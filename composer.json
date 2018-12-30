@@ -1,0 +1,41 @@
+{
+    "name": "whitecube/nova-page",
+    "description": "Static pages content management for Laravel Nova",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "nova",
+        "cms",
+        "page",
+        "content",
+        "wysiwyg",
+        "flatfile"
+    ],
+    "authors": [
+        {
+            "name": "Toon Van den Bos",
+            "email": "toon@whitecube.be"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "nesbot/carbon": "^2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*",
+        "mockery/mockery": "0.9.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Whitecube\\NovaPage\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Whitecube\\NovaPage\\NovaPageServiceProvider"
+            ]
+        }
+    }
+}
