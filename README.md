@@ -14,19 +14,25 @@ In your terminal type : `composer require whitecube/nova-page` and provide "dev-
     }
 ```
 
-Next, add this line to `providers` section of the app config file in `app/config/app.php`:
+Now, add this line to `providers` section of the app config file in `app/config/app.php`:
 
 ```php
     'providers' => [
-
         // ...
-
         /*
          * Package Service Providers...
          */
         Whitecube\NovaPage\NovaPageServiceProvider::class,
-
         // ...
+    ],
+```
 
+Next, add the `Page` facade:
+
+```php
+    'aliases' => [
+        // ...
+        'Page' => Whitecube\NovaPage\NovaPageFacade::class,
+        // ...
     ],
 ```
