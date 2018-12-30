@@ -115,5 +115,56 @@ class Manager
     {
         return new Container($identifier, $data, $source);
     }
+
+    /**
+     * Get a loaded container by its identifier
+     *
+     * @param string $identifier
+     * @return Whitecube\NovaPage\Page\Container
+     */
+    public function get($identifier = null)
+    {
+        if(is_null($identifier)) {
+            return $this->current;
+        }
+
+        foreach ($this->loaded as $key => $container) {
+            if($key === $identifier) return $container;
+            if(substr($key, strpos($key, '.') + 1) === $identifier) return $container;
+        }
+
+        return;
+    }
+
+    /**
+     * Get an attribute on the current container
+     *
+     * @param string $attribute
+     * @return mixed
+     */
+    public function __get($attribute)
+    {
+        if(!$this->current) {
+            return;
+        }
+
+        return $this->current->$attribute;
+    }
+
+    /**
+     * Forward a method call to the current container
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($method, $arguments)
+    {
+        if(!$this->current) {
+            return;
+        }
+
+        return call_user_func_array([$this->current, $method], $arguments);
+    }
     
 }
