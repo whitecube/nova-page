@@ -3,6 +3,7 @@
 namespace Whitecube\NovaPage\Page;
 
 use Carbon\Carbon;
+use Whitecube\NovaPage\Sources\SourceInterface;
 
 class Container
 {

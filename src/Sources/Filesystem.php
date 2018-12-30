@@ -39,11 +39,11 @@ class Filesystem implements SourceInterface
      */
     public function fetch($identifier)
     {
-        if(!($file = $this->getFilePath($identifier)) {
+        if(!($file = $this->getFilePath($identifier))) {
             return null;
         }
 
-        $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode(file_get_contents($file), true, 512);
         if(!isset($data['created_at'])) $data['created_at'] = filectime($file);
         if(!isset($data['updated_at'])) $data['updated_at'] = filemtime($file);
 

@@ -23,7 +23,13 @@ class NovaPageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager();
+            return new Manager([
+                'sources' => [
+                    'files' => [
+                        'directory' => resource_path('lang/en/static')
+                    ]
+                ]
+            ]);
         });
     }
 
