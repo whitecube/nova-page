@@ -42,11 +42,13 @@ Next, add the `Page` facade:
 
 Now you can publish the package's configuration file with the `php artisan vendor:publish` command. This will add a `app/config/novapage.php` file containing the package's default configuration.
 
-## Middleware registration
+## Loading pages
+
+### Middleware autoloading
 
 It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the page's data using the current route's name as identifier. Of course, this means you'll need to name the routes in order to get it to work.
 
-For instance, it is possible to autoload the page's static content on each "web" request by adding `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `web` middleware group array located in the `App\Http\Kernel` file:
+For instance, it is possible to autoload the page's static content on each _web_ request by adding `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `web` middleware group array located in the `App\Http\Kernel` file:
 
 ```php
     /**
@@ -64,3 +66,24 @@ For instance, it is possible to autoload the page's static content on each "web"
         // ...
     ];
 ```
+
+### Manual loading
+
+At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Page\Manager` dependency in a controller's arguments and call the `load($identifier, $locale = null, $current = true, $source = null)` method:
+
+```php
+use Whitecube\NovaPage\Page\Manager;
+
+class AboutController extends Controller
+{
+
+    public function show(Manager $page)
+    {
+        $page->load('about');
+        return view('pages.about');
+    }
+
+}
+```
+
+If no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define that page as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` with the `$current` argument set to `false`.
