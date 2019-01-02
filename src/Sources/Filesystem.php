@@ -18,7 +18,7 @@ class Filesystem implements SourceInterface
      */
     public function getName()
     {
-        return 'files';
+        return 'filesystem';
     }
 
     /**

@@ -14,7 +14,7 @@ In your terminal type : `composer require whitecube/nova-page` and provide "dev-
     }
 ```
 
-Now, add this line to `providers` section of the app config file in `app/config/app.php`:
+Register the package in the `providers` section of the app config file in `app/config/app.php`:
 
 ```php
     'providers' => [
@@ -37,6 +37,8 @@ Next, add the `Page` facade:
         // ...
     ],
 ```
+
+Now you can publish the package's configuration file with the `php artisan vendor:publish` command. This will add a `app/config/novapage.php` file containing the package's default configuration.
 
 ## Middleware registration
 

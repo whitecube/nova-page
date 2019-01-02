@@ -22,15 +22,22 @@ class NovaPageServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/config.php', 'novapage');
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager([
-                'sources' => [
-                    'files' => [
-                        'directory' => resource_path('lang/en/static')
-                    ]
-                ]
-            ]);
+            return new Manager(config('novapage'));
         });
+    }
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__ . '/config.php' => config_path('novapage.php')
+        ]);
     }
 
     /**
