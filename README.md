@@ -131,3 +131,39 @@ Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timesta
 #### `Page::get($attribute, $callback = null)`
 
 Returns a defined field's value. Optionally, you can provide a callback `Closure` that will be applied to the returned value. 
+
+### Dependency Injection
+
+Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Container` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Container` is requested, which can be easily achieved using the package's `LoadPageFromRouteName` middleware.
+
+```php
+use Whitecube\NovaPage\Page\Container;
+
+class HomepageController extends Controller
+{
+
+    public function show(Container $page)
+    {
+        // If needed, manipulate $page's attribute before passing it to the view.
+        return view('pages.home', ['page' => $page]);
+    }
+
+}
+```
+
+And use it as a regular object in the `pages.home` template:
+
+```blade
+@extends('layout')
+
+@section('template', $page->getId())
+
+@section('content')
+    <h1>{{ $page->getTitle('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
+    <p>Edited on <time datetime="{{ $page->getDate('updated_at')->format('c') }}">{{ $page->getDate('updated_at')->toFormattedDateString() }}</time></p>
+    <p>{{ $page->introduction }}</p>
+    <a href="{!! $page->cta->href !!}">{{ $page->cta->label }}</a>
+@endsection
+```
+
+As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Page\Container` instance.

@@ -4,6 +4,7 @@ namespace Whitecube\NovaPage;
 
 use Illuminate\Support\ServiceProvider;
 use Whitecube\NovaPage\Page\Manager;
+use Whitecube\NovaPage\Page\Container;
 
 class NovaPageServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,9 @@ class NovaPageServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config.php', 'novapage');
         $this->app->singleton(Manager::class, function ($app) {
             return new Manager();
+        });
+        $this->app->bind(Container::class, function($app) {
+            return $app->make(Manager::class)->find();
         });
     }
 
