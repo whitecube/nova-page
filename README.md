@@ -48,23 +48,28 @@ Now you can publish the package's configuration file with the `php artisan vendo
 
 It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the page's data using the current route's name as identifier. Of course, this means you'll need to name the routes in order to get it to work.
 
-For instance, it is possible to autoload the page's static content on each _web_ request by adding `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `web` middleware group array located in the `App\Http\Kernel` file:
+Add `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
 
 ```php
     /**
-     * The application's route middleware groups.
+     * The application's route middleware.
+     *
+     * These middleware may be assigned to groups or used individually.
      *
      * @var array
      */
-    protected $middlewareGroups = [
-        'web' => [
-            // ...
-            \Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class,
-            // ...
-        ],
-
+    protected $routeMiddleware = [
         // ...
+        'loadPage' => \Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class,
     ];
+```
+
+Assign the middleware to all the routes having static content to load:
+
+```php
+Route::middleware('loadPage')->group(function() {
+    Route::get('/', 'HomepageController@show')->name('home');
+}
 ```
 
 ### Manual loading
