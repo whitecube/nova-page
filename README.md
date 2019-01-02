@@ -40,6 +40,22 @@ Next, add the `Page` facade:
     ],
 ```
 
+Finally, register the Nova tool in `app/Http/Providers/NovaServiceProvider.php`:
+
+```php
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [
+            \Whitecube\NovaPage\NovaPageTool::make(),
+        ];
+    }
+```
+
 Now you can publish the package's configuration file with the `php artisan vendor:publish` command. This will add a `app/config/novapage.php` file containing the package's default configuration.
 
 ## Loading pages for display
