@@ -42,7 +42,7 @@ Next, add the `Page` facade:
 
 Now you can publish the package's configuration file with the `php artisan vendor:publish` command. This will add a `app/config/novapage.php` file containing the package's default configuration.
 
-## Loading pages
+## Loading pages for display
 
 ### Middleware autoloading
 
@@ -69,7 +69,7 @@ For instance, it is possible to autoload the page's static content on each _web_
 
 ### Manual loading
 
-At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Page\Manager` dependency in a controller's arguments and call the `load($identifier, $locale = null, $current = true, $source = null)` method:
+At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Page\Manager` dependency in a controller and call its `load($identifier, $locale = null, $current = true, $source = null)` method:
 
 ```php
 use Whitecube\NovaPage\Page\Manager;
@@ -86,4 +86,20 @@ class AboutController extends Controller
 }
 ```
 
-If no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define that page as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` with the `$current` argument set to `false`.
+If no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define it as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` with `$current` set to `false`.
+
+## Template usage
+
+Retrieving the page's static values in your application's blade templates is made possible using the `Page` facade and its different methods:
+
+```blade
+@extends('layout')
+
+@section('template', Page::id())
+
+@section('content')
+    <h1>{{ Page::title('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
+    <p>{{ Page::get('introduction') }}</p>
+    <a href="{!! Page::get('cta.href') !!}">{{ Page::get('cta.label') }}</a>
+@endsection
+```

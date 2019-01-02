@@ -113,7 +113,7 @@ class Manager
      * @param string $identifier
      * @return Whitecube\NovaPage\Page\Container
      */
-    public function get($identifier = null)
+    public function find($identifier = null)
     {
         if(is_null($identifier)) {
             return $this->current;

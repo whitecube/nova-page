@@ -2,6 +2,7 @@
 
 namespace Whitecube\NovaPage\Page;
 
+use Closure;
 use Carbon\Carbon;
 use Whitecube\NovaPage\Sources\SourceInterface;
 
@@ -53,7 +54,9 @@ class Container
     /**
      * Create the page resource
      *
-     * @param array $config
+     * @param string $identifier
+     * @param array $data
+     * @param Whitecube\NovaPage\Sources\SourceInterface $source
      */
     public function __construct($identifier, $data, SourceInterface $source)
     {
@@ -64,6 +67,25 @@ class Container
         $this->setDate('updated_at', $data['updated_at'] ?? null);
         $this->attributes = $data['attributes'] ?? [];
         $this->source = $source;
+    }
+
+    /**
+     * Wrap calls to getter methods without the "get" prefix
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($method, $arguments)
+    {
+        if(strpos($method, 'get') === 0) {
+            return;
+        }
+
+        $getter = 'get' . ucfirst($method);
+        if(method_exists($this, $getter)) {
+            return call_user_func_array([$this, $getter], $arguments);
+        }
     }
 
     /**
@@ -103,6 +125,21 @@ class Container
 
     /**
      * Retrieve a page's attribute
+     *
+     * @param string $attribute
+     * @return mixed
+     */
+    public function get($attribute, Closure $callback = null)
+    {
+        if($callback) {
+            return $callback($this->__get($attribute));
+        }
+
+        return $this->__get($attribute);
+    }
+
+    /**
+     * Magically retrieve a page's attribute
      *
      * @param string $attribute
      * @return mixed
