@@ -5,17 +5,9 @@ namespace Whitecube\NovaPage\Page;
 use App;
 use Whitecube\NovaPage\Exceptions\ContainerNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
-use Whitecube\NovaPage\Sources\Filesystem;
 
 class Manager
 {
-
-    /**
-     * NovaPage Configuration
-     *
-     * @var array
-     */
-    protected $config;
 
     /**
      * The registered container's data sources. First one is default.
@@ -38,15 +30,9 @@ class Manager
      */
     protected $loaded = [];
 
-    /**
-     * Set default manager source and other configuration
-     *
-     * @param array $config
-     */
-    public function __construct(array $config = [])
+    public function __construct()
     {
-        $this->config = $config;
-        $this->getSource($config['default_source'] ?? Filesystem::class);
+        $this->getSource(config('novapage.default_source'));
     }
 
     /**
@@ -80,8 +66,6 @@ class Manager
         $this->loaded[$key][$container->getLocale()] = $container;
         if($current) $this->current = $container;
 
-        dd($this);
-
         return $container;
     }
 
@@ -105,7 +89,7 @@ class Manager
             return null;
         }
 
-        $source->setConfig($this->config['sources'][$source->getName()] ?? []);
+        $source->setConfig(config('novapage.sources.' . $source->getName()) ?? []);
 
         return $this->sources[$classname] = $source;
     }

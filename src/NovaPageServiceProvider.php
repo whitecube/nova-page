@@ -24,7 +24,7 @@ class NovaPageServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config.php', 'novapage');
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager(config('novapage'));
+            return new Manager();
         });
     }
 
