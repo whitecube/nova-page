@@ -152,12 +152,12 @@ class Container
     /**
      * Retrieve a timestamp linked to this page resource
      *
-     * @param string $moment
+     * @param string $timestamp
      * @return Carbon\Carbon
      */
-    public function getDate($moment)
+    public function getDate($timestamp = 'created_at')
     {
-        return $this->dates[$moment] ?? null;
+        return $this->dates[$timestamp] ?? null;
     }
 
     /**

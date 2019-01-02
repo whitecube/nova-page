@@ -99,7 +99,35 @@ Retrieving the page's static values in your application's blade templates is mad
 
 @section('content')
     <h1>{{ Page::title('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
+    <p>Last edited on <time datetime="{{ Page::date('updated_at')->format('c') }}">{{ Page::date('updated_at')->toFormattedDateString() }}</time></p>
     <p>{{ Page::get('introduction') }}</p>
     <a href="{!! Page::get('cta.href') !!}">{{ Page::get('cta.label') }}</a>
 @endsection
 ```
+
+### Useful Facade methods
+
+#### `Page::id()`
+
+Returns the page's identifier (usualy the request's route name).
+
+#### `Page::title($default = null, $prepend = null, $append = null)`
+
+Returns and optionally formats the page's title. The title is a automatic & required field in the page edition form and **is not** linked to or overwritten by an alternative `title` attribute you could add to the page's fields.
+
+#### `Page::locale()`
+
+Returns the locale code of the loaded page. Usually (and should be) the same as `App::getLocale()`.
+
+#### `Page::date($timestamp = 'created_at')`
+
+Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timestamp. Possible timestamps are:
+
+- `created_at`
+- `updated_at`
+
+> **Note**: Since most UNIX systems do not have a creation date for their files. Therefore, the `created_at` and `updated_at` timestamps are stored in the file's JSON attributes.
+
+#### `Page::get($attribute, $callback = null)`
+
+Returns a defined field's value. Optionally, you can provide a callback `Closure` that will be applied to the returned value. 
