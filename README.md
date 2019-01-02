@@ -113,7 +113,7 @@ Returns the page's identifier (usualy the request's route name).
 
 #### `Page::title($default = null, $prepend = null, $append = null)`
 
-Returns and optionally formats the page's title. The title is a automatic & required field in the page edition form and **is not** linked to or overwritten by an alternative `title` attribute you could add to the page's fields.
+Returns and optionally formats the page's title. The title is an automatic & required field and **is not** linked to or overwritten by an alternative `title` attribute you could add to the page's fields.
 
 #### `Page::locale()`
 
@@ -126,7 +126,7 @@ Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timesta
 - `created_at`
 - `updated_at`
 
-> **Note**: Since most UNIX systems do not have a creation date for their files. Therefore, the `created_at` and `updated_at` timestamps are stored in the file's JSON attributes.
+> **Note**: Since most UNIX systems do not have a creation date for their files, the `created_at` and `updated_at` timestamps are stored in the file's JSON attributes. Keep this in mind if you want to edit the files in a text editor.
 
 #### `Page::get($attribute, $callback = null)`
 
