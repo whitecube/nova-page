@@ -99,7 +99,7 @@ Retrieving the page's static values in your application's blade templates is mad
 
 @section('content')
     <h1>{{ Page::title('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
-    <p>Last edited on <time datetime="{{ Page::date('updated_at')->format('c') }}">{{ Page::date('updated_at')->toFormattedDateString() }}</time></p>
+    <p>Edited on <time datetime="{{ Page::date('updated_at')->format('c') }}">{{ Page::date('updated_at')->toFormattedDateString() }}</time></p>
     <p>{{ Page::get('introduction') }}</p>
     <a href="{!! Page::get('cta.href') !!}">{{ Page::get('cta.label') }}</a>
 @endsection
