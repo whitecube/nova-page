@@ -2,6 +2,7 @@
 
 namespace Whitecube\NovaPage\Page;
 
+use App;
 use Whitecube\NovaPage\Exceptions\ContainerNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Sources\Filesystem;
@@ -52,26 +53,34 @@ class Manager
      * Load a new Page Container
      *
      * @param string $identifier
+     * @param string $locale
      * @param bool $current
      * @param string $source
      * @return Whitecube\NovaPage\Page\Container
      */
-    public function load($identifier, $current = true, $source = null)
+    public function load($identifier, $locale = null, $current = true, $source = null)
     {
         $source = $this->getSource($source);
+        $key = $source->getName() . '.' . $identifier;
 
-        if(isset($this->loaded[$source->getName() . '.' . $identifier])) {
-            return $this->loaded[$source->getName() . '.' . $identifier];
+        if(isset($this->loaded[$key][$locale ?? App::getLocale()])) {
+            return $this->loaded[$key][$locale ?? App::getLocale()];
         }
 
-        if(!($raw = $source->fetch($identifier))) {
+        if(!($raw = $source->fetch($identifier, $locale))) {
             throw new ContainerNotFoundException($source, $identifier);
         }
 
         $container = $this->getNewContainer($identifier, $raw, $source);
 
-        $this->loaded[$source->getName() . '.' . $identifier] = $container;
+        if(!isset($this->loaded[$key])) {
+            $this->loaded[$key] = [];
+        }
+
+        $this->loaded[$key][$container->getLocale()] = $container;
         if($current) $this->current = $container;
+
+        dd($this);
 
         return $container;
     }
@@ -92,9 +101,7 @@ class Manager
             return $this->sources[$classname];
         }
 
-        $source = new $classname($this->config);
-
-        if(!($source instanceof SourceInterface)) {
+        if(!(($source = new $classname()) instanceof SourceInterface)) {
             return null;
         }
 

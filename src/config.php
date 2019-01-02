@@ -24,11 +24,13 @@ return [
     | provided when instanciated. This means you can add your own source's
     | configuration here too.
     |
+    | Path configurations can contain the following variables: {locale}
+    |
     */
     'sources' => [
 
         'filesystem' => [
-            'directory' => resource_path('lang/en/static')
+            'directory' => resource_path('lang/{locale}/static')
         ]
 
     ]
