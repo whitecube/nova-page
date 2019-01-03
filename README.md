@@ -60,7 +60,7 @@ Now you can publish the package's configuration file with the `php artisan vendo
 
 ## Templates
 
-In order to assign fields (and even cards!) to page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
+In order to assign fields (and even cards!) to a page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
 
 ### Creating Templates
 
@@ -99,26 +99,25 @@ class Aboutpage extends Template
 }
 ```
 
-Fields and cards defintion is exactly the same as on regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
+Fields and cards defintion is exactly the same as for regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
 
 ### Assigning templates
 
 Once the template is defined, simply assign it to the chosen routes using the `template()` method (which is added to the original `Route` api by NovaPage):
 
 ```php
-Route::get('/about', 'AboutController@show')
-    ->template(\App\Nova\Templates\Homepage::class)
+Route::get('/about-me', 'AboutController@show')
+    ->template(\App\Nova\Templates\Aboutpage::class)
     ->name('about');
 ```
 
-**Important**: Do not forget to name the routes you'll be using with NovaPage templates. Route names are used for retrieving and naming the JSON files.
-
+**Important**: Do not forget to name the routes you'll be using with NovaPage templates. Route names are used for retrieving and naming the route's JSON files.
 
 ## Loading pages for display
 
 ### Middleware autoloading
 
-It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the page's data using the current route's name as identifier. Of course, this means you'll need to name the routes in order to get it to work.
+It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the current page's data using the current route name as identifier.
 
 Add `\Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
 
@@ -235,7 +234,11 @@ Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timesta
 
 #### `Page::get($attribute, $callback = null)`
 
-Returns a defined field's value. Optionally, you can provide a callback `Closure` that will be applied to the returned value. 
+Returns a defined field's value. Optionally, you can provide a callback `Closure` that will be applied to the returned value.
+
+#### `Page::find($name)`
+
+Returns a previously loaded page template.
 
 ### Dependency Injection
 
