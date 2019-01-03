@@ -58,6 +58,62 @@ Finally, register the Nova tool in `app/Http/Providers/NovaServiceProvider.php`:
 
 Now you can publish the package's configuration file with the `php artisan vendor:publish` command. This will add a `app/config/novapage.php` file containing the package's default configuration.
 
+## Templates
+
+In order to assign fields (and even cards!) to page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
+
+### Creating Templates
+
+Each Template is defined in an unique class, just as Resources. You can store those classes wherever you want, but a new `app/Nova/Templates` directory is probably a good choice.
+
+```php
+namespace App\Nova\Templates;
+
+use Illuminate\Http\Request;
+use Whitecube\NovaPage\Pages\Template;
+
+class Aboutpage extends Template
+{
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the cards available for the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function cards(Request $request)
+    {
+        return [];
+    }
+}
+```
+
+Fields and cards defintion is exactly the same as on regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
+
+### Assigning templates
+
+Once the template is defined, simply assign it to the chosen routes using the `template()` method (which is added to the original `Route` api by NovaPage):
+
+```php
+Route::get('/about', 'AboutController@show')
+    ->template(\App\Nova\Templates\Homepage::class)
+    ->name('about');
+```
+
+**Important**: Do not forget to name the routes you'll be using with NovaPage templates. Route names are used for retrieving and naming the JSON files.
+
+
 ## Loading pages for display
 
 ### Middleware autoloading
@@ -76,23 +132,33 @@ Add `\Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class` to the `r
      */
     protected $routeMiddleware = [
         // ...
-        'loadPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class,
+        'loadNovaPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class,
     ];
 ```
 
-Assign the middleware to all the routes having static content to load:
+You can now assign the `loadNovaPage` middleware to all routes that need it, or even add it to the `web` middleware group in the same `App\Http\Kernel` file:
 
 ```php
-Route::middleware('loadPage')->group(function() {
-    Route::get('/', 'HomepageController@show')->name('home');
-}
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            // ...
+            'loadNovaPage',
+        ],
+        // ...
+    };
 ```
 
 ### Manual loading
 
-At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Pages\Manager` dependency in a controller and call its `load($identifier, $locale = null, $current = true, $source = null)` method:
+At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Pages\Manager` dependency in a controller and call its `load($name, $template, $locale = null, $current = true)` method:
 
 ```php
+use App\Nova\Templates\Aboutpage;
 use Whitecube\NovaPage\Pages\Manager;
 
 class AboutController extends Controller
@@ -100,16 +166,34 @@ class AboutController extends Controller
 
     public function show(Manager $page)
     {
-        $page->load('about');
+        $page->load('about', Aboutpage::class);
         return view('pages.about');
     }
 
 }
 ```
 
-If no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define it as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` with `$current` set to `false`.
+In most cases, this will probably not be very convenient since we alreay registered the current route's template in our routes definitions. Therefore, it is also possible to load the page's content with an `Illuminate\Routing\Route` instance using the `loadFromRoute($route, $locale = null, $current = true)` method:
 
-## Template usage
+```php
+use Illuminate\Http\Request;
+use Whitecube\NovaPage\Pages\Manager;
+
+class AboutController extends Controller
+{
+
+    public function show(Request $request, Manager $page)
+    {
+        $page->loadFromRoute($request->route());
+        return view('pages.about');
+    }
+
+}
+```
+
+Anyway, if no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define it as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` or `loadFromRoute()` with `$current` set to `false`.
+
+## Front-end Template Usage
 
 Retrieving the page's static values in your application's blade templates is made possible using the `Page` facade and its different methods:
 
