@@ -3,28 +3,28 @@
 namespace Whitecube\NovaPage\Page;
 
 use App;
-use Whitecube\NovaPage\Exceptions\ContainerNotFoundException;
+use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 
 class Manager
 {
 
     /**
-     * The registered container's data sources. First one is default.
+     * The registered Template's data sources. First one is default.
      *
      * @var array
      */
     protected $sources;
 
     /**
-     * The default current page container
+     * The default current page Template
      *
-     * @var Whitecube\NovaPage\Page\Container
+     * @var Whitecube\NovaPage\Page\Template
      */
     protected $current;
 
     /**
-     * The loaded containers
+     * The loaded Templates
      *
      * @var array
      */
@@ -36,13 +36,13 @@ class Manager
     }
 
     /**
-     * Load a new Page Container
+     * Load a new Page Template
      *
      * @param string $identifier
      * @param string $locale
      * @param bool $current
      * @param string $source
-     * @return Whitecube\NovaPage\Page\Container
+     * @return Whitecube\NovaPage\Page\Template
      */
     public function load($identifier, $locale = null, $current = true, $source = null)
     {
@@ -54,19 +54,19 @@ class Manager
         }
 
         if(!($raw = $source->fetch($identifier, $locale))) {
-            throw new ContainerNotFoundException($source, $identifier);
+            throw new TemplateContentNotFoundException($source, $identifier);
         }
 
-        $container = $this->getNewContainer($identifier, $raw, $source);
+        $template = $this->getNewTemplate($identifier, $raw, $source);
 
         if(!isset($this->loaded[$key])) {
             $this->loaded[$key] = [];
         }
 
-        $this->loaded[$key][$container->getLocale()] = $container;
-        if($current) $this->current = $container;
+        $this->loaded[$key][$template->getLocale()] = $template;
+        if($current) $this->current = $template;
 
-        return $container;
+        return $template;
     }
 
     /**
@@ -95,23 +95,23 @@ class Manager
     }
 
     /**
-     * Return a new Container instance
+     * Return a new Template instance
      *
      * @param string $identifier
      * @param array $data
      * @param Whitecube\NovaPage\Sources\SourceInterface $source
-     * @return Whitecube\NovaPage\Page\Container
+     * @return Whitecube\NovaPage\Page\Template
      */
-    protected function getNewContainer($identifier, array $data, SourceInterface $source)
+    protected function getNewTemplate($identifier, array $data, SourceInterface $source)
     {
-        return new Container($identifier, $data, $source);
+        return new Template($identifier, $data, $source);
     }
 
     /**
-     * Get a loaded container by its identifier
+     * Get a loaded Template by its identifier
      *
      * @param string $identifier
-     * @return Whitecube\NovaPage\Page\Container
+     * @return Whitecube\NovaPage\Page\Template
      */
     public function find($identifier = null)
     {
@@ -119,16 +119,16 @@ class Manager
             return $this->current;
         }
 
-        foreach ($this->loaded as $key => $container) {
-            if($key === $identifier) return $container;
-            if(substr($key, strpos($key, '.') + 1) === $identifier) return $container;
+        foreach ($this->loaded as $key => $template) {
+            if($key === $identifier) return $template;
+            if(substr($key, strpos($key, '.') + 1) === $identifier) return $template;
         }
 
         return;
     }
 
     /**
-     * Get an attribute on the current container
+     * Get an attribute on the current Template
      *
      * @param string $attribute
      * @return mixed
@@ -143,7 +143,7 @@ class Manager
     }
 
     /**
-     * Forward a method call to the current container
+     * Forward a method call to the current Template
      *
      * @param string $method
      * @param array $arguments

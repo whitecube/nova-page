@@ -6,7 +6,6 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Whitecube\NovaPage\Http\Middleware\Authorize;
 
 class NovaPageToolServiceProvider extends ServiceProvider
 {
@@ -40,9 +39,7 @@ class NovaPageToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/nova-page')
-                ->group(__DIR__.'/../routes/api.php');
+        // Add API routes here if necessary.
     }
 
     /**

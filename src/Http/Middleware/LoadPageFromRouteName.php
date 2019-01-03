@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaPage\Middleware;
+namespace Whitecube\NovaPage\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

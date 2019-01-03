@@ -14,8 +14,9 @@ class NovaPageTool extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-page', __DIR__.'/../dist/js/tool.js');
-        Nova::style('nova-page', __DIR__.'/../dist/css/tool.css');
+        Nova::resources([
+            \Whitecube\NovaPage\Page\Resource::class,
+        ]);
     }
 
     /**

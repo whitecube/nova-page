@@ -4,7 +4,7 @@ namespace Whitecube\NovaPage;
 
 use Illuminate\Support\ServiceProvider;
 use Whitecube\NovaPage\Page\Manager;
-use Whitecube\NovaPage\Page\Container;
+use Whitecube\NovaPage\Page\Template;
 
 class NovaPageServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class NovaPageServiceProvider extends ServiceProvider
     protected $defer = true;
 
     /**
-     * Register bindings in the container.
+     * Register bindings in the Container.
      *
      * @return void
      */
@@ -27,7 +27,7 @@ class NovaPageServiceProvider extends ServiceProvider
         $this->app->singleton(Manager::class, function ($app) {
             return new Manager();
         });
-        $this->app->bind(Container::class, function($app) {
+        $this->app->bind(Template::class, function($app) {
             return $app->make(Manager::class)->find();
         });
     }

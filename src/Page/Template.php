@@ -5,8 +5,9 @@ namespace Whitecube\NovaPage\Page;
 use Closure;
 use Carbon\Carbon;
 use Whitecube\NovaPage\Sources\SourceInterface;
+use Illuminate\Http\Request;
 
-class Container
+abstract class Template
 {
 
     /**
@@ -58,7 +59,7 @@ class Container
      * @param array $data
      * @param Whitecube\NovaPage\Sources\SourceInterface $source
      */
-    public function __construct($identifier, $data, SourceInterface $source)
+    public function __construct($identifier = null, $data = [], SourceInterface $source = null)
     {
         $this->identifier = $identifier;
         $this->title = $data['title'] ?? null;
@@ -177,5 +178,21 @@ class Container
 
         return $this->dates[$moment] = new Carbon($date);
     }
+
+    /**
+     * Get the fields displayed by the template.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    abstract public function fields(Request $request);
+
+    /**
+     * Get the cards available for the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    abstract public function cards(Request $request);
 
 }

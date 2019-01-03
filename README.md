@@ -64,7 +64,7 @@ Now you can publish the package's configuration file with the `php artisan vendo
 
 It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the page's data using the current route's name as identifier. Of course, this means you'll need to name the routes in order to get it to work.
 
-Add `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
+Add `\Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
 
 ```php
     /**
@@ -76,7 +76,7 @@ Add `\Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class` to the `routeM
      */
     protected $routeMiddleware = [
         // ...
-        'loadPage' => \Whitecube\NovaPage\Middleware\LoadPageFromRouteName::class,
+        'loadPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class,
     ];
 ```
 
@@ -155,18 +155,18 @@ Returns a defined field's value. Optionally, you can provide a callback `Closure
 
 ### Dependency Injection
 
-Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Container` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Container` is requested, which can be easily achieved using the package's `LoadPageFromRouteName` middleware.
+Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Template` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Template` is requested, which can be easily achieved using the package's `LoadPageFromRouteName` middleware.
 
 ```php
-use Whitecube\NovaPage\Page\Container;
+use Whitecube\NovaPage\Page\Template;
 
 class HomepageController extends Controller
 {
 
-    public function show(Container $page)
+    public function show(Template $template)
     {
-        // If needed, manipulate $page's attribute before passing it to the view.
-        return view('pages.home', ['page' => $page]);
+        // If needed, manipulate $template's attribute before passing it to the view.
+        return view('pages.home', ['page' => $template]);
     }
 
 }
@@ -187,4 +187,4 @@ And use it as a regular object in the `pages.home` template:
 @endsection
 ```
 
-As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Page\Container` instance.
+As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Page\Template` instance.
