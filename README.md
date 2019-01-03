@@ -90,10 +90,10 @@ Route::middleware('loadPage')->group(function() {
 
 ### Manual loading
 
-At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Page\Manager` dependency in a controller and call its `load($identifier, $locale = null, $current = true, $source = null)` method:
+At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Pages\Manager` dependency in a controller and call its `load($identifier, $locale = null, $current = true, $source = null)` method:
 
 ```php
-use Whitecube\NovaPage\Page\Manager;
+use Whitecube\NovaPage\Pages\Manager;
 
 class AboutController extends Controller
 {
@@ -158,7 +158,7 @@ Returns a defined field's value. Optionally, you can provide a callback `Closure
 Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Template` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Template` is requested, which can be easily achieved using the package's `LoadPageFromRouteName` middleware.
 
 ```php
-use Whitecube\NovaPage\Page\Template;
+use Whitecube\NovaPage\Pages\Template;
 
 class HomepageController extends Controller
 {
@@ -187,4 +187,4 @@ And use it as a regular object in the `pages.home` template:
 @endsection
 ```
 
-As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Page\Template` instance.
+As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Pages\Template` instance.

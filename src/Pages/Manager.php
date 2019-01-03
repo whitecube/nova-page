@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaPage\Page;
+namespace Whitecube\NovaPage\Pages;
 
 use App;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
@@ -19,7 +19,7 @@ class Manager
     /**
      * The default current page Template
      *
-     * @var Whitecube\NovaPage\Page\Template
+     * @var Whitecube\NovaPage\Pages\Template
      */
     protected $current;
 
@@ -42,7 +42,7 @@ class Manager
      * @param string $locale
      * @param bool $current
      * @param string $source
-     * @return Whitecube\NovaPage\Page\Template
+     * @return Whitecube\NovaPage\Pages\Template
      */
     public function load($identifier, $locale = null, $current = true, $source = null)
     {
@@ -100,7 +100,7 @@ class Manager
      * @param string $identifier
      * @param array $data
      * @param Whitecube\NovaPage\Sources\SourceInterface $source
-     * @return Whitecube\NovaPage\Page\Template
+     * @return Whitecube\NovaPage\Pages\Template
      */
     protected function getNewTemplate($identifier, array $data, SourceInterface $source)
     {
@@ -111,7 +111,7 @@ class Manager
      * Get a loaded Template by its identifier
      *
      * @param string $identifier
-     * @return Whitecube\NovaPage\Page\Template
+     * @return Whitecube\NovaPage\Pages\Template
      */
     public function find($identifier = null)
     {

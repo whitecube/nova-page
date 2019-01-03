@@ -4,7 +4,7 @@ namespace Whitecube\NovaPage\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Whitecube\NovaPage\Page\Manager;
+use Whitecube\NovaPage\Pages\Manager;
 
 class LoadPageFromRouteName
 {
@@ -12,7 +12,7 @@ class LoadPageFromRouteName
     /**
      * The Nova Page Manager singleton instance
      *
-     * @var \Whitecube\NovaPage\Page\Manager
+     * @var \Whitecube\NovaPage\Pages\Manager
      */
     protected $page;
 

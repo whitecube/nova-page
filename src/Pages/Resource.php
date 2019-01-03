@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaPage\Page;
+namespace Whitecube\NovaPage\Pages;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource as BaseResource;
@@ -38,7 +38,7 @@ class Resource extends BaseResource
     /**
      * Create a new resource instance.
      *
-     * @param \Whitecube\NovaPage\Page\Template $resource
+     * @param \Whitecube\NovaPage\Pages\Template $resource
      * @return void
      */
     public function __construct(Template $resource)

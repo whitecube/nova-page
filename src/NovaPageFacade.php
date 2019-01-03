@@ -3,7 +3,7 @@
 namespace Whitecube\NovaPage;
  
 use Illuminate\Support\Facades\Facade;
-use Whitecube\NovaPage\Page\Manager;
+use Whitecube\NovaPage\Pages\Manager;
  
 class NovaPageFacade extends Facade {
  

@@ -3,8 +3,8 @@
 namespace Whitecube\NovaPage;
 
 use Illuminate\Support\ServiceProvider;
-use Whitecube\NovaPage\Page\Manager;
-use Whitecube\NovaPage\Page\Template;
+use Whitecube\NovaPage\Pages\Manager;
+use Whitecube\NovaPage\Pages\Template;
 
 class NovaPageServiceProvider extends ServiceProvider
 {

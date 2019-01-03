@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaPage\Page;
+namespace Whitecube\NovaPage\Pages;
 
 use Closure;
 use Carbon\Carbon;
