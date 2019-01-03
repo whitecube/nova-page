@@ -2,27 +2,44 @@
 
 namespace Whitecube\NovaPage\Pages;
 
+use App;
 use Closure;
 use Carbon\Carbon;
+use BadMethodCallException;
 use Whitecube\NovaPage\Sources\SourceInterface;
+use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
 
 abstract class Template
 {
 
     /**
-     * The page resource identifier
+     * The page name (usually the route's name)
      *
      * @var string
      */
-    protected $identifier;
+    protected $name;
 
     /**
-     * The page's title
+     * The page's current locale code
      *
      * @var string
      */
-    protected $title;
+    protected $locale;
+
+    /**
+     * The page's title for the currently loaded locales
+     *
+     * @var array
+     */
+    protected $localizedTitle = [];
+
+    /**
+     * The page's attributes for the currently loaded locales
+     *
+     * @var array
+     */
+    protected $localizedAttributes = [];
 
     /**
      * The page's timestamps
@@ -32,42 +49,90 @@ abstract class Template
     protected $dates = [];
 
     /**
-     * The page's locale code
-     *
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * The page's attributes
-     *
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
      * The page's source
      *
-     * @var Whitecube\NovaPage\Sources\SourceInterface
+     * @var mixed
      */
     protected $source;
 
     /**
-     * Create the page resource
+     * Create A Template Instance.
      *
-     * @param string $identifier
-     * @param array $data
-     * @param Whitecube\NovaPage\Sources\SourceInterface $source
+     * @param string $name
+     * @param string $locale
      */
-    public function __construct($identifier = null, $data = [], SourceInterface $source = null)
+    public function __construct($name = null, $locale = null)
     {
-        $this->identifier = $identifier;
-        $this->title = $data['title'] ?? null;
-        $this->locale = $data['locale'] ?? null;
-        $this->setDate('created_at', $data['created_at'] ?? null);
-        $this->setDate('updated_at', $data['updated_at'] ?? null);
-        $this->attributes = $data['attributes'] ?? [];
-        $this->source = $source;
+        $this->name = $name;
+        $this->setLocale($locale);
+        $this->load();
+    }
+
+    /**
+     * Get the template's source class name
+     *
+     * @return string
+     */
+    public function getSource() : SourceInterface
+    {
+        if(is_string($this->source) || is_null($this->source)) {
+            $source = $this->source ?? config('novapage.default_source');
+            $this->source = new $source;
+            $this->source->setConfig(config('novapage.sources.' . $this->source->getName()) ?? []);
+        }
+
+        return $this->source;
+    }
+
+    /**
+     * Load the page's static content for the current locale if needed
+     *
+     * @return $this
+     */
+    public function load()
+    {
+        if(!$this->name || isset($this->localizedAttributes[$this->locale])) {
+            return $this;
+        }
+
+        if(!($data = $this->getSource()->fetch($this->name, $this->locale))) {
+            throw new TemplateContentNotFoundException($this->getSource()->getName(), $this->name);
+        }
+
+        $this->fill($this->locale, $data);
+    }
+
+    /**
+     * Set all the template's attributes for given locale
+     *
+     * @param string $locale
+     * @param array $data
+     * @return void
+     */
+    public function fill($locale, array $data = [])
+    {
+        $this->localizedTitle[$locale] = $data['title'] ?? null;
+        $this->localizedAttributes[$locale] = $data['attributes'] ?? [];
+
+        $this->setDateIf('created_at', $data['created_at'] ?? null, function(Carbon $new, Carbon $current = null) {
+            return (!$current || $new->isBefore($current));
+        });
+
+        $this->setDateIf('updated_at', $data['updated_at'] ?? null, function(Carbon $new, Carbon $current = null) {
+            return (!$current || $new->isAfter($current));
+        });
+    }
+
+    /**
+     * Create a new loaded template instance
+     *
+     * @param string $name
+     * @param string $locale
+     * @return \Whitecube\NovaPage\Pages\Template
+     */
+    public function getNewTemplate($name, $locale)
+    {
+        return new static($name, $locale);
     }
 
     /**
@@ -79,28 +144,28 @@ abstract class Template
      */
     public function __call($method, $arguments)
     {
-        if(strpos($method, 'get') === 0) {
-            return;
-        }
-
         $getter = 'get' . ucfirst($method);
         if(method_exists($this, $getter)) {
             return call_user_func_array([$this, $getter], $arguments);
         }
+
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
     }
 
     /**
-     * Retrieve the page's identifier
+     * Retrieve the page name
      *
      * @return string
      */
-    public function getId()
+    public function getName()
     {
-        return $this->identifier;
+        return $this->name;
     }
 
     /**
-     * Retrieve the page's title
+     * Retrieve the page's localized title
      *
      * @param string $default
      * @param string $prepend
@@ -109,31 +174,43 @@ abstract class Template
      */
     public function getTitle($default = null, $prepend = '', $append = '')
     {
-        $title = trim($prepend . ($this->title ?? $default ?? '') . $append);
+        $title = $this->localizedTitle[$this->locale] ?? $default ?? '';
+        $title = trim($prepend . $title . $append);
         return strlen($title) ? $title : null;
     }
 
     /**
-     * Retrieve the page's locale
+     * Retrieve the page's current locale
      *
-     * @param string $default
      * @return string
      */
-    public function getLocale($default = null)
+    public function getLocale()
     {
-        return strlen($this->locale) ? $this->locale : $default;
+        return $this->locale;
+    }
+
+    /**
+     * Set the page's current locale
+     *
+     * @param string $locale
+     * @return $this
+     */
+    public function setLocale($locale = null)
+    {
+        $this->locale = $locale ?? App::getLocale();
     }
 
     /**
      * Retrieve a page's attribute
      *
      * @param string $attribute
+     * @param Closure $closure
      * @return mixed
      */
-    public function get($attribute, Closure $callback = null)
+    public function get($attribute, Closure $closure = null)
     {
-        if($callback) {
-            return $callback($this->__get($attribute));
+        if($closure) {
+            return $closure($this->__get($attribute));
         }
 
         return $this->__get($attribute);
@@ -147,7 +224,7 @@ abstract class Template
      */
     public function __get($attribute)
     {
-        return $this->attributes[$attribute] ?? null;
+        return $this->localizedAttributes[$this->locale][$attribute] ?? null;
     }
 
     /**
@@ -177,6 +254,25 @@ abstract class Template
         }
 
         return $this->dates[$moment] = new Carbon($date);
+    }
+
+    /**
+     * Define a timestamp if closure condition is met
+     *
+     * @param string $moment
+     * @param mixed $date
+     * @param Closure $closure
+     * @return mixed
+     */
+    public function setDateIf($moment, $date = null, Closure $closure)
+    {
+        if(!($date instanceof Carbon)) {
+            $date = new Carbon($date);
+        }
+
+        if($closure($date, $this->getDate($moment))) {
+            return $this->setDate($moment, $date);
+        }
     }
 
     /**

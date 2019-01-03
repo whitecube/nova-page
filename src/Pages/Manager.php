@@ -2,19 +2,18 @@
 
 namespace Whitecube\NovaPage\Pages;
 
-use App;
-use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
+use Illuminate\Routing\Route;
+use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 
 class Manager
 {
-
     /**
-     * The registered Template's data sources. First one is default.
+     * The registered NovaPage Templates.
      *
-     * @var array
+     * @var Whitecube\NovaPage\Pages\TemplatesRepository
      */
-    protected $sources;
+    protected $templates;
 
     /**
      * The default current page Template
@@ -30,101 +29,91 @@ class Manager
      */
     protected $loaded = [];
 
+    /**
+     * Create the Main Service Singleton
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->getSource(config('novapage.default_source'));
+        $this->templates = new TemplatesRepository();
     }
 
     /**
      * Load a new Page Template
      *
-     * @param string $identifier
+     * @param string $name
+     * @param string $template
      * @param string $locale
      * @param bool $current
-     * @param string $source
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($identifier, $locale = null, $current = true, $source = null)
+    public function load($name, $template, $locale = null, $current = true)
     {
-        $source = $this->getSource($source);
-        $key = $source->getName() . '.' . $identifier;
-
-        if(isset($this->loaded[$key][$locale ?? App::getLocale()])) {
-            return $this->loaded[$key][$locale ?? App::getLocale()];
+        if(!($template = $this->templates->find($template))) {
+            throw new TemplateNotFoundException($template, $name);
         }
 
-        if(!($raw = $source->fetch($identifier, $locale))) {
-            throw new TemplateContentNotFoundException($source, $identifier);
-        }
-
-        $template = $this->getNewTemplate($identifier, $raw, $source);
+        $key = $template->getSource()->getName() . '.' . $name;
 
         if(!isset($this->loaded[$key])) {
-            $this->loaded[$key] = [];
+            $this->loaded[$key] = $template->getNewTemplate($name, $locale);
+        }
+        else {
+            $this->loaded[$key]->setLocale($locale)->load();
         }
 
-        $this->loaded[$key][$template->getLocale()] = $template;
-        if($current) $this->current = $template;
+        if($current) {
+            $this->current = $this->loaded[$key];
+        }
 
-        return $template;
+        return $this->loaded[$key];
     }
 
     /**
-     * Return an instance of the requested (or default) source
+     * Load Page Template for given route instance
      *
-     * @param string $classname
-     * @return Whitecube\NovaPage\Sources\SourceInterface
+     * @param Illuminate\Routing\Route $route
+     * @param string $locale
+     * @param bool $current
+     * @return mixed
      */
-    public function getSource($classname = null) : SourceInterface
+    public function loadForRoute(Route $route, $locale = null, $current = true)
     {
-        if(is_null($classname)) {
-            return array_values($this->sources)[0];
+        if(!$route->template()) {
+            return;
         }
 
-        if(isset($this->sources[$classname])) {
-            return $this->sources[$classname];
-        }
-
-        if(!(($source = new $classname()) instanceof SourceInterface)) {
-            return null;
-        }
-
-        $source->setConfig(config('novapage.sources.' . $source->getName()) ?? []);
-
-        return $this->sources[$classname] = $source;
+        return $this->load($route->getName(), $route->template(), $locale, $current);
     }
 
     /**
-     * Return a new Template instance
+     * Get a loaded Template by its name
      *
-     * @param string $identifier
-     * @param array $data
-     * @param Whitecube\NovaPage\Sources\SourceInterface $source
+     * @param string $name
      * @return Whitecube\NovaPage\Pages\Template
      */
-    protected function getNewTemplate($identifier, array $data, SourceInterface $source)
+    public function find($name = null)
     {
-        return new Template($identifier, $data, $source);
-    }
-
-    /**
-     * Get a loaded Template by its identifier
-     *
-     * @param string $identifier
-     * @return Whitecube\NovaPage\Pages\Template
-     */
-    public function find($identifier = null)
-    {
-        if(is_null($identifier)) {
+        if(is_null($name)) {
             return $this->current;
         }
 
         foreach ($this->loaded as $key => $template) {
-            if($key === $identifier) return $template;
-            if(substr($key, strpos($key, '.') + 1) === $identifier) return $template;
+            if($key === $name) return $template;
+            if(substr($key, strpos($key, '.') + 1) === $name) return $template;
         }
+    }
 
-        return;
+    /**
+     * Register a Template into the TemplatesRepository.
+     *
+     * @param string $template
+     * @return Whitecube\NovaPage\Pages\Template
+     */
+    public function register($template)
+    {
+        return $this->templates->register($template);
     }
 
     /**

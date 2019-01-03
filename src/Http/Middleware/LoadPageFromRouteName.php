@@ -16,6 +16,11 @@ class LoadPageFromRouteName
      */
     protected $page;
 
+    /**
+     * Create the Middleware Instance
+     *
+     * @return void
+     */
     public function __construct(Manager $page)
     {
         $this->page = $page;
@@ -30,7 +35,7 @@ class LoadPageFromRouteName
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->page->load($request->route()->getName());
+        $this->page->loadForRoute($request->route());
 
         return $next($request);
     }

@@ -48,7 +48,6 @@ class Filesystem implements SourceInterface
         }
 
         $data = json_decode(file_get_contents($file), true, 512);
-        $data['locale'] = $this->resolveLocalePathVariable($locale);
         if(!isset($data['created_at'])) $data['created_at'] = filectime($file);
         if(!isset($data['updated_at'])) $data['updated_at'] = filemtime($file);
 

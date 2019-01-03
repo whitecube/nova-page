@@ -2,19 +2,13 @@
 
 namespace Whitecube\NovaPage;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use Whitecube\NovaPage\Pages\Manager;
 use Whitecube\NovaPage\Pages\Template;
 
 class NovaPageServiceProvider extends ServiceProvider
 {
-
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * Register bindings in the Container.
@@ -39,19 +33,10 @@ class NovaPageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Route::mixin(new NovaPageRouteMacros());
         $this->publishes([
             __DIR__ . '/config.php' => config_path('novapage.php')
         ]);
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [Manager::class];
     }
 
 }

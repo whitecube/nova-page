@@ -25,7 +25,7 @@ class Resource extends BaseResource
      * @var array
      */
     public static $search = [
-        'title'
+        'title', 'name'
     ];
 
     /**
@@ -75,7 +75,7 @@ class Resource extends BaseResource
      */
     public function subtitle()
     {
-        return $this->resource->getId();
+        return $this->resource->getName();
     }
 
     /**

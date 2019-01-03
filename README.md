@@ -116,7 +116,7 @@ Retrieving the page's static values in your application's blade templates is mad
 ```blade
 @extends('layout')
 
-@section('template', Page::id())
+@section('pageName', Page::name())
 
 @section('content')
     <h1>{{ Page::title('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
@@ -128,9 +128,9 @@ Retrieving the page's static values in your application's blade templates is mad
 
 ### Useful Facade methods
 
-#### `Page::id()`
+#### `Page::name()`
 
-Returns the page's identifier (usualy the request's route name).
+Returns the page's name (usually the route's name).
 
 #### `Page::title($default = null, $prepend = null, $append = null)`
 
@@ -177,7 +177,7 @@ And use it as a regular object in the `pages.home` template:
 ```blade
 @extends('layout')
 
-@section('template', $page->getId())
+@section('pageName', $page->getName())
 
 @section('content')
     <h1>{{ $page->getTitle('Default title', 'My website: ', ' • Awesome appended string') }}</h1>
