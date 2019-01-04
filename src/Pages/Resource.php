@@ -8,9 +8,13 @@ use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Resource extends BaseResource
 {
+
+    use ResolvesPageFields;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -85,7 +89,7 @@ class Resource extends BaseResource
      */
     public static function newModel()
     {
-        return app(Manager::class);
+        return resolve(Manager::class);
     }
 
     /**
@@ -107,8 +111,8 @@ class Resource extends BaseResource
     public function fields(Request $request)
     {
         return array_prepend(
-            $this->getBaseAttributesPanel(),
-            $this->getTemplateAttributesFields($request)
+            $this->getTemplateAttributesFields($request),
+            $this->getBaseAttributesPanel()
         );
     }
 
@@ -183,6 +187,30 @@ class Resource extends BaseResource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Prepare the resource for JSON serialization.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->serializeWithId($this->resolveFields(resolve(NovaRequest::class)));
+    }
+
+    /**
+     * Prepare the resource for JSON serialization using the given fields.
+     *
+     * @param  \Illuminate\Support\Collection  $fields
+     * @return array
+     */
+    protected function serializeWithId(Collection $fields)
+    {
+        return [
+            'id' => $this->resource->getName(),
+            'fields' => $fields->all(),
+        ];
     }
 
 }

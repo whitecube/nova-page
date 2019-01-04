@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Whitecube\NovaPage\Http\Controllers\CardController;
+use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\ResourceCountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +16,24 @@ use Whitecube\NovaPage\Http\Controllers\CardController;
 |
 */
 
-Route::get('/nova-api/nova-page/cards', CardController::class . '@index');
-Route::get('/nova-api/nova-page/filters', function() {
-    return response()->json([]);
-});
-Route::get('/nova-api/nova-page/lenses', function() {
-    return response()->json([]);
-});
+// Actions...
 Route::get('/nova-api/nova-page/actions', function() {
-    return response()->json([]);
+    return collect();
 });
+
+// Filters...
+Route::get('/nova-api/nova-page/filters', function() {
+    return collect();
+});
+
+// Lenses...
+Route::get('/nova-api/nova-page/lenses', function() {
+    return collect();
+});
+
+// Cards / Metrics...
+Route::get('/nova-api/nova-page/cards', CardController::class . '@index');
+
+// Resource Management...
+Route::get('/nova-api/nova-page', ResourceIndexController::class . '@handle');
+Route::get('/nova-api/nova-page/count', ResourceCountController::class . '@show');

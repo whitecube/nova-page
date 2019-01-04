@@ -11,6 +11,7 @@ class Manager
 {
 
     use ConditionallyLoadsAttributes,
+        QueriesPages,
         ResolvesPageCards;
 
     /**
