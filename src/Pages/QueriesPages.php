@@ -16,7 +16,7 @@ trait QueriesPages
     public function queryIndex(ResourceIndexRequest $request)
     {
         return $this->getAllTemplateRoutes()->map(function($route) {
-            return new Resource($this->loadForRoute($route));
+            return new Resource($this->loadForRoute($route, null, false, false));
         });
     }
 

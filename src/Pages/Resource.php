@@ -163,7 +163,8 @@ class Resource extends BaseResource
             })->sortable(),
 
             DateTime::make('Last updated on', function() {
-                return $this->getDate('updated_at')->toDateTimeString();
+                $updated_at = $this->getDate('updated_at');
+                return $updated_at ? $updated_at->toDateTimeString() : null;
             })->format(config('novapage.date_format'))->sortable()
         ];
     }
