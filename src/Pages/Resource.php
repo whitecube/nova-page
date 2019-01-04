@@ -51,6 +51,16 @@ class Resource extends BaseResource
     }
 
     /**
+     * Determine if this resource uses soft deletes.
+     *
+     * @return bool
+     */
+    public static function softDeletes()
+    {
+        return false;
+    }
+
+    /**
      * Get the displayable label of the resource.
      *
      * @return string

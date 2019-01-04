@@ -24,7 +24,7 @@ class ResourceIndexController extends Controller
 
         return response()->json([
             'label' => config('novapage.label'),
-            'resources' => $paginator->getCollection()->values(),
+            'resources' => $paginator->getCollection()->values()->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
             'softDeletes' => null,

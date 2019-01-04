@@ -6,6 +6,9 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Whitecube\NovaPage\Pages\Manager;
+use Whitecube\NovaPage\Pages\Template;
 use Whitecube\NovaPage\Http\Middleware\Authorize;
 
 class NovaPageToolServiceProvider extends ServiceProvider
@@ -23,6 +26,9 @@ class NovaPageToolServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->routes();
         });
+
+        Gate::policy(Manager::class, NovaPagePolicy::class);
+        Gate::policy(Template::class, NovaPagePolicy::class);
 
         Nova::serving(function (ServingNova $event) {
             //
