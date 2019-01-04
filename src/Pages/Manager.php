@@ -52,9 +52,10 @@ class Manager
      * @param string $template
      * @param string $locale
      * @param bool $current
+     * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($name, $template, $locale = null, $current = true)
+    public function load($name, $template, $locale = null, $current = true, $throwOnMissing = true)
     {
         if(!($template = $this->templates->find($template))) {
             throw new TemplateNotFoundException($template, $name);
@@ -63,10 +64,10 @@ class Manager
         $key = $template->getSource()->getName() . '.' . $name;
 
         if(!isset($this->loaded[$key])) {
-            $this->loaded[$key] = $template->getNewTemplate($name, $locale);
+            $this->loaded[$key] = $template->getNewTemplate($name, $locale, $throwOnMissing);
         }
         else {
-            $this->loaded[$key]->setLocale($locale)->load();
+            $this->loaded[$key]->setLocale($locale)->load($throwOnMissing);
         }
 
         if($current) {
@@ -82,15 +83,16 @@ class Manager
      * @param Illuminate\Routing\Route $route
      * @param string $locale
      * @param bool $current
+     * @param bool $throwOnMissing
      * @return mixed
      */
-    public function loadForRoute(Route $route, $locale = null, $current = true)
+    public function loadForRoute(Route $route, $locale = null, $current = true, $throwOnMissing = true)
     {
         if(!$route->template()) {
             return;
         }
 
-        return $this->load($route->getName(), $route->template(), $locale, $current);
+        return $this->load($route->getName(), $route->template(), $locale, $current, $throwOnMissing);
     }
 
     /**

@@ -60,12 +60,13 @@ abstract class Template
      *
      * @param string $name
      * @param string $locale
+     * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $locale = null)
+    public function __construct($name = null, $locale = null, $throwOnMissing = true)
     {
         $this->name = $name;
         $this->setLocale($locale);
-        $this->load();
+        $this->load($throwOnMissing);
     }
 
     /**
@@ -87,19 +88,25 @@ abstract class Template
     /**
      * Load the page's static content for the current locale if needed
      *
+     * @param bool $throwOnMissing
      * @return $this
      */
-    public function load()
+    public function load($throwOnMissing = true)
     {
         if(!$this->name || isset($this->localizedAttributes[$this->locale])) {
             return $this;
         }
 
-        if(!($data = $this->getSource()->fetch($this->name, $this->locale))) {
+        if($data = $this->getSource()->fetch($this->name, $this->locale)) {
+            $this->fill($this->locale, $data);
+            return $this;
+        }
+
+        if($throwOnMissing) {
             throw new TemplateContentNotFoundException($this->getSource()->getName(), $this->name);
         }
 
-        $this->fill($this->locale, $data);
+        return $this;
     }
 
     /**
@@ -114,13 +121,15 @@ abstract class Template
         $this->localizedTitle[$locale] = $data['title'] ?? null;
         $this->localizedAttributes[$locale] = $data['attributes'] ?? [];
 
-        $this->setDateIf('created_at', $data['created_at'] ?? null, function(Carbon $new, Carbon $current = null) {
-            return (!$current || $new->isBefore($current));
-        });
+        $this->setDateIf('created_at', $data['created_at'] ?? null,
+            function(Carbon $new, Carbon $current = null) {
+                return (!$current || $new->isBefore($current));
+            });
 
-        $this->setDateIf('updated_at', $data['updated_at'] ?? null, function(Carbon $new, Carbon $current = null) {
-            return (!$current || $new->isAfter($current));
-        });
+        $this->setDateIf('updated_at', $data['updated_at'] ?? null,
+            function(Carbon $new, Carbon $current = null) {
+                return (!$current || $new->isAfter($current));
+            });
     }
 
     /**
@@ -128,11 +137,12 @@ abstract class Template
      *
      * @param string $name
      * @param string $locale
+     * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($name, $locale)
+    public function getNewTemplate($name, $locale, $throwOnMissing = true)
     {
-        return new static($name, $locale);
+        return new static($name, $locale, $throwOnMissing);
     }
 
     /**
