@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Whitecube\NovaPage\Http\Controllers\CardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,3 +13,14 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
 */
+
+Route::get('/nova-api/nova-page/cards', CardController::class . '@index');
+Route::get('/nova-api/nova-page/filters', function() {
+    return response()->json([]);
+});
+Route::get('/nova-api/nova-page/lenses', function() {
+    return response()->json([]);
+});
+Route::get('/nova-api/nova-page/actions', function() {
+    return response()->json([]);
+});

@@ -85,7 +85,7 @@ class Resource extends BaseResource
      */
     public static function newModel()
     {
-        return;
+        return app(Manager::class);
     }
 
     /**

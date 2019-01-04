@@ -5,9 +5,14 @@ namespace Whitecube\NovaPage\Pages;
 use Illuminate\Routing\Route;
 use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
+use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 
 class Manager
 {
+
+    use ConditionallyLoadsAttributes,
+        ResolvesPageCards;
+
     /**
      * The registered NovaPage Templates.
      *
