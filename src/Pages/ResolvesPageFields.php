@@ -22,26 +22,6 @@ use Laravel\Nova\Http\Requests\ResourceDetailRequest;
 
 trait ResolvesPageFields
 {
-    /**
-     * Resolve the index fields.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function indexFields(NovaRequest $request)
-    {
-        return new FieldCollection([
-
-            Text::make('Name', function() {
-                return $this->getName();
-            })->sortable(),
-
-            Text::make('Title', function() {
-                return $this->getTitle();
-            })->sortable(),
-            
-        ]);
-    }
 
     /**
      * Get the fields that are available for the given request.
@@ -54,7 +34,7 @@ trait ResolvesPageFields
         $action = $request->route()->getAction()['controller'];
 
         if($action === ResourceIndexController::class . '@handle') {
-            return $this->indexFields($request);
+            return new FieldCollection($this->getIndexTableFields($request));
         }
 
         return new FieldCollection(array_values($this->filter($this->fields($request))));

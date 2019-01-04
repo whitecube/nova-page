@@ -120,10 +120,29 @@ class Resource extends BaseResource
      */
     public function fields(Request $request)
     {
+        // TODO: add lang translations for panel name
         return array_prepend(
             $this->getTemplateAttributesFields($request),
-            $this->getBaseAttributesPanel()
+            new Panel('Base page attributes', $this->getBaseAttributeFields())
         );
+    }
+
+    /**
+     * Get the base common attributes
+     *
+     * @return array
+     */
+    protected function getBaseAttributeFields()
+    {
+        // TODO: add lang translations for base field labels 
+        return [
+            Text::make('Page title', 'nova_page_title')
+                ->rules(['required', 'string', 'max:255']),
+
+            DateTime::make('Page creation date', 'nova_page_created_at')
+                ->format('DD-MM-YYYY HH:mm:ss')
+                ->rules(['required', 'string', 'max:255']),
+        ];
     }
 
     /**
@@ -131,17 +150,22 @@ class Resource extends BaseResource
      *
      * @return Laravel\Nova\Panel
      */
-    protected function getBaseAttributesPanel()
+    protected function getIndexTableFields()
     {
         // TODO: add lang translations for base field labels 
-        return new Panel('Base page attributes', [
-            Text::make('Page title', '_nova_page_title')
-                ->rules(['required', 'string', 'max:255']),
+        return [
+            Text::make('Name', function() {
+                return $this->getName();
+            })->sortable(),
 
-            DateTime::make('Page creation date', '_nova_page_created_at')
-                ->format('DD-MM-YYYY HH:mm:ss')
-                ->rules(['required', 'string', 'max:255']),
-        ]);
+            Text::make('Title', function() {
+                return $this->getTitle();
+            })->sortable(),
+
+            DateTime::make('Last updated on', function() {
+                return $this->getDate('updated_at')->toDateTimeString();
+            })->format(config('novapage.date_format'))->sortable()
+        ];
     }
 
     /**
