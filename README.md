@@ -2,11 +2,11 @@
 
 Ever wanted to expose static content of an "About" page as editable fields in your app's administration without having to create specific models & migrations? Using this package, you'll be able to do so. By default, it will store the content in JSON files in the application's `resources/lang` directory, making them available for version control.
 
-This package adds basic **flat-file CMS features** to Laravel Nova in a breeze using template configurations as it were administrable Laravel Models, meaning it allows the usage of all the available Laravel Nova fields and tools.
+This package adds basic **flat-file CMS features** to Laravel Nova in a breeze using template configurations as if it were administrable Laravel Models, meaning it allows the usage of all the available Laravel Nova fields and tools.
 
 ## Installation
 
-In your terminal type : `composer require whitecube/nova-page` and provide "dev-master" as the version of the package. Or open up composer.json and add the following line under `require`:
+In your terminal, type : `composer require whitecube/nova-page` and provide "dev-master" as the version of the package. Or open up composer.json and add the following line under `require`:
 
 ```json
     {
@@ -16,7 +16,9 @@ In your terminal type : `composer require whitecube/nova-page` and provide "dev-
     }
 ```
 
-Register the package in the `providers` section of the app config file in `app/config/app.php`:
+If using Laravel >= 5.5, the service providers and aliases will register automatically.
+
+If for some reason you must do it manually, register the package in the `providers` section of the app config file in `app/config/app.php` and also add the facade:
 
 ```php
     'providers' => [
@@ -28,16 +30,14 @@ Register the package in the `providers` section of the app config file in `app/c
         Whitecube\NovaPage\NovaPageServiceProvider::class,
         // ...
     ],
-```
 
-Next, add the `Page` facade:
+    ...
 
-```php
     'aliases' => [
-        // ...
-        'Page' => Whitecube\NovaPage\NovaPageFacade::class,
-        // ...
-    ],
+            // ...
+            'Page' => Whitecube\NovaPage\NovaPageFacade::class,
+            // ...
+        ],
 ```
 
 Finally, register the Nova tool in `app/Http/Providers/NovaServiceProvider.php`:
@@ -64,7 +64,7 @@ In order to assign fields (and even cards!) to a page's edition form, we'll have
 
 ### Creating Templates
 
-Each Template is defined in an unique class, just as Resources. You can store those classes wherever you want, but a new `app/Nova/Templates` directory is probably a good choice.
+Each Template is defined in an unique class, just like Nova Resources. You can store those classes wherever you want, but a new `app/Nova/Templates` directory is probably a good choice.
 
 ```php
 namespace App\Nova\Templates;
