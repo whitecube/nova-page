@@ -5,6 +5,7 @@ namespace Whitecube\NovaPage\Pages;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource as BaseResource;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
@@ -148,7 +149,7 @@ class Resource extends BaseResource
     /**
      * Get the base attributes Nova Panel
      *
-     * @return Laravel\Nova\Panel
+     * @return array
      */
     protected function getIndexTableFields()
     {
@@ -243,7 +244,9 @@ class Resource extends BaseResource
     protected function serializeWithId(Collection $fields)
     {
         return [
-            'id' => $this->resource->getName(),
+            'id' => tap(ID::make('id', function() {
+                        return $this->getName();
+                    }))->resolve($this->resource),
             'fields' => $fields->all(),
         ];
     }
