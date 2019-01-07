@@ -40,7 +40,10 @@
             "providers": [
                 "Whitecube\\NovaPage\\NovaPageServiceProvider",
                 "Whitecube\\NovaPage\\NovaPageToolServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Page": "Whitecube\\NovaPage\\NovaPageFacade"
+            }
         }
     }
 }
