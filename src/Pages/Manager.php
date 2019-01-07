@@ -54,6 +54,7 @@ class Manager
      * @param bool $current
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
+     * @throws TemplateNotFoundException
      */
     public function load($name, $template, $locale = null, $current = true, $throwOnMissing = true)
     {
