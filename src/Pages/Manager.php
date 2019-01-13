@@ -155,5 +155,15 @@ class Manager
 
         return call_user_func_array([$this->current, $method], $arguments);
     }
+
+    /**
+     * Mimic eloquent model method and return a fake Query builder
+     *
+     * @return Whitecube\NovaPage\Pages\Query
+     */
+    public function newQueryWithoutScopes()
+    {
+        return new Query($this->templates);
+    }
     
 }

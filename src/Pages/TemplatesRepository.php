@@ -15,7 +15,7 @@ class TemplatesRepository
     /**
      * Get all registered templates
      *
-     * @return void
+     * @return array
      */
     public function all()
     {
@@ -38,14 +38,14 @@ class TemplatesRepository
     }
 
     /**
-     * Get a specific template based on its route name
+     * Get a specific template based on an instance name
      *
-     * @param string $route
+     * @param string $name
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function find($route)
+    public function find($name)
     {
-        return $this->templates[$route] ?? null;
+        return $this->templates[$name] ?? null;
     }
     
 }
