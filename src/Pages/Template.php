@@ -4,13 +4,14 @@ namespace Whitecube\NovaPage\Pages;
 
 use App;
 use Closure;
+use ArrayAccess;
 use Carbon\Carbon;
 use BadMethodCallException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
 
-abstract class Template
+abstract class Template implements ArrayAccess
 {
 
     /**
@@ -274,6 +275,14 @@ abstract class Template
      */
     public function __get($attribute)
     {
+        if($attribute === 'nova_page_title') {
+            return $this->getTitle();
+        }
+
+        if($attribute === 'nova_page_created_at') {
+            return $this->getDate('created_at');
+        }
+
         return $this->localizedAttributes[$this->locale][$attribute] ?? null;
     }
 
@@ -323,6 +332,62 @@ abstract class Template
         if($closure($date, $this->getDate($moment))) {
             return $this->setDate($moment, $date);
         }
+    }
+
+    /**
+     * Magically set a page's attribute
+     *
+     * @param string $attribute
+     * @param mixed $attribute
+     */
+    public function __set($attribute, $value)
+    {
+        $this->localizedAttributes[$this->locale][$attribute] = $value;
+    }
+
+    /**
+     * Determine if the given attribute exists.
+     *
+     * @param  mixed  $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return ! is_null($this->__get($offset));
+    }
+
+    /**
+     * Get the value for a given offset.
+     *
+     * @param  mixed  $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
+    }
+
+    /**
+     * Set the value for a given offset.
+     *
+     * @param  mixed  $offset
+     * @param  mixed  $value
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+
+    /**
+     * Unset the value for a given offset.
+     *
+     * @param  mixed  $offset
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->localizedAttributes[$this->locale][$offset]);
     }
 
     /**
