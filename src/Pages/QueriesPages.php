@@ -15,8 +15,9 @@ trait QueriesPages
      */
     public function queryIndex(ResourceIndexRequest $request)
     {
-        return $this->getAllTemplateRoutes()->map(function($route) {
-            return new Resource($this->loadForRoute($route, null, false, false));
+        $query = $this->newQueryWithoutScopes();
+        return $query->get(false)->map(function($template) {
+            return new Resource($template);
         });
     }
 
@@ -28,18 +29,6 @@ trait QueriesPages
      */
     public function queryCount(ResourceIndexRequest $request)
     {
-        return $this->getAllTemplateRoutes()->count();
-    }
-
-    /**
-     * Retrieves all Routes having a template assigned
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected function getAllTemplateRoutes()
-    {
-        return collect(Route::getRoutes()->getRoutes())->filter(function($route) {
-            return !is_null($route->template());
-        });
+        return $this->newQueryWithoutScopes()->get(false)->count();
     }
 }

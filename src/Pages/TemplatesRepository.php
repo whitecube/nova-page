@@ -65,14 +65,13 @@ class TemplatesRepository
     /**
      * Get a registered page template by its key
      *
-     * @param string $type
-     * @param string $key
+     * @param string $name
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function getPageTemplate($type, $key)
+    public function getPageTemplate($name)
     {
-        if(array_key_exists($type . '.' . $key, $this->pages)) {
-            return $this->templates[$this->pages[$type . '.' . $key]];
+        if(array_key_exists($name, $this->pages)) {
+            return $this->templates[$this->pages[$name]];
         }
     }
 
@@ -89,7 +88,7 @@ class TemplatesRepository
     {
         $name = $type . '.' . $key;
 
-        if(!($template = $this->getPageTemplate($type, $key))) {
+        if(!($template = $this->getPageTemplate($name))) {
             throw new TemplateNotFoundException($this->pages[$name] ?? null, $name);
         }
 

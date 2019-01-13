@@ -27,7 +27,7 @@ trait ResolvesPageCards
     public function resolveCards(NovaRequest $request)
     {
         $cards = [];
-        foreach ($this->templates->all() as $template) {
+        foreach ($this->repository->getTemplates() as $template) {
             $cards = array_merge($cards, array_values($this->filter($template->cards($request))));
         }
         return collect($cards);

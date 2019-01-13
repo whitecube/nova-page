@@ -23,6 +23,13 @@ class Query
     protected $name;
 
     /**
+     * The locale filter used to retrieve the resource
+     *
+     * @var null|string
+     */
+    protected $locale;
+
+    /**
      * Create a new NovaPage Resource QueryBuilder
      *
      * @return void
@@ -64,12 +71,21 @@ class Query
     /**
      * Mimic eloquent's Builder and execute the query
      *
+     * @param bool $throwOnMissing
      * @return Illuminate\Support\Collection
      */
-    public function get()
+    public function get($throwOnMissing = true)
     {
-        return Collection::make($this->repository->all())
-            ->reject([$this, 'shouldReject']);
+        return Collection::make($this->repository->getPages())
+            ->map(function($template, $name) {
+                return $this->repository->getPageTemplate($name);
+            })
+            ->filter()
+            ->reject([$this, 'shouldReject'])
+            ->map(function($template, $name) use ($throwOnMissing) {
+                list($type, $key) = explode('.', $name);
+                return $this->repository->load($type, $key, $this->locale, $throwOnMissing);
+            });
     }
 
     /**

@@ -2,23 +2,9 @@
 
 namespace Whitecube\NovaPage\Pages;
 
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
-
-use Laravel\Nova\Fields\Avatar;
-use Laravel\Nova\Fields\MorphTo;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Actions\Actionable;
-use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Contracts\Resolvable;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Actions\ActionResource;
-use Laravel\Nova\Contracts\ListableField;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Laravel\Nova\Http\Requests\ResourceDetailRequest;
 
 trait ResolvesPageFields
 {
