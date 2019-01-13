@@ -22,7 +22,6 @@ class NovaPageRouteMacros
             }
 
             $this->action['nova-page-template'] = $template;
-            $this->container->make(Manager::class)->register($template);
 
             return $this;
         };

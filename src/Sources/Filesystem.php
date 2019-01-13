@@ -8,11 +8,11 @@ class Filesystem implements SourceInterface
     use ParsesPathVariables;
 
     /**
-     * The static files storage directory
+     * The static files storage path route
      *
      * @var string
      */
-    protected $directory;
+    protected $path;
 
     /**
      * Retrieve the source's name
@@ -31,19 +31,20 @@ class Filesystem implements SourceInterface
      */
     public function setConfig(array $config)
     {
-        $this->directory = rtrim($config['directory'], '/');
+        $this->path = rtrim($config['path'], '/');
     }
 
     /**
      * Retrieve data from the filesystem
      *
-     * @param string $identifier
+     * @param string $type
+     * @param string $key
      * @param string $locale
      * @return array
      */
-    public function fetch($identifier, $locale = null)
+    public function fetch($type, $key, $locale)
     {
-        if(!($file = $this->getFilePath($identifier, $locale))) {
+        if(!($file = $this->getFilePath($type, $key, $locale))) {
             return null;
         }
 
@@ -57,16 +58,19 @@ class Filesystem implements SourceInterface
     /**
      * Build the path to the file using its identifier
      *
-     * @param string $identifier
+     * @param string $type
+     * @param string $key
      * @param string $locale
      * @return string
      */
-    protected function getFilePath($identifier, $locale)
+    protected function getFilePath($type, $key, $locale)
     {
         $variables = [
+            'type' => $type,
+            'key' => $key,
             'locale' => $locale,
         ];
 
-        return realpath($this->parsePath($this->directory, $variables) . DIRECTORY_SEPARATOR . $identifier . '.json');
+        return realpath($this->parsePath($this->path, $variables));
     }
 }

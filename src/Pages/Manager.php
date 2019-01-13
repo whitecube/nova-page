@@ -3,7 +3,6 @@
 namespace Whitecube\NovaPage\Pages;
 
 use Illuminate\Routing\Route;
-use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 
@@ -15,25 +14,18 @@ class Manager
         ResolvesPageCards;
 
     /**
-     * The registered NovaPage Templates.
+     * The registered NovaPage Templates & Pages.
      *
      * @var Whitecube\NovaPage\Pages\TemplatesRepository
      */
-    protected $templates;
+    protected $repository;
 
     /**
-     * The default current page Template
+     * The default current Page Template
      *
      * @var Whitecube\NovaPage\Pages\Template
      */
     protected $current;
-
-    /**
-     * The loaded Templates
-     *
-     * @var array
-     */
-    protected $loaded = [];
 
     /**
      * Create the Main Service Singleton
@@ -42,40 +34,38 @@ class Manager
      */
     public function __construct()
     {
-        $this->templates = new TemplatesRepository();
+        $this->repository = new TemplatesRepository();
+    }
+
+    /**
+     * Load the TemplateRepository with registered routes
+     *
+     * @return void
+     */
+    public function booted()
+    {
+        $this->repository->registerRouteTemplates();
     }
 
     /**
      * Load a new Page Template
      *
-     * @param string $name
-     * @param string $template
+     * @param string $key
+     * @param string $type
      * @param string $locale
      * @param bool $current
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
-     * @throws TemplateNotFoundException
      */
-    public function load($name, $template, $locale = null, $current = true, $throwOnMissing = true)
+    public function load($key, $type = null, $locale = null, $current = true, $throwOnMissing = true)
     {
-        if(!($template = $this->templates->find($template))) {
-            throw new TemplateNotFoundException($template, $name);
-        }
-
-        $key = $template->getSource()->getName() . '.' . $name;
-
-        if(!isset($this->loaded[$key])) {
-            $this->loaded[$key] = $template->getNewTemplate($name, $locale, $throwOnMissing);
-        }
-        else {
-            $this->loaded[$key]->setLocale($locale)->load($throwOnMissing);
-        }
+        $template = $this->repository->load($type ?? 'route', $key, $locale, $throwOnMissing);
 
         if($current) {
-            $this->current = $this->loaded[$key];
+            $this->current = $template;
         }
 
-        return $this->loaded[$key];
+        return $template;
     }
 
     /**
@@ -93,36 +83,35 @@ class Manager
             return;
         }
 
-        return $this->load($route->getName(), $route->template(), $locale, $current, $throwOnMissing);
+        return $this->load($route->getName(), 'route', $locale, $current, $throwOnMissing);
     }
 
     /**
      * Get a loaded Template by its name
      *
-     * @param string $name
-     * @return Whitecube\NovaPage\Pages\Template
+     * @param string $key
+     * @param string $type
+     * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function find($name = null)
+    public function find($key = null, $type = null)
     {
-        if(is_null($name)) {
+        if(is_null($key)) {
             return $this->current;
         }
 
-        foreach ($this->loaded as $key => $template) {
-            if($key === $name) return $template;
-            if(substr($key, strpos($key, '.') + 1) === $name) return $template;
-        }
+        return $this->repository->getLoaded($type ?? 'route', $key);
     }
 
     /**
      * Register a Template into the TemplatesRepository.
      *
+     * @param string $key
      * @param string $template
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function register($template)
+    public function register($key, $template)
     {
-        return $this->templates->register($template);
+        return $this->repository->register($key, $template);
     }
 
     /**
@@ -163,7 +152,7 @@ class Manager
      */
     public function newQueryWithoutScopes()
     {
-        return new Query($this->templates);
+        return new Query($this->repository);
     }
     
 }

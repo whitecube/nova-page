@@ -18,9 +18,11 @@ class NovaPageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/config.php', 'novapage');
+
         $this->app->singleton(Manager::class, function ($app) {
             return new Manager();
         });
+
         $this->app->bind(Template::class, function($app) {
             return $app->make(Manager::class)->find();
         });
@@ -34,9 +36,14 @@ class NovaPageServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::mixin(new NovaPageRouteMacros());
+
         $this->publishes([
             __DIR__ . '/config.php' => config_path('novapage.php')
         ]);
+
+        $this->app->booted(function() {
+            $this->app->make(Manager::class)->booted();
+        });
     }
 
 }

@@ -6,5 +6,5 @@ interface SourceInterface
 {
     public function getName();
     public function setConfig(array $config);
-    public function fetch($identifier);
+    public function fetch($type, $key, $locale);
 }

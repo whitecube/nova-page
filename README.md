@@ -117,9 +117,9 @@ Route::get('/about-me', 'AboutController@show')
 
 ### Middleware autoloading
 
-It is possible to load the page's static content automatically using the `LoadPageFromRouteName` middleware. This way, the application will fetch the current page's data using the current route name as identifier.
+It is possible to load the page's static content automatically using the `LoadPageForCurrentRoute` middleware. This way, the application will fetch the current page's data using the current route name as identifier.
 
-Add `\Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
+Add `\Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
 
 ```php
     /**
@@ -131,7 +131,7 @@ Add `\Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class` to the `r
      */
     protected $routeMiddleware = [
         // ...
-        'loadNovaPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageFromRouteName::class,
+        'loadNovaPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class,
     ];
 ```
 
@@ -242,7 +242,7 @@ Returns a previously loaded page template.
 
 ### Dependency Injection
 
-Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Template` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Template` is requested, which can be easily achieved using the package's `LoadPageFromRouteName` middleware.
+Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Template` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Template` is requested, which can be easily achieved using the package's `LoadPageForCurrentRoute` middleware.
 
 ```php
 use Whitecube\NovaPage\Pages\Template;

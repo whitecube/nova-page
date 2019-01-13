@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Whitecube\NovaPage\Pages\Manager;
 
-class LoadPageFromRouteName
+class LoadPageForCurrentRoute
 {
 
     /**

@@ -16,7 +16,7 @@ class TemplateNotFoundException extends Exception
      * @param Exception $previous
      */
     public function __construct($template = null, $name = null, $code = 0, Exception $previous = null) {
-        $message = 'Unable to use unregistered NovaPage Template';
+        $message = 'NovaPage Template';
 
         if($template) {
             $message .= ' "' . $template . '"';
@@ -26,7 +26,7 @@ class TemplateNotFoundException extends Exception
             $message .= ' for "' . $name . '"';
         }
 
-        $message .= '.';
+        $message .= ' not found.';
 
         parent::__construct($message, $code, $previous);
     }

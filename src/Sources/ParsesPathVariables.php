@@ -13,7 +13,9 @@ trait ParsesPathVariables
      * @var array
      */
     protected $pathVariableResolvers = [
-        '{locale}' => 'resolveLocalePathVariable'
+        '{type}' => 'resolveTypePathVariable',
+        '{key}' => 'resolveKeyPathVariable',
+        '{locale}' => 'resolveLocalePathVariable',
     ];
 
     /**
@@ -31,6 +33,28 @@ trait ParsesPathVariables
         }
 
         return $path;
+    }
+
+    /**
+     * Provides the {type} variable value
+     *
+     * @param mixed $default
+     * @return string
+     */
+    protected function resolveTypePathVariable($default = null)
+    {
+        return $default ?? 'route';
+    }
+
+    /**
+     * Provides the {key} variable value
+     *
+     * @param mixed $default
+     * @return string
+     */
+    protected function resolveKeyPathVariable($default = null)
+    {
+        return $default ?? '';
     }
 
     /**

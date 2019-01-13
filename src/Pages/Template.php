@@ -21,6 +21,13 @@ abstract class Template
     protected $name;
 
     /**
+     * The page type
+     *
+     * @var string
+     */
+    protected $type;
+
+    /**
      * The page's current locale code
      *
      * @var string
@@ -59,12 +66,14 @@ abstract class Template
      * Create A Template Instance.
      *
      * @param string $name
+     * @param string $type
      * @param string $locale
      * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $locale = null, $throwOnMissing = true)
+    public function __construct($name = null, $type = null, $locale = null, $throwOnMissing = true)
     {
         $this->name = $name;
+        $this->type = $type;
         $this->setLocale($locale);
         $this->load($throwOnMissing);
     }
@@ -97,13 +106,13 @@ abstract class Template
             return $this;
         }
 
-        if($data = $this->getSource()->fetch($this->name, $this->locale)) {
+        if($data = $this->getSource()->fetch($this->type, $this->name, $this->locale)) {
             $this->fill($this->locale, $data);
             return $this;
         }
 
         if($throwOnMissing) {
-            throw new TemplateContentNotFoundException($this->getSource()->getName(), $this->name);
+            throw new TemplateContentNotFoundException($this->getSource()->getName(), $this->type, $this->name);
         }
 
         return $this;
@@ -135,14 +144,15 @@ abstract class Template
     /**
      * Create a new loaded template instance
      *
-     * @param string $name
+     * @param string $type
+     * @param string $key
      * @param string $locale
      * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($name, $locale, $throwOnMissing = true)
+    public function getNewTemplate($type, $key, $locale, $throwOnMissing = true)
     {
-        return new static($name, $locale, $throwOnMissing);
+        return new static($key, $type, $locale, $throwOnMissing);
     }
 
     /**
