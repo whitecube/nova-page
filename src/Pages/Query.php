@@ -59,7 +59,7 @@ class Query
      */
     public function firstOrFail()
     {
-        $results = $this->get();
+        $results = $this->get(false);
 
         if($results->count()) {
             return $results->first();
