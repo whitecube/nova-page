@@ -185,6 +185,26 @@ abstract class Template
     }
 
     /**
+     * Retrieve the page type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Retrieve the compound page type.name
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->type . '.' . $this->name;
+    }
+
+    /**
      * Retrieve the page's localized title
      *
      * @param string $default

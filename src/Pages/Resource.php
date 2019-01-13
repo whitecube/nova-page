@@ -245,7 +245,7 @@ class Resource extends BaseResource
     {
         return [
             'id' => tap(ID::make('id', function() {
-                        return $this->getName();
+                        return $this->getKey();
                     }))->resolve($this->resource),
             'fields' => $fields->all(),
         ];
