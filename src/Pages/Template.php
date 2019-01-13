@@ -205,6 +205,16 @@ abstract class Template
     }
 
     /**
+     * Mimic Eloquent's getKeyName method, returning null
+     *
+     * @return null
+     */
+    public function getKeyName()
+    {
+        return null;
+    }
+
+    /**
      * Retrieve the page's localized title
      *
      * @param string $default
