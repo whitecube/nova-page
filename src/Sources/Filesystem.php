@@ -47,7 +47,7 @@ class Filesystem implements SourceInterface
      */
     public function fetch($type, $key, $locale)
     {
-        if(!($file = $this->getFilePath($type, $key, $locale))) {
+        if(!($file = realpath($this->getFilePath($type, $key, $locale)))) {
             return null;
         }
 
@@ -96,6 +96,6 @@ class Filesystem implements SourceInterface
             'locale' => $locale,
         ];
 
-        return realpath($this->parsePath($this->path, $variables));
+        return $this->parsePath($this->path, $variables);
     }
 }
