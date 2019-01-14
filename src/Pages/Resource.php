@@ -100,6 +100,12 @@ class Resource extends BaseResource
      */
     public static function newModel()
     {
+        if(request()->resourceId) {
+            return resolve(Manager::class)
+                ->newQueryWithoutScopes()
+                ->whereKey(request()->resourceId)
+                ->firstOrFail();
+        }
         return resolve(Manager::class);
     }
 

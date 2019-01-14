@@ -2,6 +2,9 @@
 
 namespace Whitecube\NovaPage\Sources;
 
+use Carbon\Carbon;
+use Whitecube\NovaPage\Pages\Template;
+
 class Filesystem implements SourceInterface
 {
 
@@ -53,6 +56,28 @@ class Filesystem implements SourceInterface
         if(!isset($data['updated_at'])) $data['updated_at'] = filemtime($file);
 
         return $data;
+    }
+
+    /**
+     * Retrieve data from the filesystem
+     *
+     * @param \Whitecube\NovaPage\Pages\Template $template
+     * @param string $locale
+     * @return bool
+     */
+    public function store(Template $template, $locale)
+    {
+        $data = [];
+        $data['title'] = $template->getTitle();
+        $data['created_at'] = $template->getdate('created_at')->toDateTimeString();
+        $data['updated_at'] = Carbon::now()->toDateTimeString();
+        $data['attributes'] = $template->getLocalized($locale);
+
+        return file_put_contents($this->getFilePath(
+            $template->getType(),
+            $template->getName(),
+            $locale
+        ), json_encode($data, JSON_PRETTY_PRINT, 512));
     }
 
     /**

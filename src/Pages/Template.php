@@ -249,6 +249,7 @@ abstract class Template implements ArrayAccess
     public function setLocale($locale = null)
     {
         $this->locale = $locale ?? App::getLocale();
+        return $this;
     }
 
     /**
@@ -265,6 +266,17 @@ abstract class Template implements ArrayAccess
         }
 
         return $this->__get($attribute);
+    }
+
+    /**
+     * Retrieve all the page's attributes for given local
+     *
+     * @param string $locale
+     * @return array
+     */
+    public function getLocalized($locale)
+    {
+        return $this->localizedAttributes[$locale];
     }
 
     /**
@@ -342,7 +354,18 @@ abstract class Template implements ArrayAccess
      */
     public function __set($attribute, $value)
     {
-        $this->localizedAttributes[$this->locale][$attribute] = $value;
+        switch ($attribute) {
+            case 'nova_page_title':
+                $this->localizedTitle[$this->locale] = $value;
+                break;
+            case 'nova_page_created_at':
+                $this->setDate('created_at', $value);
+                break;
+            
+            default:
+                $this->localizedAttributes[$this->locale][$attribute] = $value;
+                break;
+        }
     }
 
     /**
@@ -405,5 +428,30 @@ abstract class Template implements ArrayAccess
      * @return array
      */
     abstract public function cards(Request $request);
+
+    /**
+     * Mimic eloquent model method and return a fake Query builder
+     *
+     * @return Whitecube\NovaPage\Pages\Query
+     */
+    public function newQueryWithoutScopes()
+    {
+        return resolve(Manager::class)->newQueryWithoutScopes();
+    }
+
+    /**
+     * Store template attributes in Source
+     *
+     * @return bool
+     */
+    public function save()
+    {
+        $this->setDateIf('created_at', Carbon::now(),
+            function(Carbon $new, Carbon $current = null) {
+                return !$current;
+            }
+        );
+        return $this->getSource()->store($this, $this->locale);
+    }
 
 }
