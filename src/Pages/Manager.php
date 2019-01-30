@@ -52,14 +52,13 @@ class Manager
      *
      * @param string $key
      * @param string $type
-     * @param string $locale
      * @param bool $current
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($key, $type = null, $locale = null, $current = true, $throwOnMissing = true)
+    public function load($key, $type = null, $current = true, $throwOnMissing = true)
     {
-        $template = $this->repository->load($type ?? 'route', $key, $locale, $throwOnMissing);
+        $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
 
         if($current) {
             $this->current = $template;
@@ -72,18 +71,17 @@ class Manager
      * Load Page Template for given route instance
      *
      * @param Illuminate\Routing\Route $route
-     * @param string $locale
      * @param bool $current
      * @param bool $throwOnMissing
      * @return mixed
      */
-    public function loadForRoute(Route $route, $locale = null, $current = true, $throwOnMissing = true)
+    public function loadForRoute(Route $route, $current = true, $throwOnMissing = true)
     {
         if(!$route->template()) {
             return;
         }
 
-        return $this->load($route->getName(), 'route', $locale, $current, $throwOnMissing);
+        return $this->load($route->getName(), 'route', $current, $throwOnMissing);
     }
 
     /**

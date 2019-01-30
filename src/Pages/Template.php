@@ -10,9 +10,11 @@ use BadMethodCallException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 
 abstract class Template implements ArrayAccess
 {
+    use HasAttributes;
 
     /**
      * The page name (usually the route's name)
@@ -29,25 +31,11 @@ abstract class Template implements ArrayAccess
     protected $type;
 
     /**
-     * The page's current locale code
+     * The page's title
      *
      * @var string
      */
-    protected $locale;
-
-    /**
-     * The page's title for the currently loaded locales
-     *
-     * @var array
-     */
-    protected $localizedTitle = [];
-
-    /**
-     * The page's attributes for the currently loaded locales
-     *
-     * @var array
-     */
-    protected $localizedAttributes = [];
+    protected $title;
 
     /**
      * The page's timestamps
@@ -68,14 +56,12 @@ abstract class Template implements ArrayAccess
      *
      * @param string $name
      * @param string $type
-     * @param string $locale
      * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $type = null, $locale = null, $throwOnMissing = true)
+    public function __construct($name = null, $type = null, $throwOnMissing = true)
     {
         $this->name = $name;
         $this->type = $type;
-        $this->setLocale($locale);
         $this->load($throwOnMissing);
     }
 
@@ -96,19 +82,19 @@ abstract class Template implements ArrayAccess
     }
 
     /**
-     * Load the page's static content for the current locale if needed
+     * Load the page's static content if needed
      *
      * @param bool $throwOnMissing
      * @return $this
      */
     public function load($throwOnMissing = true)
     {
-        if(!$this->name || isset($this->localizedAttributes[$this->locale])) {
+        if(!$this->name || count($this->attributes)) {
             return $this;
         }
 
-        if($data = $this->getSource()->fetch($this->type, $this->name, $this->locale)) {
-            $this->fill($this->locale, $data);
+        if($data = $this->getSource()->fetch($this->type, $this->name)) {
+            $this->fill($data);
             return $this;
         }
 
@@ -120,16 +106,15 @@ abstract class Template implements ArrayAccess
     }
 
     /**
-     * Set all the template's attributes for given locale
+     * Set all the template's attributes
      *
-     * @param string $locale
      * @param array $data
      * @return void
      */
-    public function fill($locale, array $data = [])
+    public function fill(array $data = [])
     {
-        $this->localizedTitle[$locale] = $data['title'] ?? null;
-        $this->localizedAttributes[$locale] = $data['attributes'] ?? [];
+        $this->title = $data['title'] ?? null;
+        $this->attributes = $data['attributes'] ?? [];
 
         $this->setDateIf('created_at', $data['created_at'] ?? null,
             function(Carbon $new, Carbon $current = null) {
@@ -147,13 +132,12 @@ abstract class Template implements ArrayAccess
      *
      * @param string $type
      * @param string $key
-     * @param string $locale
      * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($type, $key, $locale, $throwOnMissing = true)
+    public function getNewTemplate($type, $key, $throwOnMissing = true)
     {
-        return new static($key, $type, $locale, $throwOnMissing);
+        return new static($key, $type, $throwOnMissing);
     }
 
     /**
@@ -225,31 +209,9 @@ abstract class Template implements ArrayAccess
      */
     public function getTitle($default = null, $prepend = '', $append = '')
     {
-        $title = $this->localizedTitle[$this->locale] ?? $default ?? '';
+        $title = $this->title ?? $default ?? '';
         $title = trim($prepend . $title . $append);
         return strlen($title) ? $title : null;
-    }
-
-    /**
-     * Retrieve the page's current locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Set the page's current locale
-     *
-     * @param string $locale
-     * @return $this
-     */
-    public function setLocale($locale = null)
-    {
-        $this->locale = $locale ?? App::getLocale();
-        return $this;
     }
 
     /**
@@ -269,17 +231,6 @@ abstract class Template implements ArrayAccess
     }
 
     /**
-     * Retrieve all the page's attributes for given local
-     *
-     * @param string $locale
-     * @return array
-     */
-    public function getLocalized($locale)
-    {
-        return $this->localizedAttributes[$locale];
-    }
-
-    /**
      * Magically retrieve a page's attribute
      *
      * @param string $attribute
@@ -295,7 +246,7 @@ abstract class Template implements ArrayAccess
             return $this->getDate('created_at');
         }
 
-        return $this->localizedAttributes[$this->locale][$attribute] ?? null;
+        return $this->getAttribute($attribute);
     }
 
     /**
@@ -356,14 +307,14 @@ abstract class Template implements ArrayAccess
     {
         switch ($attribute) {
             case 'nova_page_title':
-                $this->localizedTitle[$this->locale] = $value;
+                $this->title = $value;
                 break;
             case 'nova_page_created_at':
                 $this->setDate('created_at', $value);
                 break;
             
             default:
-                $this->localizedAttributes[$this->locale][$attribute] = $value;
+                $this->attributes[$attribute] = $value;
                 break;
         }
     }
@@ -410,7 +361,7 @@ abstract class Template implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->localizedAttributes[$this->locale][$offset]);
+        unset($this->attributes[$offset]);
     }
 
     /**
@@ -451,7 +402,7 @@ abstract class Template implements ArrayAccess
                 return !$current;
             }
         );
-        return $this->getSource()->store($this, $this->locale);
+        return $this->getSource()->store($this);
     }
 
 }

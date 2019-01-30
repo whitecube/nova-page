@@ -42,16 +42,16 @@ class Filesystem implements SourceInterface
      *
      * @param string $type
      * @param string $key
-     * @param string $locale
      * @return array
      */
-    public function fetch($type, $key, $locale)
+    public function fetch($type, $key)
     {
-        if(!($file = realpath($this->getFilePath($type, $key, $locale)))) {
+        if(!($file = realpath($this->getFilePath($type, $key)))) {
             return null;
         }
 
         $data = json_decode(file_get_contents($file), true, 512);
+        if(isset($data['attributes'])) $data['attributes'] = $this->encodeNested($data['attributes']);
         if(!isset($data['created_at'])) $data['created_at'] = filectime($file);
         if(!isset($data['updated_at'])) $data['updated_at'] = filemtime($file);
 
@@ -62,21 +62,19 @@ class Filesystem implements SourceInterface
      * Retrieve data from the filesystem
      *
      * @param \Whitecube\NovaPage\Pages\Template $template
-     * @param string $locale
      * @return bool
      */
-    public function store(Template $template, $locale)
+    public function store(Template $template)
     {
         $data = [];
         $data['title'] = $template->getTitle();
         $data['created_at'] = $template->getdate('created_at')->toDateTimeString();
         $data['updated_at'] = Carbon::now()->toDateTimeString();
-        $data['attributes'] = $template->getLocalized($locale);
+        $data['attributes'] = $template->getAttributes();
 
         return file_put_contents($this->getFilePath(
             $template->getType(),
-            $template->getName(),
-            $locale
+            $template->getName()
         ), json_encode($data, JSON_PRETTY_PRINT, 512));
     }
 
@@ -85,17 +83,29 @@ class Filesystem implements SourceInterface
      *
      * @param string $type
      * @param string $key
-     * @param string $locale
      * @return string
      */
-    protected function getFilePath($type, $key, $locale)
+    protected function getFilePath($type, $key)
     {
         $variables = [
             'type' => $type,
             'key' => $key,
-            'locale' => $locale,
         ];
 
         return $this->parsePath($this->path, $variables);
+    }
+
+    /**
+     * Encode nested arrays and objects as if they came from a MySQL JSON column
+     *
+     * @param array $attributes
+     * @return array
+     */
+    protected function encodeNested(array $attributes)
+    {
+        return array_map(function($value) {
+            if(!is_array($value) && !is_object($value)) return $value;
+            return json_encode($value);
+        }, $attributes);
     }
 }

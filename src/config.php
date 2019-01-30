@@ -50,7 +50,7 @@ return [
     'sources' => [
 
         'filesystem' => [
-            'path' => resource_path('lang/{locale}/{type}/{key}.json')
+            'path' => resource_path('lang/{type}/{key}.json')
         ]
 
     ]

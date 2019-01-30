@@ -80,11 +80,10 @@ class TemplatesRepository
      *
      * @param string $type
      * @param string $key
-     * @param string $locale
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($type, $key, $locale, $throwOnMissing)
+    public function load($type, $key, $throwOnMissing)
     {
         $name = $type . '.' . $key;
 
@@ -93,10 +92,10 @@ class TemplatesRepository
         }
 
         if(!isset($this->loaded[$name])) {
-            $this->loaded[$name] = $template->getNewTemplate($type, $key, $locale, $throwOnMissing);
+            $this->loaded[$name] = $template->getNewTemplate($type, $key, $throwOnMissing);
         }
         else {
-            $this->loaded[$name]->setLocale($locale)->load($throwOnMissing);
+            $this->loaded[$name]->load($throwOnMissing);
         }
 
         return $this->loaded[$name];
