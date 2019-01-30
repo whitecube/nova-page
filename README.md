@@ -40,7 +40,7 @@ If for some reason you must do it manually, register the package in the `provide
         ],
 ```
 
-Finally, register the Nova tool in `app/Http/Providers/NovaServiceProvider.php`:
+Finally, register the Nova tool in `app/Providers/NovaServiceProvider.php`:
 
 ```php
     /**
