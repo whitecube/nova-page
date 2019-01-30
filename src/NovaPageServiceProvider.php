@@ -4,6 +4,7 @@ namespace Whitecube\NovaPage;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
+use Whitecube\NovaPage\Commands\CreateTemplate;
 use Whitecube\NovaPage\Pages\Manager;
 use Whitecube\NovaPage\Pages\Template;
 
@@ -26,6 +27,17 @@ class NovaPageServiceProvider extends ServiceProvider
         $this->app->bind(Template::class, function($app) {
             return $app->make(Manager::class)->find();
         });
+
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
+    }
+
+    public function registerCommands()
+    {
+        $this->commands([
+            CreateTemplate::class
+        ]);
     }
 
     /**
