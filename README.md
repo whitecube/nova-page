@@ -119,6 +119,6 @@ Thanks!
 
 
 ## Made with ❤️ for open source
-At [whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.  
+At [Whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.
 So when we have an opportunity to give something back, we're super excited!  
 We hope you will enjoy this small contribution from us and would love to [hear from you](mailto:hello@whitecube.be) if you find it useful in your projects.
