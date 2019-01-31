@@ -118,12 +118,12 @@ abstract class Template implements ArrayAccess
 
         $this->setDateIf('created_at', $data['created_at'] ?? null,
             function(Carbon $new, Carbon $current = null) {
-                return (!$current || $new->isBefore($current));
+                return (!$current || $new->lessThan($current));
             });
 
         $this->setDateIf('updated_at', $data['updated_at'] ?? null,
             function(Carbon $new, Carbon $current = null) {
-                return (!$current || $new->isAfter($current));
+                return (!$current || $new->greaterThan($current));
             });
     }
 
