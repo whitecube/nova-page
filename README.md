@@ -77,7 +77,7 @@ Route::get('/about-me', 'AboutController@show')
     ->name('about');
 ```
 
-Fields and cards defintion is exactly the same as regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
+Fields and cards definition is exactly the same as regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
 
 #### Loading the data in your pages
 The easiest way is to use middleware.
