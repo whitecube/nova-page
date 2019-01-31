@@ -6,7 +6,7 @@ This package adds basic **flat-file CMS features** to Laravel Nova in a breeze u
 
 ## Installation
 
-`composer require whitecube/nova-page`.
+`composer require whitecube/nova-page`
 
 
 If using Laravel >= 5.5, the service providers and aliases will register automatically.
