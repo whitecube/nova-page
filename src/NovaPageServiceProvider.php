@@ -3,6 +3,7 @@
 namespace Whitecube\NovaPage;
 
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Whitecube\NovaPage\Commands\CreateTemplate;
 use Whitecube\NovaPage\Pages\Manager;
@@ -28,9 +29,19 @@ class NovaPageServiceProvider extends ServiceProvider
             return $app->make(Manager::class)->find();
         });
 
+        $this->registerBladeDirectives();
+
         if ($this->app->runningInConsole()) {
             $this->registerCommands();
         }
+    }
+
+    public function registerBladeDirectives()
+    {
+        Blade::directive('get', function ($key) {
+            $key = trim(trim($key, '"'), "'");
+            return resolve(Manager::class)->get($key);
+        });
     }
 
     public function registerCommands()
