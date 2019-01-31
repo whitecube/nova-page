@@ -53,6 +53,11 @@ In order to assign fields (and even cards!) to a page's edition form, we'll have
 
 Each Template is defined in an unique class that resembles regular Nova Resources. You can store those classes wherever you want, but the package is configured to use `app/Nova/Templates` by default.
 
+You can use the artisan command to generate the file
+```bash
+php artisan make:template About
+```
+
 ```php
 namespace App\Nova\Templates;
 
