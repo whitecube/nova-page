@@ -101,7 +101,7 @@ protected $routeMiddleware = [
 
 #### Accessing the data in your views
 
-Retrieving the page's static values in your application's blade templates is made possible using the `Page` facade.
+Retrieving the page's static values in your application's blade templates is possible with the `get` directive or using the `Page` facade.
 
 ```php
 <p>@get('title')</p>
