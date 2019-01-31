@@ -18,11 +18,6 @@ composer require whitecube/nova-page
 Then register the Nova tool in `app/Providers/NovaServiceProvider.php`:
 
 ```php
-/**
- * Get the tools that should be listed in the Nova sidebar.
- *
- * @return array
- */
 public function tools()
 {
     return [
@@ -111,3 +106,15 @@ Retrieving the page's static values in your application's blade templates is mad
 ```php
 <p>{{ Page::get('title') }}</p>
 ```
+
+## Contributing
+
+Feel free to suggest changes, ask for new features or fix bugs yourself. We're sure there are still a lot of improvements that could be made and we would be very happy to merge useful pull requests.
+
+Thanks!
+
+
+## Made with ❤️ for open source
+At [whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.  
+So when we have an opportunity to give something back, we're super excited!  
+We hope you will enjoy this small contribution from us and would love to [hear from you](mailto:hello@whitecube.be) if you find it useful in your projects.
