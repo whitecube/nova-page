@@ -104,6 +104,10 @@ protected $routeMiddleware = [
 Retrieving the page's static values in your application's blade templates is made possible using the `Page` facade.
 
 ```php
+<p>@get('title')</p>
+
+// or
+
 <p>{{ Page::get('title') }}</p>
 ```
 
