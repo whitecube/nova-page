@@ -14,31 +14,31 @@ If using Laravel >= 5.5, the service providers and aliases will register automat
 If for some reason you must do it manually, register the package in the `providers` section of the app config file in `app/config/app.php` and also add the facade:
 
 ```php
-    'providers' => [
-        // ...
-        Whitecube\NovaPage\NovaPageServiceProvider::class,
-    ],
+'providers' => [
+    // ...
+    Whitecube\NovaPage\NovaPageServiceProvider::class,
+],
 
-    'aliases' => [
-        // ...
-        'Page' => Whitecube\NovaPage\NovaPageFacade::class,
-    ],
+'aliases' => [
+    // ...
+    'Page' => Whitecube\NovaPage\NovaPageFacade::class,
+],
 ```
 
 Finally, register the Nova tool in `app/Providers/NovaServiceProvider.php`:
 
 ```php
-    /**
-     * Get the tools that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
-    public function tools()
-    {
-        return [
-            \Whitecube\NovaPage\NovaPageTool::make(),
-        ];
-    }
+/**
+ * Get the tools that should be listed in the Nova sidebar.
+ *
+ * @return array
+ */
+public function tools()
+{
+    return [
+        \Whitecube\NovaPage\NovaPageTool::make(),
+    ];
+}
 ```
 
 You can publish the package's configuration file with the `php artisan vendor:publish` command. This will add the `app/config/novapage.php` file containing the package's default configuration.
@@ -107,34 +107,34 @@ It is possible to load the page's static content automatically using the `LoadPa
 Add `\Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class` to the `routeMiddleware` array located in the `App\Http\Kernel` file:
 
 ```php
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        // ...
-        'loadNovaPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class,
-    ];
+/**
+ * The application's route middleware.
+ *
+ * These middleware may be assigned to groups or used individually.
+ *
+ * @var array
+ */
+protected $routeMiddleware = [
+    // ...
+    'loadNovaPage' => \Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class,
+];
 ```
 
 You can now assign the `loadNovaPage` middleware to all routes that need it, or even add it to the `web` middleware group in the same `App\Http\Kernel` file:
 
 ```php
-    /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [
-        'web' => [
-            // ...
-            'loadNovaPage',
-        ],
+/**
+ * The application's route middleware groups.
+ *
+ * @var array
+ */
+protected $middlewareGroups = [
+    'web' => [
         // ...
-    };
+        'loadNovaPage',
+    ],
+    // ...
+};
 ```
 
 ### Manual loading
