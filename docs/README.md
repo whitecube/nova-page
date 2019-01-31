@@ -6,7 +6,9 @@ This package adds basic **flat-file CMS features** to Laravel Nova in a breeze u
 
 ## Installation
 
-`composer require whitecube/nova-page`
+```bash
+composer require whitecube/nova-page
+```
 
 
 If using Laravel >= 5.5, the service providers and aliases will register automatically.
@@ -84,7 +86,7 @@ class About extends Template
 }
 ```
 
-Fields and cards defintion is exactly the same as regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
+Fields and cards definition is exactly the same as regular [Laravel Nova Resources](https://nova.laravel.com/docs/1.0/resources/fields.html#defining-fields).
 
 ### Assigning templates
 
@@ -181,7 +183,7 @@ Anyway, if no locale is provided, NovaPage will use the application's current lo
 
 Retrieving the page's static values in your application's blade templates is made possible using the `Page` facade and its different methods:
 
-```blade
+```php
 @extends('layout')
 
 @section('pageName', Page::name())
@@ -246,7 +248,7 @@ class HomepageController extends Controller
 
 And use it as a regular object in the `pages.home` template:
 
-```blade
+```php
 @extends('layout')
 
 @section('pageName', $page->getName())
