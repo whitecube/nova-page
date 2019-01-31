@@ -1,0 +1,18 @@
+preset: laravel
+
+enabled:
+  - alpha_ordered_imports
+
+disabled:
+  - length_ordered_imports
+
+finder:
+  exclude:
+    - "tests"
+    - "node_modules"
+    - "storage"
+    - "vendor"
+  not-name:
+    - "AcceptanceTester.php"
+    - "FunctionalTester.php"
+    - "UnitTester.php"
