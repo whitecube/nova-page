@@ -157,7 +157,7 @@ class AboutController extends Controller
 
     public function show(Manager $page)
     {
-        $page->load('about', Aboutpage::class);
+        $page->load('about', About::class);
         return view('pages.about');
     }
 
