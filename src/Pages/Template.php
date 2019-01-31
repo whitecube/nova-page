@@ -405,4 +405,24 @@ abstract class Template implements ArrayAccess
         return $this->getSource()->store($this);
     }
 
+    /**
+     * Get the casts array.
+     *
+     * @return array
+     */
+    public function getCasts()
+    {
+        return $this->casts;
+    }
+
+    /**
+     * Get the attributes that should be converted to dates.
+     *
+     * @return array
+     */
+    public function getDates()
+    {
+        return [];
+    }
+
 }
