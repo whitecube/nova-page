@@ -8,6 +8,7 @@ use ArrayAccess;
 use Carbon\Carbon;
 use BadMethodCallException;
 use Whitecube\NovaPage\Sources\SourceInterface;
+use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
@@ -244,6 +245,10 @@ abstract class Template implements ArrayAccess
 
         if($attribute === 'nova_page_created_at') {
             return $this->getDate('created_at');
+        }
+
+        if(!isset($this->attributes[$attribute])) {
+            throw new ValueNotFoundException($attribute, get_class($this), $this->getSource()->getFilePath($this->type, $this->name));
         }
 
         return $this->getAttribute($attribute);

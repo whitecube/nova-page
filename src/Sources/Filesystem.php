@@ -85,7 +85,7 @@ class Filesystem implements SourceInterface
      * @param string $key
      * @return string
      */
-    protected function getFilePath($type, $key)
+    public function getFilePath($type, $key)
     {
         $variables = [
             'type' => $type,
