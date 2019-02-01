@@ -239,6 +239,8 @@ abstract class Template implements ArrayAccess
      */
     public function __get($attribute)
     {
+        if(!$attribute) return;
+
         if($attribute === 'nova_page_title') {
             return $this->getTitle();
         }
