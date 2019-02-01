@@ -34,7 +34,10 @@ class ResourceUpdateController extends Controller
         tap($template)->save();
         collect($callbacks)->each->__invoke();
 
-        return response('');
+        return response()->json([
+            'id' => $template->getKey(),
+            'resource' => $template->getAttributes(),
+        ]);
     }
 
     /**

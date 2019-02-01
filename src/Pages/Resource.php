@@ -68,7 +68,6 @@ class Resource extends BaseResource
      */
     public static function label()
     {
-        // TODO: add lang translations for resource label
         return 'nova-pages';
     }
 
@@ -79,7 +78,6 @@ class Resource extends BaseResource
      */
     public static function singularLabel()
     {
-        // TODO: add lang translations for resource singular label
         return 'nova-page';
     }
 
@@ -127,7 +125,6 @@ class Resource extends BaseResource
      */
     public function fields(Request $request)
     {
-        // TODO: add lang translations for panel name
         return array_prepend(
             $this->getTemplateAttributesFields($request),
             new Panel('Base page attributes', $this->getBaseAttributeFields())
@@ -141,7 +138,6 @@ class Resource extends BaseResource
      */
     protected function getBaseAttributeFields()
     {
-        // TODO: add lang translations for base field labels 
         return [
             Text::make('Page title', 'nova_page_title')
                 ->rules(['required', 'string', 'max:255']),
@@ -159,7 +155,6 @@ class Resource extends BaseResource
      */
     protected function getIndexTableFields()
     {
-        // TODO: add lang translations for base field labels 
         return [
             Text::make('Name', function() {
                 return $this->getName();
