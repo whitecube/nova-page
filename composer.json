@@ -27,8 +27,10 @@
         "phpunit/phpunit": "7.1.*"
     },
     "autoload": {
-        "psr-0": {
-            "Whitecube\\NovaPage\\": "src/"
+        "psr-4": {
+            "Whitecube\\NovaPage\\": "src/",
+            "Tests\\": "tests/",
+            "FakeTestApp\\": "tests/test-application/app"
         }
     },
     "minimum-stability": "dev",

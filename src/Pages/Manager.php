@@ -32,9 +32,9 @@ class Manager
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TemplatesRepository $repository)
     {
-        $this->repository = new TemplatesRepository();
+        $this->repository = $repository;
     }
 
     /**
@@ -103,13 +103,14 @@ class Manager
     /**
      * Register a Template into the TemplatesRepository.
      *
+     * @param string $type
      * @param string $key
      * @param string $template
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function register($key, $template)
+    public function register($type, $key, $template)
     {
-        return $this->repository->register($key, $template);
+        return $this->repository->register($type, $key, $template);
     }
 
     /**
@@ -151,6 +152,11 @@ class Manager
     public function newQueryWithoutScopes()
     {
         return new Query($this->repository);
+    }
+
+    public function getRepository()
+    {
+        return $this->repository;
     }
     
 }

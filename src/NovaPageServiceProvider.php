@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Whitecube\NovaPage\Commands\CreateTemplate;
 use Whitecube\NovaPage\Pages\Manager;
 use Whitecube\NovaPage\Pages\Template;
+use Whitecube\NovaPage\Pages\TemplatesRepository;
 
 class NovaPageServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,7 @@ class NovaPageServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/config.php', 'novapage');
 
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager();
+            return new Manager($app->make(TemplatesRepository::class));
         });
 
         $this->app->bind(Template::class, function($app) {
