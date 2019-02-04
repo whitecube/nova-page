@@ -1,5 +1,6 @@
 # Nova Page
 
+![](https://img.shields.io/travis/com/whitecube/nova-page.svg?style=flat)
 ![](https://img.shields.io/github/release/whitecube/nova-page.svg?style=flat)
 [![Maintainability](https://api.codeclimate.com/v1/badges/81fb879e36167269fe10/maintainability)](https://codeclimate.com/github/whiteCube/kabas-core/maintainability)
 ![](https://img.shields.io/packagist/dt/whitecube/nova-page.svg?colorB=green&style=flat)
