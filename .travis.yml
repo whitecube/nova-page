@@ -4,11 +4,11 @@ env:
         - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
 php:
-    - 7.0
+    - 7.1
 before_script:
+    - composer install
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
-    - composer install
     - ./cc-test-reporter before-build
 script:
     - "vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml"
