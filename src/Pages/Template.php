@@ -53,11 +53,11 @@ abstract class Template implements ArrayAccess
     protected $source;
 
     /**
-     * The page's raw data
+     * Should missing values be reported
      *
-     * @var array
+     * @var bool
      */
-    protected $raw;
+    protected $throwOnMissing;
 
     /**
      * Create A Template Instance.
@@ -70,7 +70,8 @@ abstract class Template implements ArrayAccess
     {
         $this->name = $name;
         $this->type = $type;
-        $this->load($throwOnMissing);
+        $this->throwOnMissing = $throwOnMissing;
+        $this->load($this->throwOnMissing);
     }
 
     /**
@@ -120,7 +121,6 @@ abstract class Template implements ArrayAccess
      */
     public function fill(array $data = [])
     {
-        $this->raw = $data;
         $this->title = $data['title'] ?? null;
         $this->attributes = $data['attributes'] ?? [];
 
@@ -256,7 +256,7 @@ abstract class Template implements ArrayAccess
             return $this->getDate('created_at');
         }
 
-        if(!isset($this->attributes[$attribute])) {
+        if(!isset($this->attributes[$attribute]) && $this->throwOnMissing) {
             $path = $this->getSource()->getFilePath($this->type, $this->name);
             throw new ValueNotFoundException($attribute, get_class($this), $path);
         }
@@ -264,9 +264,25 @@ abstract class Template implements ArrayAccess
         return $this->getAttribute($attribute);
     }
 
-    public function getRaw()
+    /**
+     * Get an attribute from the Template.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getAttribute($key)
     {
-        return $this->raw;
+        if (!$key) {
+            return;
+        }
+
+        // If the attribute exists in the attribute array or has a "get" mutator we will
+        // get the attribute's value. Otherwise, we will proceed as if the developers
+        // are asking for a relationship's value. This covers both types of values.
+        if (array_key_exists($key, $this->attributes) ||
+            $this->hasGetMutator($key)) {
+            return $this->getAttributeValue($key);
+        }
     }
 
     /**

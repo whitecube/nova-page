@@ -3,6 +3,7 @@
 namespace Whitecube\NovaPage\Sources;
 
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem AS BaseFilesystem;
 use Whitecube\NovaPage\Pages\Template;
 
 class Filesystem implements SourceInterface
@@ -72,10 +73,10 @@ class Filesystem implements SourceInterface
         $data['updated_at'] = Carbon::now()->toDateTimeString();
         $data['attributes'] = $template->getAttributes();
 
-        return file_put_contents($this->getFilePath(
-            $template->getType(),
-            $template->getName()
-        ), json_encode($data, JSON_PRETTY_PRINT, 512));
+        $path = $this->getFilePath($template->getType(), $template->getName());
+        $this->makeDirectory($path);
+
+        return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT, 512));
     }
 
     /**
@@ -93,6 +94,22 @@ class Filesystem implements SourceInterface
         ];
 
         return $this->parsePath($this->path, $variables);
+    }
+
+    /**
+     * Create the path's directory structure if it does not yet exist
+     *
+     * @param string $path
+     * @return void
+     */
+    protected function makeDirectory($path)
+    {
+        $files = resolve(BaseFilesystem::class);
+
+        if(!$files->isDirectory(dirname($path))) {
+            $files->makeDirectory(dirname($path), 0755, true, true);
+            \Log::info($path);
+        }
     }
 
     /**
