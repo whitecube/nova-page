@@ -43,6 +43,8 @@ public function tools()
 }
 ```
 
+## Configuration
+
 You can publish the package's configuration file with the `php artisan vendor:publish` command. This will add the `app/config/novapage.php` file containing the package's default configuration.
 
 ## Templates
