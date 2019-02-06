@@ -41,26 +41,22 @@ class Filesystem implements SourceInterface
     /**
      * Retrieve data from the filesystem
      *
-     * @param string $type
-     * @param string $key
+     * @param \Whitecube\NovaPage\Pages\Template $template
      * @return array
      */
-    public function fetch($type, $key)
+    public function fetch(Template $template)
     {
-        if(!($file = realpath($this->getFilePath($type, $key)))) {
-            return null;
+        $file = $this->getFilePath($template->getType(), $template->getName());
+
+        if(!($file = realpath($file))) {
+            return;
         }
 
-        $data = json_decode(file_get_contents($file), true, 512);
-        if(isset($data['attributes'])) $data['attributes'] = $this->encodeNested($data['attributes']);
-        if(!isset($data['created_at'])) $data['created_at'] = filectime($file);
-        if(!isset($data['updated_at'])) $data['updated_at'] = filemtime($file);
-
-        return $data;
+        return $this->parse($template, $file);
     }
 
     /**
-     * Retrieve data from the filesystem
+     * Save template in the filesystem
      *
      * @param \Whitecube\NovaPage\Pages\Template $template
      * @return bool
@@ -112,16 +108,39 @@ class Filesystem implements SourceInterface
     }
 
     /**
-     * Encode nested arrays and objects as if they came from a MySQL JSON column
+     * Transforms a JSON file into a valid raw NovaPage content array
      *
+     * @param \Whitecube\NovaPage\Pages\Template $template
+     * @param string $file
+     * @return array
+     */
+    protected function parse(Template $template, $file)
+    {
+        $json = json_decode(file_get_contents($file), true);
+
+        return [
+            'title' => $json['title'] ?? basename($file, '.json'),
+            'created_at' => $json['created_at'] ?? filectime($file),
+            'updated_at' => $json['updated_at'] ?? filemtime($file),
+            'attributes' => $this->getParsedAttributes($template, $json['attributes'] ?? [])
+        ];
+    }
+
+    /**
+     * Retrieve and parse attributes array
+     *
+     * @param \Whitecube\NovaPage\Pages\Template $template
      * @param array $attributes
      * @return array
      */
-    protected function encodeNested(array $attributes)
+    protected function getParsedAttributes(Template $template, $attributes)
     {
-        return array_map(function($value) {
-            if(!is_array($value) && !is_object($value)) return $value;
-            return json_encode($value);
-        }, $attributes);
+        foreach ($attributes as $key => $value) {
+            if(!is_array($value) && !is_object($value)) continue;
+            if($template->isJsonAttribute($key)) continue;
+            $attributes[$key] = json_encode($value);
+        }
+
+        return $attributes;
     }
 }

@@ -8,6 +8,6 @@ interface SourceInterface
 {
     public function getName();
     public function setConfig(array $config);
-    public function fetch($type, $key);
+    public function fetch(Template $template);
     public function store(Template $template);
 }
