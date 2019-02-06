@@ -108,7 +108,6 @@ class Filesystem implements SourceInterface
 
         if(!$files->isDirectory(dirname($path))) {
             $files->makeDirectory(dirname($path), 0755, true, true);
-            \Log::info($path);
         }
     }
 
