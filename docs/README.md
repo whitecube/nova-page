@@ -205,19 +205,19 @@ Retrieving the page's static values in your application's blade templates is mad
 
 ### Useful Facade methods
 
-#### `Page::name()`
+**`Page::name()`**
 
 Returns the page's name (usually the route's name).
 
-#### `Page::title($default = null, $prepend = null, $append = null)`
+**`Page::title($default = null, $prepend = null, $append = null)`**
 
 Returns and optionally formats the page's title. The title is an automatic & required field and **is not** linked to or overwritten by an alternative `title` attribute you could add to the page's fields.
 
-#### `Page::locale()`
+**`Page::locale()`**
 
 Returns the locale code of the loaded page. Usually (and should be) the same as `App::getLocale()`.
 
-#### `Page::date($timestamp = 'created_at')`
+**`Page::date($timestamp = 'created_at')`**
 
 Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timestamp. Possible timestamps are:
 
@@ -226,11 +226,11 @@ Returns a [Carbon](https://carbon.nesbot.com/) instance of the requested timesta
 
 > **Note**: Since most UNIX systems do not have a creation date for their files, the `created_at` and `updated_at` timestamps are stored in the file's JSON attributes. Keep this in mind if you want to edit the files in a text editor.
 
-#### `Page::get($attribute, $callback = null)`
+**`Page::get($attribute, $callback = null)`**
 
 Returns a defined field's value. Optionally, you can provide a callback `Closure` that will be applied to the returned value.
 
-#### `Page::find($name)`
+**`Page::find($name)`**
 
 Returns a previously loaded page template.
 
