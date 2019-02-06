@@ -269,3 +269,27 @@ And use it as a regular object in the `pages.home` template:
 ```
 
 As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Pages\Template` instance.
+
+## Advanced features
+
+### Working with JSON fields
+
+Since MySQL has a JSON data type, some Nova fields take advantage of the nested behavior of these "JSON attributes". As you already know, NovaPage stores its data in the filesystem using JSON files (unless you change the `default_source` option, of course). Most Laravel Packages or Nova fields exploiting the JSON data type expect a raw JSON string as input, that's why NovaPage leaves attributes containing arrays and objects as strings.
+
+If your application needs to access these attributes as parsed associative arrays, you can declare them using the `jsonAttributes` array in your Template class:
+
+```php
+namespace App\Nova\Templates;
+
+use Whitecube\NovaPage\Pages\Template;
+
+class Home extends Template
+{
+    /**
+     * The JSON attributes that should be automatically decoded
+     *
+     * @var array
+     */
+    protected $jsonAttributes = ['my_json_attribute', 'another_json_attribute'];
+}
+```
