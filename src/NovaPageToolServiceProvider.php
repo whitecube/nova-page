@@ -26,13 +26,6 @@ class NovaPageToolServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->routes();
         });
-
-        Gate::policy(Manager::class, NovaPagePolicy::class);
-        Gate::policy(Template::class, NovaPagePolicy::class);
-
-        Nova::serving(function (ServingNova $event) {
-            //
-        });
     }
 
     /**
