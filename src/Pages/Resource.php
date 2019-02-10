@@ -16,6 +16,14 @@ class Resource extends BaseResource
 {
 
     use ResolvesPageFields;
+    
+    
+    /**
+     * Define a holder for $model, Nova was complaining when using the search
+     *
+     * @var string
+     */
+    public static $model;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
