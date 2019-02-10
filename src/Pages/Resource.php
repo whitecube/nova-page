@@ -24,6 +24,13 @@ class Resource extends BaseResource
      * @var string
      */
     public static $model;
+    
+    /**
+     * Indicates if the resoruce should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = true;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
