@@ -19,6 +19,8 @@
         <whitelist>
             <directory>src/</directory>
             <exclude>
+                <directory>src/Exceptions</directory>
+                <directory>src/Stubs</directory>
                 <file>src/config.php</file>
             </exclude>
         </whitelist>

@@ -28,4 +28,8 @@ class Test extends Template {
     {
         return [];
     }
+
+    public function foo() {
+        return 'bar';
+    }
 }

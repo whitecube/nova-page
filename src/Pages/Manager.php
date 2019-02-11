@@ -3,7 +3,6 @@
 namespace Whitecube\NovaPage\Pages;
 
 use Illuminate\Routing\Route;
-use Whitecube\NovaPage\Sources\SourceInterface;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 
 class Manager
@@ -154,6 +153,10 @@ class Manager
         return new Query($this->repository);
     }
 
+    /**
+     * Get the underlying template repository
+     * @return TemplatesRepository|Whitecube\NovaPage\Pages\TemplatesRepository
+     */
     public function getRepository()
     {
         return $this->repository;
