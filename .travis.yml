@@ -17,6 +17,8 @@ before_script:
 - ls -la
 install:
 - echo "{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${NOVA_USERNAME}\",\"password\":\"${NOVA_PASSWORD}\"}}}" > auth.json
+- ls -la
+- cat auth.json
 script:
 - vendor/bin/phpunit tests/ -c phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
 - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code
