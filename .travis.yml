@@ -1,16 +1,21 @@
 env:
-    global:
-        - CC_TEST_REPORTER_ID=9018da71c7c0cf180e515b46e57c57f6c9d86aebdbd35ee51bfffab612150e7a
-        - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+  global:
+  - CC_TEST_REPORTER_ID=9018da71c7c0cf180e515b46e57c57f6c9d86aebdbd35ee51bfffab612150e7a
+  - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct;
+    else git log -1 --skip 1 --pretty=format:%ct; fi)
+  - secure: TKoIsWYrYM2VucQ06IB4Ld57812WPRV2XVsgbrl6w3s21dJnGexh8YUo1Xxwi3XC7QjPoYTcQ+kK6O8BSfWReRamZURZRr4lxgXc8ehIW6bbKAVN38PWZtmVE4STz6TPGUEmgoU71xbc1qhRyfwdrTGUfwDiZ7CJpnLWnq+2cSzGDwDnmnvasCAXxblxlm/rRpS2eKBN9/i8kw2qeQxiHSQuXMdV5ArPAttmfjchvt/rejvL1Xo40ZFo25Cq7O8+77b66OmxjtQb0bgLFd/KnRz8lgvyjsR6noBWQJqujUnir/pC2MHky/mNQ1+AAhefEKtQvJj1o5AKiqTcKz86oR84cQq2ueDqG4tuFjKRwQ8a5woAuAr19pxryZXblc6Tlny9oBztr2apSJqfBA/qV5RmUdhZksAQFA8VuVh988Tg0C60IH2ZdU9Kk/zI1Bm9kW6HzEuEChar8sGOcf0tGuavdLH2ktVDBTDhfj28HrfvUvkIF3TOpqNjvtiUfPO72JpDW+7sZsao1uI9GwZCLNmxskh7vCJ4iovHqB6jgVnHLFCf/UlvhMaw5xmhqoQAAE4y+wuDetQE7F5CKwblHHXAc9vlroF1NUNBzEoL0gDkP2/7vumftuIQZV3/ntaQC9DNGczXHXFRho7/Zel865lpu/nVr9+sizczZf4X5nI=
+  - secure: M91iZJpqyT19Roc6wOVJhd6vhUnsWCsTmfrQN17kL/zXPGY1rVjW7tfGkRGPckbkBS8r7d/0hKZFzWIHt4KQwtXuhFs8tBKukOGxgOGvUXzsO8i1wfbuFv8vikaMxatEq8nxUtBAmqSJFwlJ+HIxCgbDK3m6mNQX/wQ4pGhtcpkrUu877lSYCgYMkSKl9fcvlhy/g8WB8SMGdMwKAhQKua+m5PPWKfZduAqm9ivRJQ9ez1eXA9dg7NYot0L6ekOwKXLb7qKfHlPwci4hmeVarIIDoqkyHCgJFyV57UmcfY/IHoMpCq/wgEfD0AgJJ5rQt8N3S8MkebjUi8RzQTajV9Ojx7JGtjzN58Aq2ioB5q7HcpKyOEB3fd8D2KdCc0rLPm7kyKCUjF09ySAEKVaY1bFnTy4kdEDO4BDF7oSQxpUeCFXId+zCC2B6mleqdIm3RZCNzEJoiBzUe1DRL9NrdlQejr4M39a1K8H0o+c4iC4LtKKVWHjKJY18wCISLe9RS5jezpI9FP0hYEPnGIehz9l9Xx0bHWeDHM9ye5aPIl1lcxKF19xPpMRBfQYfd7taieZd/M9IV9nJOisG99zpPIG4jnH7I3EFZuuihEE9/THuHTUG1L5lfNNMsHWlbxp+nHVSvvmvUlQsflfqOGrW4HAE1lMkhUuS+9MS4y65dgY=
 language: php
 php:
-    - 7.1
+- 7.1
 before_script:
-    - composer install
-    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-    - chmod +x ./cc-test-reporter
-    - ./cc-test-reporter before-build
-    - ls -la
+- composer install
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
+- ls -la
 script:
-    - "vendor/bin/phpunit tests/ -c phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml"
-    - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+- vendor/bin/phpunit tests/ -c phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
+- if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code
+  $TRAVIS_TEST_RESULT; fi
