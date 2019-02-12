@@ -3,8 +3,6 @@ env:
   - CC_TEST_REPORTER_ID=9018da71c7c0cf180e515b46e57c57f6c9d86aebdbd35ee51bfffab612150e7a
   - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct;
     else git log -1 --skip 1 --pretty=format:%ct; fi)
-  - secure: dqldMi9ccyoA3qd1823ORle42jEfVe1nNQSOuoysgM0XDjwVEq7HMeAbr/de/h5lmUSJR/BPnDTtu5VbstPjoX1n4YcuTQaoN/LadgbFQIXMYsjeymVwbF7HP5puKvzuh6OHWhInuT5P1YSfGnRK0S0lOQG8mTQyC6UsRFF+H1OBL7KuEtGRX9PZMenZ7srLO6Cp4lYTm+Tr0jeuMiYXXU8MzNweJwg3XUYP69xM623Nlj4/ry8LNOp3PDtmMzuqXaBsj0SjCEpMhSLZeL3kaSGlDB5HJrgzxAkx5yPPROE7Sfx6Q7DsJ/ikSBIyQvYBtKpOzx3d99oe09lIptBMF5Tieygvc2H+xiogMt3257/jaEfI5zSJH9af8ThsTnGRyivhxKVIlD8GFx57XWKMGOHTD90HJu3nEaWb2aXvh/gyCllsdInTvmrJ+99/qYMyddAzVjSo3mnZjXlajMGkWvp2vZnaFd2ZH7I4NMvBFvjMqMgoXFiTY2RppUeqXQFwQ3kXQSgVH5+EkLCz9Yu0r+3Vi7OJbwKIcmSZOwsmv7oW9G++xo8iEJu+hzaSn2Ez+UeW1+0zsjjX6DJs8aNechxCCsgNGT5lAPILQoKF7PCUK1qyg4rmDcB9Esz2zTKvlifSCp3ptOFkHCWIrPVfVpiL8oZvUCoE+lVU5EuQXgo=
-  - secure: SuUruP59+q/kTXKQpM4jgePWavz+ky4PPtSuS6PE0u5C88mDhH/9b9lFZ9sBUAlTMRZKYpSwoW2AbDkOfpZrgqTp94wQSEhxvOSTCEmPgukHT0iRR0dOj0f16LeH8LQaCsU1tGc7SBDa10SnSuuji3QZF/KOYcTS1TRa8yhStWhoVAvndFM4qkI+V57TAmeYaYaJIXOQwtGkOHaYCe/VdBvCnMhfB0rzR3ap57LKa9edZGvNib7QxuIfza5d+rjdCAcAhfqiBsOR5erjt0tUNvPxR+QrAIyhqjxeNiKMi6x4ea/iNRvYWK6oBVFD7s/UqGkP44WuCwciP5gkSeQPUiTvgLBh7OR1Jq7QnaHKRapUc7aemxU/v6xvAInTYBySy/f6flfQnJwXNwWwZHZd6QEkR5zgwVM4EzO3AwK6gpm8uEMyGgmOnsbSNCQIK/QBQMuW3QvteJ2mNQpuYmKSMwJHiGDd+KcABj+MSp1zKeS0TqpUVUc5Z5v4MT4ycZkoX4gTof16t6PCf/Bi8bKRsEL3HDi0eu05IzcWMdZkYug6Dt4GDwLuBVJKN7QIyxSRcSpE1zivt9C6eyEb4r4mvJvsp01CvVpC8twa9C70jLIESoA+TNScz7ZUeZBo5/k1NGBksXlnMe1EMEB6nNOdkEid5SIlRlKAp7Q3KLA0Tro=
 language: php
 php:
 - 7.1
@@ -17,8 +15,6 @@ before_script:
 - ls -la
 install:
 - echo "{\"http-basic\":{\"nova.laravel.com\":{\"username\":\"${NOVA_USERNAME}\",\"password\":\"${NOVA_PASSWORD}\"}}}" > auth.json
-- ls -la
-- cat auth.json
 script:
 - vendor/bin/phpunit tests/ -c phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
 - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code
