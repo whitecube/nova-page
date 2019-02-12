@@ -2,7 +2,8 @@
 
 ![](https://img.shields.io/travis/com/whitecube/nova-page.svg?style=flat)
 ![](https://img.shields.io/github/release/whitecube/nova-page.svg?style=flat)
-[![Maintainability](https://api.codeclimate.com/v1/badges/81fb879e36167269fe10/maintainability)](https://codeclimate.com/github/whiteCube/kabas-core/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/67b809601a9d88bd2c14/maintainability)](https://codeclimate.com/github/whitecube/nova-page/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/67b809601a9d88bd2c14/test_coverage)](https://codeclimate.com/github/whitecube/nova-page/test_coverage)
 ![](https://img.shields.io/packagist/dt/whitecube/nova-page.svg?colorB=green&style=flat)
 ![](https://img.shields.io/github/license/whitecube/nova-page.svg?style=flat)
 
