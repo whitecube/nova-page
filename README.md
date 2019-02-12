@@ -46,7 +46,7 @@ php artisan make:template About
 namespace App\Nova\Templates;
 
 use Illuminate\Http\Request;
-use use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Text;
 use Whitecube\NovaPage\Pages\Template;
 
 class About extends Template
