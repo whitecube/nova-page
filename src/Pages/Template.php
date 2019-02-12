@@ -62,6 +62,13 @@ abstract class Template implements ArrayAccess
     protected $throwOnMissing;
 
     /**
+     * The page's raw data
+     *
+     * @var array
+     */
+    protected $raw;
+
+    /**
      * Create A Template Instance.
      *
      * @param string $name
@@ -123,6 +130,7 @@ abstract class Template implements ArrayAccess
      */
     public function fill(array $data = [])
     {
+        $this->raw = $data;
         $this->title = $data['title'] ?? null;
         $this->attributes = $data['attributes'] ?? [];
 
@@ -461,6 +469,16 @@ abstract class Template implements ArrayAccess
     public function getDates()
     {
         return [];
+    }
+
+    /**
+     * Get the page's raw data
+     *
+     * @return array
+     */
+    public function getRaw()
+    {
+        return $this->raw;
     }
 
 }
