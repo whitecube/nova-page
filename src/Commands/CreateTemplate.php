@@ -46,7 +46,7 @@ class CreateTemplate extends Command
      */
     public function handle()
     {
-        $name = ucfirst(snake_case($this->getNameArgument()));
+        $name = ucwords($this->getNameArgument());
         $path = $this->getPath($name);
 
         // Make directory if it does not exist
