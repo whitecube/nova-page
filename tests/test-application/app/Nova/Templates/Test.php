@@ -3,6 +3,7 @@
 namespace FakeTestApp\Nova\Templates;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Whitecube\NovaPage\Pages\Template;
 
 class Test extends Template {
@@ -15,7 +16,9 @@ class Test extends Template {
      */
     public function fields(Request $request)
     {
-        return [];
+        return [
+            Text::make('Test', 'test_field')
+        ];
     }
 
     /**
