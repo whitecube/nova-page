@@ -218,7 +218,7 @@ abstract class Template implements ArrayAccess
     }
 
     /**
-     * Retrieve the page's localized title
+     * Retrieve the page's title
      *
      * @param string $default
      * @param string $prepend
