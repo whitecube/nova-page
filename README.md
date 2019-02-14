@@ -1,11 +1,11 @@
 # Nova Page
 
-![](https://img.shields.io/travis/com/whitecube/nova-page.svg?style=flat)
+[![](https://img.shields.io/travis/com/whitecube/nova-page.svg?style=flat)](https://travis-ci.com/whitecube/nova-page)
 ![](https://img.shields.io/github/release/whitecube/nova-page.svg?style=flat)
 [![Maintainability](https://api.codeclimate.com/v1/badges/67b809601a9d88bd2c14/maintainability)](https://codeclimate.com/github/whitecube/nova-page/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/67b809601a9d88bd2c14/test_coverage)](https://codeclimate.com/github/whitecube/nova-page/test_coverage)
-![](https://img.shields.io/packagist/dt/whitecube/nova-page.svg?colorB=green&style=flat)
-![](https://img.shields.io/github/license/whitecube/nova-page.svg?style=flat)
+[![](https://img.shields.io/packagist/dt/whitecube/nova-page.svg?colorB=green&style=flat)](https://packagist.org/packages/whitecube/nova-page)
+[![](https://img.shields.io/github/license/whitecube/nova-page.svg?style=flat)](https://github.com/whitecube/nova-page/blob/master/LICENSE)
 
 Ever wanted to expose static content of an "About" page as editable fields in your app's administration without having to create specific models & migrations? Using this package, you'll be able to do so. By default, it will store the content in JSON files in the application's `resources/lang` directory, making them available for version control.
 
