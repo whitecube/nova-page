@@ -83,7 +83,7 @@ class Query
             ->filter()
             ->reject([$this, 'shouldReject'])
             ->map(function($template, $name) use ($throwOnMissing) {
-                list($type, $key) = explode('.', $name);
+                list($type, $key) = explode('.', $name, 2);
                 return $this->repository->load($type, $key, $this->locale, $throwOnMissing);
             });
     }
