@@ -2,10 +2,13 @@
 
 namespace Tests\Pages;
 
+use Illuminate\Routing\Route;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Orchestra\Testbench\TestCase;
 use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
+use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
 use Whitecube\NovaPage\Pages\Manager;
 use Whitecube\NovaPage\Pages\Resource;
 use Whitecube\NovaPage\Pages\Template;
@@ -126,6 +129,27 @@ class ResourceTest extends TestCase {
         $template = $this->createMock(Template::class);
         $instance = new Resource($template);
         $this->assertFalse($instance->authorizedToDelete(request()));
+    }
+
+    /** @test */
+    public function can_prepare_the_resource_to_be_json_serialized()
+    {
+        $this->app->bind(NovaRequest::class, function() {
+            $route = $this->createMock(Route::class);
+            $route->method('getAction')->willReturn([
+                'controller' => ResourceIndexController::class . '@handle'
+            ]);
+            $request = $this->createMock(NovaRequest::class);
+            $request->expects($this->any())->method('route')->willReturn($route);
+            $request->expects($this->any())->method('setContainer')->will($this->returnSelf());
+
+            return $request;
+        });
+        $template = $this->createMock(Template::class);
+        $instance = new Resource($template);
+        $result = $instance->jsonSerialize();
+        $this->assertTrue(is_array($result));
+        $this->assertArrayHasKey('fields', $result);
     }
 
 }
