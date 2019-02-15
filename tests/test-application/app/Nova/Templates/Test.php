@@ -8,6 +8,10 @@ use Whitecube\NovaPage\Pages\Template;
 
 class Test extends Template {
 
+    protected $jsonAttributes = [
+        'foo_json'
+    ];
+
     /**
      * Get the fields displayed by the resource.
      *

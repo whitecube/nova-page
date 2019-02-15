@@ -230,6 +230,22 @@ class TemplateTest extends TestCase {
         $this->assertArrayHasKey('attributes', $instance->getRaw());
     }
 
+    /** @test */
+    public function can_get_json_attributes()
+    {
+        $instance = $this->getInstance();
+        $this->assertCount(1, $instance->getJsonAttributes());
+        $this->assertSame('foo_json', $instance->getJsonAttributes()[0]);
+    }
+
+    /** @test */
+    public function can_check_if_has_json_attribute()
+    {
+        $instance = $this->getInstance();
+        $this->assertTrue($instance->isJsonAttribute('foo_json'));
+        $this->assertFalse($instance->isJsonAttribute('bar_json'));
+    }
+
     protected function getInstance()
     {
         $instance = (new class('test', 'route', false) extends Test {
