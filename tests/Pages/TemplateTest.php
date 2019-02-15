@@ -7,6 +7,7 @@ use FakeTestApp\Nova\Templates\Test;
 use Orchestra\Testbench\TestCase;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
+use Whitecube\NovaPage\Pages\Query;
 use Whitecube\NovaPage\Pages\Template;
 use Whitecube\NovaPage\Sources\Filesystem;
 
@@ -120,6 +121,113 @@ class TemplateTest extends TestCase {
     {
         $instance = $this->getInstance();
         $this->assertNull($instance->getAttribute('foobarbaz'));
+    }
+
+    /** @test */
+    public function can_return_timestamps_linked_to_template()
+    {
+        $instance = $this->getInstance();
+        $this->assertInstanceOf(Carbon::class, $instance->getDate('created_at'));
+    }
+
+    /** @test */
+    public function can_set_a_date_and_convert_it_to_a_carbon_instance()
+    {
+        $instance = $this->getInstance();
+        $this->assertNull($instance->getDate('foobarbaz'));
+        $instance->setDate('foobarbaz', '17 march 2019');
+        $this->assertInstanceOf(Carbon::class, $instance->getDate());
+    }
+
+    /** @test */
+    public function can_conditionnally_set_a_date_with_a_closure_condition()
+    {
+        $instance = $this->getInstance();
+        $instance->setDateIf('foobarbaz', '17 march 2019', function($date) {
+            return false;
+        });
+        $this->assertNull($instance->getDate('foobarbaz'));
+        $instance->setDateIf('foobarbaz', '17 march 2019', function($date) {
+            return true;
+        });
+        $this->assertInstanceOf(Carbon::class, $instance->getDate('foobarbaz'));
+    }
+
+    /** @test */
+    public function can_set_values()
+    {
+        $instance = $this->getInstance();
+        $this->assertNull($instance->foobarbaz);
+        $instance->foobarbaz = 'test';
+        $this->assertSame('test', $instance->foobarbaz);
+        $instance->nova_page_title = 'Page title modified';
+        $this->assertSame('Page title modified', $instance->title());
+        $instance->nova_page_created_at = '17 march 2019';
+        $this->assertSame(3, $instance->getDate()->month);
+    }
+
+    /** @test */
+    public function can_check_if_an_attribute_is_set()
+    {
+        $instance = $this->getInstance();
+        $this->assertFalse($instance->offsetExists('foobarbaz'));
+        $instance->foobarbaz = 'test';
+        $this->assertTrue($instance->offsetExists('foobarbaz'));
+    }
+
+    /** @test */
+    public function can_get_a_value()
+    {
+        $instance = $this->getInstance();
+        $this->assertSame('Test value', $instance->offsetGet('test_field'));
+    }
+
+    /** @test */
+    public function can_set_a_value()
+    {
+        $instance = $this->getInstance();
+        $instance->offsetSet('foobarbaz', 'test');
+        $this->assertSame('test', $instance->foobarbaz);
+    }
+
+    /** @test */
+    public function can_unset_an_attribute()
+    {
+        $instance = $this->getInstance();
+        $instance->foobarbaz = 'test';
+        $instance->offsetUnset('foobarbaz');
+        $this->assertNull($instance->foobarbaz);
+    }
+
+    /** @test */
+    public function can_get_a_fresh_query_instance()
+    {
+        $instance = $this->getInstance();
+        $this->assertInstanceOf(Query::class, $instance->newQueryWithoutScopes());
+    }
+
+    /** @test */
+    public function can_save_the_data()
+    {
+        $instance = $this->getInstance();
+        $source = $this->createMock(Filesystem::class);
+        $source->method('fetch')->willReturn([
+            'title' => 'Page title',
+            'attributes' => [
+                'test_field' => 'Test value'
+            ]
+        ]);
+        $source->expects($this->once())->method('store');
+        $instance->setSource($source);
+        $instance->save();
+    }
+
+    /** @test */
+    public function can_return_raw_values()
+    {
+        $instance = $this->getInstance();
+        $this->assertCount(2, $instance->getRaw());
+        $this->assertArrayHasKey('attributes', $instance->getRaw());
     }
 
     protected function getInstance()
