@@ -21,7 +21,13 @@
             <exclude>
                 <directory>src/Exceptions</directory>
                 <directory>src/Stubs</directory>
+                <directory>src/Http</directory>
                 <file>src/config.php</file>
+                <file>src/NovaPageFacade.php</file>
+                <file>src/NovaPageRouteMacros.php</file>
+                <file>src/NovaPageServiceProvider.php</file>
+                <file>src/NovaPageTool.php</file>
+                <file>src/NovaPageToolServiceProvider.php</file>
             </exclude>
         </whitelist>
     </filter>
