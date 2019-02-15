@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Pages;
+namespace Tests\Unit\Pages;
 
 use Carbon\Carbon;
 use FakeTestApp\Nova\Templates\Test;

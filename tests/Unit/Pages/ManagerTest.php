@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Pages;
+namespace Tests\Unit\Pages;
 
 use FakeTestApp\Nova\Templates\Test;
 use Illuminate\Routing\Route;
