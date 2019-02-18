@@ -1,8 +1,12 @@
 {
     "title": "Test page title",
-    "created_at": "",
-    "updated_at": "",
+    "created_at": "2019-02-18 08:48:00",
+    "updated_at": "2019-02-18 09:34:13",
     "attributes": {
-        "test_field": "Test value"
+        "test_field": "Test value",
+        "foo_json": {
+            "test": "test"
+        },
+        "foo_test": "[\"one\",\"two\"]"
     }
 }
