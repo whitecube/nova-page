@@ -18,6 +18,13 @@ class Resource extends BaseResource
     use ResolvesPageFields;
 
     /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = '';
+    
+    /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
