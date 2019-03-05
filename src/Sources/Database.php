@@ -77,7 +77,6 @@ class Database implements SourceInterface {
             'name' => $template->getName(),
             'title' => $template->getTitle(),
             'type' => $template->getType(),
-            'locale' => App::getLocale(),
             'attributes' => json_encode($template->getAttributes()),
             'updated_at' => Carbon::now(),
             'created_at' => $template->getDate('created_at')

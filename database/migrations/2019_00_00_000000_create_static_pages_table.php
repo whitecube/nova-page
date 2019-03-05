@@ -18,7 +18,6 @@ class CreateStaticPagesTable extends Migration
             $table->string('name');
             $table->string('title');
             $table->string('type');
-            $table->string('locale', 10);
             $table->json('attributes');
             $table->timestamps();
         });
