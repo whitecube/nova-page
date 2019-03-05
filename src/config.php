@@ -51,6 +51,9 @@ return [
 
         'filesystem' => [
             'path' => resource_path('lang/{type}/{key}.json')
+        ],
+        'database' => [
+            'table_name' => 'static_pages'
         ]
 
     ]
