@@ -47,13 +47,25 @@ public function tools()
 
 You can publish the package's configuration file with the `php artisan vendor:publish` command. This will add the `app/config/novapage.php` file containing the package's default configuration.
 
-### Using a database as the data source
+### Using the database as the data source
+A database source is available if you do not wish to make use of the package's flat-file capabilities.
 
-If you wish to use a database as a source to store the pages data you can switch the `default_source` parameter to `\Whitecube\NovaPage\Sources\Database::class`.
+#### Changing the config
+In the config file, change the `default_source` option to `\Whitecube\NovaPage\Sources\Database::class`.
 
-Then run the command `php artisan vendor:publish --tag=nova-page-migrations` to copy the migrations in your project migrations folder. The migration will create a table `static_pages` if you'd like to change that name you can do so in the migration file and then update the `table_name` parameter in the `novapage.php` config file.
+#### Running the migration
+You will need to run the following command:
+```
+php artisan vendor:publish --tag=nova-page-migrations
+```
+Doing so will copy the migration to create the `static_pages` table into your project's `database/migrations` directory. Then, simply run:
+```
+php artisan migrate
+```
 
-The package will use your project database configuration.
+#### Customizing the table name
+You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
+
 
 ## Templates
 
