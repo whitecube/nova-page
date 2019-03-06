@@ -30,7 +30,7 @@
     "require": {
         "php": ">=7.1.0",
         "laravel/nova": "*",
-        "nesbot/carbon": "^1.3"
+        "nesbot/carbon": "^2.1"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
