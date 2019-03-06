@@ -29,12 +29,11 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "laravel/nova": "*",
-        "nesbot/carbon": "^2.1"
+        "laravel/nova": "*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
-        "orchestra/testbench": "~3.0",
+        "orchestra/testbench": "^3.0",
         "phpunit/phpunit": "7.1.*"
     },
     "autoload": {
