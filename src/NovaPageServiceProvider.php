@@ -60,8 +60,12 @@ class NovaPageServiceProvider extends ServiceProvider
         Route::mixin(new NovaPageRouteMacros());
 
         $this->publishes([
-            __DIR__ . '/config.php' => config_path('novapage.php')
-        ]);
+            __DIR__ . '/config.php' => config_path('novapage.php'),
+        ], 'nova-page-config');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/' => database_path('migrations')
+        ], 'nova-page-migrations');
 
         $this->app->booted(function() {
             $this->app->make(Manager::class)->booted();

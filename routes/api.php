@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Whitecube\NovaPage\Http\Controllers\ActionController;
 use Whitecube\NovaPage\Http\Controllers\CardController;
+use Whitecube\NovaPage\Http\Controllers\FilterController;
+use Whitecube\NovaPage\Http\Controllers\LensController;
 use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
 use Whitecube\NovaPage\Http\Controllers\ResourceCountController;
 use Whitecube\NovaPage\Http\Controllers\ResourceUpdateController;
@@ -18,19 +21,13 @@ use Whitecube\NovaPage\Http\Controllers\ResourceUpdateController;
 */
 
 // Actions...
-Route::get('/nova-api/nova-page/actions', function() {
-    return collect();
-});
+Route::get('/nova-api/nova-page/actions', ActionController::class . '@index');
 
 // Filters...
-Route::get('/nova-api/nova-page/filters', function() {
-    return collect();
-});
+Route::get('/nova-api/nova-page/filters', FilterController::class . '@index');
 
 // Lenses...
-Route::get('/nova-api/nova-page/lenses', function() {
-    return collect();
-});
+Route::get('/nova-api/nova-page/lenses', LensController::class . '@index');
 
 // Cards / Metrics...
 Route::get('/nova-api/nova-page/cards', CardController::class . '@index');
