@@ -64,22 +64,15 @@ class Database implements SourceInterface {
      */
     public function store(Template $template)
     {
-        $staticPage = DB::table($this->tableName)->where('name', $template->getName())->first();
-        if ($staticPage) {
-            return DB::table($this->tableName)->update([
-                'title' => $template->getTitle(),
-                'attributes' => json_encode($template->getAttributes()),
-                'updated_at' => Carbon::now(),
-                'created_at' => $template->getDate('created_at')
-            ]);
-        }
-        return DB::table($this->tableName)->insert([
+        DB::table($this->tableName)->updateOrInsert([
+            'name' => $template->getName()
+        ], [
             'name' => $template->getName(),
             'title' => $template->getTitle(),
             'type' => $template->getType(),
             'attributes' => json_encode($template->getAttributes()),
-            'updated_at' => Carbon::now(),
-            'created_at' => $template->getDate('created_at')
+            'created_at' => $template->getDate('created_at'),
+            'updated_at' => Carbon::now()
         ]);
     }
 
