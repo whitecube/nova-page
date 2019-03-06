@@ -30,8 +30,6 @@ class NovaPageServiceProvider extends ServiceProvider
             return $app->make(Manager::class)->find();
         });
 
-        $this->registerBladeDirectives();
-
         if ($this->app->runningInConsole()) {
             $this->registerCommands();
         }
@@ -68,6 +66,8 @@ class NovaPageServiceProvider extends ServiceProvider
         $this->app->booted(function() {
             $this->app->make(Manager::class)->booted();
         });
+
+        $this->registerBladeDirectives();
     }
 
 }
