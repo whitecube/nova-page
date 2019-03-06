@@ -7,7 +7,6 @@ language: php
 php:
 - 7.1
 before_script:
-- composer global require "fxp/composer-asset-plugin:~1.0.0"
 - composer install
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
