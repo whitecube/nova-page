@@ -15,6 +15,10 @@
         {
             "name": "Toon Van den Bos",
             "email": "toon@whitecube.be"
+        },
+        {
+            "name": "Adrien Leloup",
+            "email": "adrien@whitecube.be"
         }
     ],
     "repositories": [
