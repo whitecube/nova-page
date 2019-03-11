@@ -25,6 +25,14 @@ class Resource extends BaseResource
     public static $title = 'title';
 
     /**
+     * Indicates if the resoruce should be globally searchable.
+     * Disabled for now until there is a fix for issue #15
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
+
+    /**
      * The columns that should be searched.
      *
      * @var array
