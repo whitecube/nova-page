@@ -47,6 +47,26 @@ public function tools()
 
 You can publish the package's configuration file with the `php artisan vendor:publish` command. This will add the `app/config/novapage.php` file containing the package's default configuration.
 
+### Using the database as the data source
+A database source is available if you do not wish to make use of the package's flat-file capabilities.
+
+#### Changing the config
+In the config file, change the `default_source` option to `\Whitecube\NovaPage\Sources\Database::class`.
+
+#### Running the migration
+You will need to run the following command:
+```
+php artisan vendor:publish --tag=nova-page-migrations
+```
+Doing so will copy the migration to create the `static_pages` table into your project's `database/migrations` directory. Then, simply run:
+```
+php artisan migrate
+```
+
+#### Customizing the table name
+You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
+
+
 ## Templates
 
 In order to assign fields (and even cards!) to a page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
