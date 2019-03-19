@@ -42,8 +42,8 @@ return [
     |
     */
     'options' => [
-        'App\Nova\Options\FooterBlocks' => '*',
-        'App\Nova\Options\ContactInfo' => ['home', 'contact']
+    //    'App\Nova\Options\FooterBlocks' => '*',
+    //    'App\Nova\Options\ContactInfo' => ['home', 'contact']
     ],
 
     /*
