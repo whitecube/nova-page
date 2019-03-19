@@ -4,7 +4,8 @@ namespace Whitecube\NovaPage\Pages;
 
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\PageResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\OptionResourceIndexController;
 
 trait ResolvesPageFields
 {
@@ -19,7 +20,7 @@ trait ResolvesPageFields
     {
         $action = $request->route()->getAction()['controller'];
 
-        if($action === ResourceIndexController::class . '@handle') {
+        if($action === PageResourceIndexController::class . '@handle' || $action === OptionResourceIndexController::class . '@handle') {
             return new FieldCollection($this->getIndexTableFields($request));
         }
 

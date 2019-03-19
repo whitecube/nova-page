@@ -4,6 +4,7 @@ namespace Whitecube\NovaPage\Pages;
 
 use Route;
 use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
+use Illuminate\Support\Arr;
 
 class TemplatesRepository
 {
@@ -43,6 +44,25 @@ class TemplatesRepository
     }
 
     /**
+     * Fill the repository with the options templates
+     * 
+     * @return void
+     */
+    public function registerOptionsTemplates()
+    {
+        $options = config('novapage.options');
+        $allRoutes = Route::getRoutes()->getRoutes();
+
+        foreach ($options as $template => $optionRoutes) {
+            if (is_array($optionRoutes)) {
+                $this->register('option', implode('+', $optionRoutes), $template);
+            } else if (is_string($optionRoutes)) {
+                $this->register('option', $optionRoutes, $template);
+            }
+        }
+    }
+
+    /**
      * Get all registered templates
      *
      * @return array
@@ -63,15 +83,26 @@ class TemplatesRepository
     }
 
     /**
+     * Get all registered options
+     * 
+     * @return array
+     */
+    public function getOptions() {
+        return Arr::where($this->pages, function($page, $key) {
+            return strpos($key, 'option.') === 0;
+        });
+    }
+
+    /**
      * Get a registered page template by its key
      *
-     * @param string $name
+     * @param string $key
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function getPageTemplate($name)
+    public function getPageTemplate($key)
     {
-        if(array_key_exists($name, $this->pages)) {
-            return $this->templates[$this->pages[$name]];
+        if(array_key_exists($key, $this->pages)) {
+            return $this->templates[$this->pages[$key]];
         }
     }
 
@@ -79,26 +110,29 @@ class TemplatesRepository
      * Load a new Page Template Instance
      *
      * @param string $type
-     * @param string $key
+     * @param string $name
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($type, $key, $throwOnMissing)
+    public function load($type, $name, $throwOnMissing)
     {
-        $name = $type . '.' . $key;
+        $key = $type . '.' . $name;
 
-        if(!($template = $this->getPageTemplate($name))) {
-            throw new TemplateNotFoundException($this->pages[$name] ?? null, $name);
+        if(!($template = $this->getPageTemplate($key))) {
+            throw new TemplateNotFoundException($this->pages[$key] ?? null, $key);
         }
 
-        if(!isset($this->loaded[$name])) {
-            $this->loaded[$name] = $template->getNewTemplate($type, $key, $throwOnMissing);
+        if(!isset($this->loaded[$key])) {
+            if ($type === 'option') {
+                $name = class_basename(get_class($template));
+            }
+            $this->loaded[$key] = $template->getNewTemplate($type, $key, $name, $throwOnMissing);
         }
         else {
-            $this->loaded[$name]->load($throwOnMissing);
+            $this->loaded[$key]->load($throwOnMissing);
         }
 
-        return $this->loaded[$name];
+        return $this->loaded[$key];
     }
 
     /**

@@ -41,6 +41,11 @@ class NovaPageServiceProvider extends ServiceProvider
             $key = trim(trim($key, '"'), "'");
             return resolve(Manager::class)->get($key);
         });
+        Blade::directive('option', function($key) {
+            $key = trim(trim($key, '"'), "'");
+            $key = explode('.', $key);
+            return resolve(Manager::class)->getOption($key[0], $key[1]);
+        });
     }
 
     public function registerCommands()

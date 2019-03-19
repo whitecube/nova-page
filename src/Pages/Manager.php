@@ -27,6 +27,13 @@ class Manager
     protected $current;
 
     /**
+     * The options for the current page
+     * 
+     * @var Whitecube\NovaPage\Pages\Template[]
+     */
+    protected $options;
+
+    /**
      * Create the Main Service Singleton
      *
      * @return void
@@ -44,6 +51,7 @@ class Manager
     public function booted()
     {
         $this->repository->registerRouteTemplates();
+        $this->repository->registerOptionsTemplates();
     }
 
     /**
@@ -59,8 +67,11 @@ class Manager
     {
         $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
 
-        if($current) {
+        if($type !== 'option' && $current) {
             $this->current = $template;
+        }
+        if ($type === 'option') {
+            $this->options[$template->getName()] = $template;
         }
 
         return $template;
@@ -72,15 +83,31 @@ class Manager
      * @param Illuminate\Routing\Route $route
      * @param bool $current
      * @param bool $throwOnMissing
-     * @return mixed
+     * @return void
      */
     public function loadForRoute(Route $route, $current = true, $throwOnMissing = true)
     {
-        if(!$route->template()) {
-            return;
+        if($route->template()) {
+            $this->load($route->getName(), 'route', $current, $throwOnMissing);
         }
 
-        return $this->load($route->getName(), 'route', $current, $throwOnMissing);
+        $this->options = [];
+        $options = $this->repository->getOptions();
+        foreach ($options as $key => $optionTemplate) {
+            $routeNames = substr($key, strpos($key, '.') + 1);
+            if ($routeNames === '*') {
+                $this->load($routeNames, 'option', false);
+                continue;
+            }
+
+            $optionRoutes = explode('+', $routeNames);
+            foreach ($optionRoutes as $routeName) {
+                if ($routeName === $route->getName()) {
+                    $this->load($routeNames, 'option', false);
+                    continue;
+                }
+            }
+        }
     }
 
     /**
@@ -110,6 +137,20 @@ class Manager
     public function register($type, $key, $template)
     {
         return $this->repository->register($type, $key, $template);
+    }
+
+    /**
+     * Get an option attribute from the loaded options for the current route
+     * 
+     * @param string $name The template's name
+     * @param string $attribute The attribute to get
+     * @return mixed
+     */
+    public function getOption($name, $attribute)
+    {
+        if (array_key_exists($name, $this->options)) {
+            return $this->options[$name]->$attribute;
+        }
     }
 
     /**

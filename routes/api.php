@@ -5,9 +5,12 @@ use Whitecube\NovaPage\Http\Controllers\ActionController;
 use Whitecube\NovaPage\Http\Controllers\CardController;
 use Whitecube\NovaPage\Http\Controllers\FilterController;
 use Whitecube\NovaPage\Http\Controllers\LensController;
-use Whitecube\NovaPage\Http\Controllers\ResourceIndexController;
-use Whitecube\NovaPage\Http\Controllers\ResourceCountController;
-use Whitecube\NovaPage\Http\Controllers\ResourceUpdateController;
+use Whitecube\NovaPage\Http\Controllers\PageResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\PageResourceCountController;
+use Whitecube\NovaPage\Http\Controllers\PageResourceUpdateController;
+use Whitecube\NovaPage\Http\Controllers\OptionResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\OptionResourceCountController;
+use Whitecube\NovaPage\Http\Controllers\OptionResourceUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +25,25 @@ use Whitecube\NovaPage\Http\Controllers\ResourceUpdateController;
 
 // Actions...
 Route::get('/nova-api/nova-page/actions', ActionController::class . '@index');
+Route::get('/nova-api/nova-option/actions', ActionController::class . '@index');
 
 // Filters...
 Route::get('/nova-api/nova-page/filters', FilterController::class . '@index');
+Route::get('/nova-api/nova-option/filters', FilterController::class . '@index');
 
 // Lenses...
 Route::get('/nova-api/nova-page/lenses', LensController::class . '@index');
+Route::get('/nova-api/nova-option/lenses', LensController::class . '@index');
 
 // Cards / Metrics...
 Route::get('/nova-api/nova-page/cards', CardController::class . '@index');
+Route::get('/nova-api/nova-option/cards', CardController::class . '@index');
 
 // Resource Management...
-Route::get('/nova-api/nova-page', ResourceIndexController::class . '@handle');
-Route::get('/nova-api/nova-page/count', ResourceCountController::class . '@show');
-Route::put('/nova-api/nova-page/{resourceId}', ResourceUpdateController::class . '@handle');
+Route::get('/nova-api/nova-page', PageResourceIndexController::class . '@handle');
+Route::get('/nova-api/nova-page/count', PageResourceCountController::class . '@show');
+Route::put('/nova-api/nova-page/{resourceId}', PageResourceUpdateController::class . '@handle');
+
+Route::get('/nova-api/nova-option', OptionResourceIndexController::class . '@handle');
+Route::get('/nova-api/nova-option/count', OptionResourceCountController::class . '@show');
+Route::put('/nova-api/nova-option/{resourceId}', OptionResourceUpdateController::class . '@handle');

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\UpdateResourceRequest;
 
-class ResourceUpdateController extends Controller
+class PageResourceUpdateController extends Controller
 {
     /**
      * Update a resource.

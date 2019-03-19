@@ -27,6 +27,13 @@ abstract class Template implements ArrayAccess
     protected $name;
 
     /**
+     * The template key, used to identify it
+     * 
+     * @var string
+     */
+    protected $key;
+
+    /**
      * The page type
      *
      * @var string
@@ -71,14 +78,16 @@ abstract class Template implements ArrayAccess
     /**
      * Create A Template Instance.
      *
-     * @param string $name
+     * @param string $key
      * @param string $type
+     * @param string $name
      * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $type = null, $throwOnMissing = true)
+    public function __construct($key = null, $type = null, $name = null, $throwOnMissing = true)
     {
-        $this->name = $name;
+        $this->key = $key;
         $this->type = $type;
+        $this->name = $name;
         $this->throwOnMissing = $throwOnMissing;
         $this->load($this->throwOnMissing);
     }
@@ -150,12 +159,13 @@ abstract class Template implements ArrayAccess
      *
      * @param string $type
      * @param string $key
+     * @param string $name
      * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($type, $key, $throwOnMissing = true)
+    public function getNewTemplate($type, $key, $name = null, $throwOnMissing = true)
     {
-        return new static($key, $type, $throwOnMissing);
+        return new static($key, $type, $name, $throwOnMissing);
     }
 
     /**
@@ -204,7 +214,7 @@ abstract class Template implements ArrayAccess
      */
     public function getKey()
     {
-        return $this->type . '.' . $this->name;
+        return $this->key;
     }
 
     /**

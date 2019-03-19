@@ -15,7 +15,8 @@ class NovaPageTool extends Tool
     public function boot()
     {
         Nova::resources([
-            \Whitecube\NovaPage\Pages\Resource::class,
+            \Whitecube\NovaPage\Pages\PageResource::class,
+            \Whitecube\NovaPage\Pages\OptionResource::class,
         ]);
     }
 

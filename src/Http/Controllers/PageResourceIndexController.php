@@ -4,12 +4,12 @@ namespace Whitecube\NovaPage\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Whitecube\NovaPage\Pages\Manager;
-use Whitecube\NovaPage\Pages\Resource;
+use Whitecube\NovaPage\Pages\PageResource;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ResourceIndexController extends Controller
+class PageResourceIndexController extends Controller
 {
     /**
      * List the resources for administration.
@@ -42,7 +42,7 @@ class ResourceIndexController extends Controller
     {
         $page = Paginator::resolveCurrentPage() ?: 1;
 
-        $items = $manager->queryIndex($request);
+        $items = $manager->queryRoutesIndex($request);
 
         $perPage = $request->perPage ?? 25;
 

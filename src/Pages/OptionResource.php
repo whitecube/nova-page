@@ -4,15 +4,16 @@ namespace Whitecube\NovaPage\Pages;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource as BaseResource;
-use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Support\Str;
 
-class Resource extends BaseResource
+class OptionResource extends BaseResource
 {
 
     use ResolvesPageFields;
@@ -76,7 +77,7 @@ class Resource extends BaseResource
      */
     public static function label()
     {
-        return 'nova-pages';
+        return config('novapage.options_label');
     }
 
     /**
@@ -86,7 +87,7 @@ class Resource extends BaseResource
      */
     public static function singularLabel()
     {
-        return 'nova-page';
+        return Str::singular(self::label());
     }
 
     /**
@@ -122,7 +123,16 @@ class Resource extends BaseResource
      */
     public static function uriKey()
     {
-        return 'nova-page';
+        return 'nova-option';
+    }
+
+    /**
+     * Format template class name for display
+     * 
+     * @return string
+     */
+    public function getFormattedName() {
+        return preg_replace('/(?<!\ )[A-Z]/', ' $0', $this->getName());
     }
 
     /**
@@ -135,25 +145,8 @@ class Resource extends BaseResource
     {
         return array_prepend(
             $this->getTemplateAttributesFields($request),
-            new Panel('Base page attributes', $this->getBaseAttributeFields())
+            Heading::make($this->getFormattedName())
         );
-    }
-
-    /**
-     * Get the base common attributes
-     *
-     * @return array
-     */
-    protected function getBaseAttributeFields()
-    {
-        return [
-            Text::make('Page title', 'nova_page_title')
-                ->rules(['required', 'string', 'max:255']),
-
-            DateTime::make('Page creation date', 'nova_page_created_at')
-                ->format('DD-MM-YYYY HH:mm:ss')
-                ->rules(['required', 'string', 'max:255']),
-        ];
     }
 
     /**
@@ -165,11 +158,7 @@ class Resource extends BaseResource
     {
         return [
             Text::make('Name', function() {
-                return $this->getName();
-            })->sortable(),
-
-            Text::make('Title', function() {
-                return $this->getTitle();
+                return $this->getFormattedName();
             })->sortable(),
 
             DateTime::make('Last updated on', function() {

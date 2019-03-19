@@ -4,10 +4,10 @@ namespace Whitecube\NovaPage\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Whitecube\NovaPage\Pages\Manager;
-use Whitecube\NovaPage\Pages\Resource;
+use Whitecube\NovaPage\Pages\PageResource;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 
-class ResourceCountController extends Controller
+class PageResourceCountController extends Controller
 {
     /**
      * Get the resource count for a given query.
@@ -17,6 +17,6 @@ class ResourceCountController extends Controller
      */
     public function show(ResourceIndexRequest $request, Manager $manager)
     {
-        return response()->json(['count' => $manager->queryCount($request)]);
+        return response()->json(['count' => $manager->queryRoutesCount($request)]);
     }
 }

@@ -4,13 +4,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin tool label
+    | Admin pages tool label
     |--------------------------------------------------------------------------
     |
     | How should we name the link in Laravel Nova's sidebar?
     |
     */
     'label' => 'Pages',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin options tool label
+    |--------------------------------------------------------------------------
+    |
+    | How should we name the link in Laravel Nova's sidebar?
+    |
+    */
+    'options_label' => 'Options',
 
     /*
     |--------------------------------------------------------------------------
@@ -21,6 +31,20 @@ return [
     |
     */
     'date_format' => 'DD/MM/YYYY · HH:mm',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Options Templates Routes
+    |--------------------------------------------------------------------------
+    |
+    | Options Templates provide reusable content that can be shared accross
+    | multiple routes.
+    |
+    */
+    'options' => [
+        'App\Nova\Options\FooterBlocks' => '*',
+        'App\Nova\Options\ContactInfo' => ['home', 'contact']
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -23,6 +23,13 @@ class Query
     protected $name;
 
     /**
+     * The type filter used to retrieve the resource
+     *
+     * @var null|string
+     */
+    protected $type;
+
+    /**
      * The locale filter used to retrieve the resource
      *
      * @var null|string
@@ -48,6 +55,18 @@ class Query
     public function whereKey($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Mimic eloquent's Builder and register a Where statement
+     *
+     * @param string $type
+     * @return self
+     */
+    public function whereType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 
@@ -97,6 +116,13 @@ class Query
      * @return Illuminate\Support\Collection
      */
     public function shouldReject($item, $name) {
-        return is_null($this->name) ? false : ($this->name !== $name);
+        if (!is_null($this->name)) {
+            return $this->name !== $name;
+        }
+        if (!is_null($this->type)) {
+            $type = substr($name, 0, strpos($name, '.'));
+            return $this->type !== $type;
+        }
+        return false;
     }
 }
