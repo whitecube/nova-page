@@ -104,7 +104,7 @@ class Manager
             foreach ($optionRoutes as $routeName) {
                 if ($routeName === $route->getName()) {
                     $this->load($routeNames, 'option', false);
-                    continue;
+                    break;
                 }
             }
         }
