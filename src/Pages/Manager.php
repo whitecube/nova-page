@@ -67,11 +67,10 @@ class Manager
     {
         $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
 
-        if($type !== 'option' && $current) {
-            $this->current = $template;
-        }
         if ($type === 'option') {
             $this->options[$template->getName()] = $template;
+        } else if ($current) {
+            $this->current = $template;
         }
 
         return $template;
