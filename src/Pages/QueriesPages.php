@@ -8,20 +8,6 @@ use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 trait QueriesPages
 {
     /**
-     * Retrieves registered pages for request
-     *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function queryIndex(ResourceIndexRequest $request)
-    {
-        $query = $this->newQueryWithoutScopes();
-        return $query->get(false)->map(function($template) {
-            return new PageResource($template);
-        });
-    }
-
-    /**
      * Retrieves registered pages with a route type for request
      *
      * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
@@ -45,17 +31,6 @@ trait QueriesPages
         return $query->whereType('option')->get(false)->map(function($template) {
             return new OptionResource($template);
         });
-    }
-
-    /**
-     * Retrieves registered pages count for request
-     *
-     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function queryCount(ResourceIndexRequest $request)
-    {
-        return $this->newQueryWithoutScopes()->get(false)->count();
     }
 
     /**
