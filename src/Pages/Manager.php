@@ -95,14 +95,14 @@ class Manager
         foreach ($options as $key => $optionTemplate) {
             $routeNames = substr($key, strpos($key, '.') + 1);
             if ($routeNames === '*') {
-                $this->load($routeNames, 'option', false);
+                $this->load($routeNames, 'option', false, $throwOnMissing);
                 continue;
             }
 
             $optionRoutes = explode('+', $routeNames);
             foreach ($optionRoutes as $routeName) {
                 if ($routeName === $route->getName()) {
-                    $this->load($routeNames, 'option', false);
+                    $this->load($routeNames, 'option', false, $throwOnMissing);
                     break;
                 }
             }
