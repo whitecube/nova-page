@@ -266,11 +266,6 @@ abstract class Template implements ArrayAccess
             return $this->getDate('created_at');
         }
 
-        if(!isset($this->attributes[$attribute]) && $this->throwOnMissing) {
-            $path = $this->getSource()->getFilePath($this->type, $this->name);
-            throw new ValueNotFoundException($attribute, get_class($this), $path);
-        }
-
         return $this->getAttribute($attribute);
     }
 
@@ -292,6 +287,11 @@ abstract class Template implements ArrayAccess
         if (array_key_exists($key, $this->attributes) ||
             $this->hasGetMutator($key)) {
             return $this->getAttributeValue($key);
+        }
+
+        if($this->throwOnMissing) {
+            $path = $this->getSource()->getFilePath($this->type, $this->name);
+            throw new ValueNotFoundException($attribute, get_class($this), $path);
         }
     }
 
