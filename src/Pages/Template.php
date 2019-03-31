@@ -291,7 +291,7 @@ abstract class Template implements ArrayAccess
 
         if($this->throwOnMissing) {
             $path = $this->getSource()->getFilePath($this->type, $this->name);
-            throw new ValueNotFoundException($attribute, get_class($this), $path);
+            throw new ValueNotFoundException($key, get_class($this), $path);
         }
     }
 
