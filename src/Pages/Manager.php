@@ -55,7 +55,7 @@ class Manager
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($key, $type = null, $current = true, $throwOnMissing = true)
+    public function load($key, $type = null, $current = true, $throwOnMissing = false)
     {
         $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
 
@@ -74,7 +74,7 @@ class Manager
      * @param bool $throwOnMissing
      * @return mixed
      */
-    public function loadForRoute(Route $route, $current = true, $throwOnMissing = true)
+    public function loadForRoute(Route $route, $current = true, $throwOnMissing = false)
     {
         if(!$route->template()) {
             return;
