@@ -3,8 +3,9 @@
 namespace Whitecube\NovaPage\Pages;
 
 use Route;
-use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 
 class TemplatesRepository
 {
@@ -44,25 +45,6 @@ class TemplatesRepository
     }
 
     /**
-     * Fill the repository with the options templates
-     * 
-     * @return void
-     */
-    public function registerOptionsTemplates()
-    {
-        $options = config('novapage.options');
-        $allRoutes = Route::getRoutes()->getRoutes();
-
-        foreach ($options as $template => $optionRoutes) {
-            if (is_array($optionRoutes)) {
-                $this->register('option', implode('+', $optionRoutes), $template);
-            } else if (is_string($optionRoutes)) {
-                $this->register('option', $optionRoutes, $template);
-            }
-        }
-    }
-
-    /**
      * Get all registered templates
      *
      * @return array
@@ -79,7 +61,7 @@ class TemplatesRepository
      */
     public function getPages()
     {
-        return $this->pages;
+        return $this->getFiltered('route.*');
     }
 
     /**
@@ -88,8 +70,18 @@ class TemplatesRepository
      * @return array
      */
     public function getOptions() {
-        return Arr::where($this->pages, function($page, $key) {
-            return strpos($key, 'option.') === 0;
+        return $this->getFiltered('option.*');
+    }
+
+    /**
+     * Get all registered pages matching given filter
+     * 
+     * @param string $filter
+     * @return array
+     */
+    public function getFiltered($filter = '*') {
+        return Arr::where($this->pages, function($page, $key) use ($filter) {
+            return Str::is($filter, $key);
         });
     }
 
@@ -144,8 +136,10 @@ class TemplatesRepository
      */
     public function getLoaded($type, $key)
     {
-        foreach ($this->loaded as $identifier => $template) {
-            if($identifier === $type . '.' . $key) return $template;
+        $identifier = $type . '.' . $key;
+
+        if(array_key_exists($identifier, $this->loaded)) {
+            return $this->loaded[$identifier];
         }
     }
 

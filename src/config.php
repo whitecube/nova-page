@@ -34,20 +34,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Options Templates Routes
-    |--------------------------------------------------------------------------
-    |
-    | Options Templates provide reusable content that can be shared accross
-    | multiple routes.
-    |
-    */
-    'options' => [
-    //    'App\Nova\Options\FooterBlocks' => '*',
-    //    'App\Nova\Options\ContactInfo' => ['home', 'contact']
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Default Source
     |--------------------------------------------------------------------------
     |

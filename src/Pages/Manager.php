@@ -27,13 +27,6 @@ class Manager
     protected $current;
 
     /**
-     * The options for the current page
-     * 
-     * @var Whitecube\NovaPage\Pages\Template[]
-     */
-    protected $options;
-
-    /**
      * Create the Main Service Singleton
      *
      * @return void
@@ -51,7 +44,6 @@ class Manager
     public function booted()
     {
         $this->repository->registerRouteTemplates();
-        $this->repository->registerOptionsTemplates();
     }
 
     /**
@@ -63,13 +55,11 @@ class Manager
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($key, $type = null, $current = true, $throwOnMissing = true)
+    public function load($key, $type = 'route', $current = true, $throwOnMissing = true)
     {
-        $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
+        $template = $this->repository->load($type, $key, $throwOnMissing);
 
-        if ($type === 'option') {
-            $this->options[$template->getName()] = $template;
-        } else if ($current) {
+        if ($type == 'route' && $current) {
             $this->current = $template;
         }
 
@@ -86,27 +76,9 @@ class Manager
      */
     public function loadForRoute(Route $route, $current = true, $throwOnMissing = true)
     {
-        if($route->template()) {
-            $this->load($route->getName(), 'route', $current, $throwOnMissing);
-        }
-
-        $this->options = [];
-        $options = $this->repository->getOptions();
-        foreach ($options as $key => $optionTemplate) {
-            $routeNames = substr($key, strpos($key, '.') + 1);
-            if ($routeNames === '*') {
-                $this->load($routeNames, 'option', false, $throwOnMissing);
-                continue;
-            }
-
-            $optionRoutes = explode('+', $routeNames);
-            foreach ($optionRoutes as $routeName) {
-                if ($routeName === $route->getName()) {
-                    $this->load($routeNames, 'option', false, $throwOnMissing);
-                    break;
-                }
-            }
-        }
+        if(!$route->template()) return;
+        
+        $this->load($route->getName(), 'route', $current, $throwOnMissing);
     }
 
     /**
@@ -116,13 +88,13 @@ class Manager
      * @param string $type
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function find($key = null, $type = null)
+    public function find($key = null, $type = 'route')
     {
         if(is_null($key)) {
             return $this->current;
         }
 
-        return $this->repository->getLoaded($type ?? 'route', $key);
+        return $this->repository->getLoaded($type, $key);
     }
 
     /**
@@ -139,14 +111,16 @@ class Manager
     }
 
     /**
-     * Get an option template
+     * Get an option template by its name
      * 
      * @param string $key The template's name/key
+     * @param bool $throwOnMissing
      * @return mixed
      */
-    public function option($name)
+    public function option($name, $throwOnMissing = false)
     {
-        // TODO : load the option page if not loaded and return it
+        return  $this->find($name, 'option') ||
+                $this->load($name, 'option', false, $throwOnMissing);
     }
 
     /**
