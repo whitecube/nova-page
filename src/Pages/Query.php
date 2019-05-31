@@ -95,7 +95,9 @@ class Query
      */
     public function get($throwOnMissing = true)
     {
-        return Collection::make($this->repository->getPages())
+        $pages = $this->repository->getFiltered(trim($this->type . '.*', '.'));
+
+        return Collection::make($pages)
             ->map(function($template, $name) {
                 return $this->repository->getPageTemplate($name);
             })
@@ -118,10 +120,6 @@ class Query
     public function shouldReject($item, $name) {
         if (!is_null($this->name)) {
             return $this->name !== $name;
-        }
-        if (!is_null($this->type)) {
-            $type = substr($name, 0, strpos($name, '.'));
-            return $this->type !== $type;
         }
         return false;
     }

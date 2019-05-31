@@ -55,25 +55,6 @@ class TemplatesRepository
     }
 
     /**
-     * Get all registered pages
-     *
-     * @return array
-     */
-    public function getPages()
-    {
-        return $this->getFiltered('route.*');
-    }
-
-    /**
-     * Get all registered options
-     * 
-     * @return array
-     */
-    public function getOptions() {
-        return $this->getFiltered('option.*');
-    }
-
-    /**
      * Get all registered pages matching given filter
      * 
      * @param string $filter
