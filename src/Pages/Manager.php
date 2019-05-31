@@ -139,17 +139,14 @@ class Manager
     }
 
     /**
-     * Get an option attribute from the loaded options for the current route
+     * Get an option template
      * 
-     * @param string $name The template's name
-     * @param string $attribute The attribute to get
+     * @param string $key The template's name/key
      * @return mixed
      */
-    public function getOption($name, $attribute)
+    public function option($name)
     {
-        if (array_key_exists($name, $this->options)) {
-            return $this->options[$name]->$attribute;
-        }
+        // TODO : load the option page if not loaded and return it
     }
 
     /**

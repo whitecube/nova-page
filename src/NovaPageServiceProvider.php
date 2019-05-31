@@ -38,13 +38,14 @@ class NovaPageServiceProvider extends ServiceProvider
     public function registerBladeDirectives()
     {
         Blade::directive('get', function ($key) {
-            $key = trim(trim($key, '"'), "'");
+            $key = trim($key, "'\"");
             return resolve(Manager::class)->get($key);
         });
+
         Blade::directive('option', function($key) {
-            $key = trim(trim($key, '"'), "'");
-            $key = explode('.', $key);
-            return resolve(Manager::class)->getOption($key[0], $key[1]);
+            $key = explode('.', trim($key, "'\""));
+            $option = resolve(Manager::class)->option(array_shift($key));
+            return data_get($option, implode('.', $key));
         });
     }
 
