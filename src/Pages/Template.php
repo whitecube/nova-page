@@ -266,6 +266,11 @@ abstract class Template implements ArrayAccess
             return $this->getDate('created_at');
         }
 
+        if(!isset($this->attributes[$attribute]) && $this->throwOnMissing) {
+            $path = $this->getSource()->getErrorLocation($this->type, $this->name);
+            throw new ValueNotFoundException($attribute, get_class($this), $path);
+        }
+
         return $this->getAttribute($attribute);
     }
 
@@ -358,7 +363,7 @@ abstract class Template implements ArrayAccess
             case 'nova_page_created_at':
                 $this->setDate('created_at', $value);
                 break;
-            
+
             default:
                 $this->attributes[$attribute] = $value;
                 break;
