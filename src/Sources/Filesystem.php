@@ -143,4 +143,14 @@ class Filesystem implements SourceInterface
 
         return $attributes;
     }
+
+    /**
+     * Get the text to display in the missing value exception
+     *
+     * @return string
+     */
+    public function getErrorLocation($type, $name)
+    {
+        return $this->getFilePath($type, $name);
+    }
 }
