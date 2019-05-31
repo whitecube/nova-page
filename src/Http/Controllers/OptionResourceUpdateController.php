@@ -16,7 +16,8 @@ class OptionResourceUpdateController extends Controller
      */
     public function handle(UpdateResourceRequest $request)
     {
-        $request->resource = 'nova-option';
+        $route = call_user_func($request->getRouteResolver());
+        $route->setParameter('resource', 'nova-option');
         $request->findResourceOrFail()->authorizeToUpdate($request);
 
         $resource = $request->resource();
