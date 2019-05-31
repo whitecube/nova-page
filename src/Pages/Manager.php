@@ -47,6 +47,19 @@ class Manager
     }
 
     /**
+     * Register a Template into the TemplatesRepository.
+     *
+     * @param string $type
+     * @param string $key
+     * @param string $template
+     * @return Whitecube\NovaPage\Pages\Template
+     */
+    public function register($type, $key, $template)
+    {
+        return $this->repository->register($type, $key, $template);
+    }
+
+    /**
      * Load a new Page Template
      *
      * @param string $key
@@ -95,19 +108,6 @@ class Manager
         }
 
         return $this->repository->getLoaded($type, $key);
-    }
-
-    /**
-     * Register a Template into the TemplatesRepository.
-     *
-     * @param string $type
-     * @param string $key
-     * @param string $template
-     * @return Whitecube\NovaPage\Pages\Template
-     */
-    public function register($type, $key, $template)
-    {
-        return $this->repository->register($type, $key, $template);
     }
 
     /**
