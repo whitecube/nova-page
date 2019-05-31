@@ -36,7 +36,21 @@ class Test extends Template {
         return [];
     }
 
+    /**
+     * Return a test value
+     *
+     * @return string
+     */
     public function foo() {
         return 'bar';
+    }
+
+    /**
+     * Return a value from an undefined computed attribute
+     *
+     * @return string
+     */
+    public function getComputedAttribute() {
+        return 'foo';
     }
 }

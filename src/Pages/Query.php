@@ -74,7 +74,7 @@ class Query
      * @param bool $throwOnMissing
      * @return Illuminate\Support\Collection
      */
-    public function get($throwOnMissing = true)
+    public function get($throwOnMissing = false)
     {
         return Collection::make($this->repository->getPages())
             ->map(function($template, $name) {

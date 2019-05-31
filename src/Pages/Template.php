@@ -75,7 +75,7 @@ abstract class Template implements ArrayAccess
      * @param string $type
      * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $type = null, $throwOnMissing = true)
+    public function __construct($name = null, $type = null, $throwOnMissing = false)
     {
         $this->name = $name;
         $this->type = $type;
@@ -105,7 +105,7 @@ abstract class Template implements ArrayAccess
      * @param bool $throwOnMissing
      * @return $this
      */
-    public function load($throwOnMissing = true)
+    public function load($throwOnMissing = false)
     {
         if(!$this->name || count($this->attributes)) {
             return $this;
@@ -153,7 +153,7 @@ abstract class Template implements ArrayAccess
      * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($type, $key, $throwOnMissing = true)
+    public function getNewTemplate($type, $key, $throwOnMissing = false)
     {
         return new static($key, $type, $throwOnMissing);
     }
@@ -292,6 +292,11 @@ abstract class Template implements ArrayAccess
         if (array_key_exists($key, $this->attributes) ||
             $this->hasGetMutator($key)) {
             return $this->getAttributeValue($key);
+        }
+
+        if($this->throwOnMissing) {
+            $path = $this->getSource()->getFilePath($this->type, $this->name);
+            throw new ValueNotFoundException($key, get_class($this), $path);
         }
     }
 

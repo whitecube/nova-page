@@ -44,7 +44,8 @@ return [
     | provided when instanciated. This means you can add your own source's
     | configuration here too.
     |
-    | Path configurations can contain the following variables: {locale}
+    | Path configurations can contain the following variables: 
+    | {type}, {key}, {locale}
     |
     */
     'sources' => [
