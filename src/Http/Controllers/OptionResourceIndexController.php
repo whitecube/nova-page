@@ -23,7 +23,7 @@ class OptionResourceIndexController extends Controller
         $paginator = $this->paginator($request, $manager);
 
         return response()->json([
-            'label' => config('novapage.options_label'),
+            'label' => config('novapage.labels.options'),
             'resources' => $paginator->getCollection()->values()->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),

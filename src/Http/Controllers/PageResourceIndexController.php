@@ -23,7 +23,7 @@ class PageResourceIndexController extends Controller
         $paginator = $this->paginator($request, $manager);
 
         return response()->json([
-            'label' => config('novapage.label'),
+            'label' => config('novapage.labels.pages'),
             'resources' => $paginator->getCollection()->values()->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),

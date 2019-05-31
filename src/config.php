@@ -4,23 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin pages tool label
+    | Admin pages tool labels
     |--------------------------------------------------------------------------
     |
-    | How should we name the link in Laravel Nova's sidebar?
+    | How should we name the links in Laravel Nova's sidebar?
     |
     */
-    'label' => 'Pages',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Admin options tool label
-    |--------------------------------------------------------------------------
-    |
-    | How should we name the link in Laravel Nova's sidebar?
-    |
-    */
-    'options_label' => 'Options',
+    'labels' => [
+        'pages' => 'Pages',
+        'page' => 'Page',
+        'options' => 'Options',
+        'option' => 'Option'
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -11,7 +11,6 @@ use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Support\Str;
 
 class OptionResource extends BaseResource
 {
@@ -77,7 +76,7 @@ class OptionResource extends BaseResource
      */
     public static function label()
     {
-        return config('novapage.options_label');
+        return config('novapage.labels.options');
     }
 
     /**
@@ -87,7 +86,7 @@ class OptionResource extends BaseResource
      */
     public static function singularLabel()
     {
-        return Str::singular(self::label());
+        return config('novapage.labels.option');
     }
 
     /**
