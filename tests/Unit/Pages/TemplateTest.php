@@ -105,8 +105,8 @@ class TemplateTest extends TestCase {
         $this->assertSame('Page title', $instance->nova_page_title);
         $this->assertInstanceOf(Carbon::class, $instance->nova_page_created_at);
         $instance->setThrowOnMissing(true);
-        $this->assertSame('foo', $instance->computed);
         $this->expectException(ValueNotFoundException::class);
+        $this->assertSame('foo', $instance->computed);
         $instance->foobarbaz;
     }
 
