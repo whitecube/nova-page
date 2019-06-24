@@ -76,7 +76,7 @@ class Resource extends BaseResource
      */
     public static function label()
     {
-        return 'nova-pages';
+        return config('novapage.resource_label') ?? 'nova-pages';
     }
 
     /**
@@ -86,7 +86,7 @@ class Resource extends BaseResource
      */
     public static function singularLabel()
     {
-        return 'nova-page';
+        return config('novapage.resource_singular_label') ?? 'nova-page';
     }
 
     /**
