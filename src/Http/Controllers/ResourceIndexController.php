@@ -4,13 +4,33 @@ namespace Whitecube\NovaPage\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Whitecube\NovaPage\Pages\Manager;
-use Whitecube\NovaPage\Pages\PageResource;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class PageResourceIndexController extends Controller
+class ResourceIndexController extends Controller
 {
+    /**
+     * Resource label callback
+     * 
+     * @return string
+     */
+    protected function resourceLabel() {
+        return 'nova-resource';
+    }
+
+    /**
+     * Callback to retrieve the resource index items
+     * 
+     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
+     * @param  \Whitecube\NovaPage\Pages\Manager $manager
+     * @return \Illuminate\Support\Collection 
+     */
+    protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager) {
+        $items = $manager->queryRoutesIndex($request);
+        return $items;
+    }
+
     /**
      * List the resources for administration.
      *
@@ -23,7 +43,7 @@ class PageResourceIndexController extends Controller
         $paginator = $this->paginator($request, $manager);
 
         return response()->json([
-            'label' => config('novapage.label'),
+            'label' => $this->resourceLabel(),
             'resources' => $paginator->getCollection()->values()->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
@@ -42,7 +62,7 @@ class PageResourceIndexController extends Controller
     {
         $page = Paginator::resolveCurrentPage() ?: 1;
 
-        $items = $manager->queryRoutesIndex($request);
+        $items = $this->resourceIndexItems($request, $manager);
 
         $perPage = $request->perPage ?? 25;
 
