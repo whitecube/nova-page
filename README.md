@@ -13,8 +13,7 @@ This package adds basic **flat-file CMS features** to Laravel Nova in a breeze u
 
 ## Quick start
 
-Here's a very condensed guide to get you started asap.  
-See the full docs at https://whitecube.github.io/nova-page
+Here's a very condensed guide to get you started asap. For more details, examples and advanced features, take a look at [the full docs](https://whitecube.github.io/nova-page).
 
 ### Install
 
@@ -118,12 +117,21 @@ Retrieving the page's static values in your application's blade templates is pos
 <p>{{ Page::get('title') }}</p>
 ```
 
+Please note it is also possible to define [Option Templates](https://whitecube.github.io/nova-page/#/?id=option-templates) for repeated data, which can be accessed using:
+
+```php
+<p>@option('footer.copyright')</p>
+
+// or
+
+<p>{{ Page::option('footer')->copyright }}</p>
+```
+
 ## Contributing
 
 Feel free to suggest changes, ask for new features or fix bugs yourself. We're sure there are still a lot of improvements that could be made and we would be very happy to merge useful pull requests.
 
 Thanks!
-
 
 ## Made with ❤️ for open source
 At [Whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.
