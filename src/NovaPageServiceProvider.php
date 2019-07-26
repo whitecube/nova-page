@@ -43,9 +43,9 @@ class NovaPageServiceProvider extends ServiceProvider
         });
 
         Blade::directive('option', function($key) {
-            $key = explode('.', trim($key, "'\""));
-            $option = resolve(Manager::class)->option(array_shift($key));
-            return data_get($option, implode('.', $key));
+            list($name, $attribute) = explode('.', trim($key, "'\""), 2);
+            $pages = resolve(Manager::class);
+            return data_get($pages->option($name), $attribute);
         });
     }
 

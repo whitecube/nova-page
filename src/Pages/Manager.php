@@ -118,7 +118,7 @@ class Manager
      */
     public function option($name, $throwOnMissing = false)
     {
-        return  $this->find($name, 'option') ||
+        return  $this->find($name, 'option') ??
                 $this->load($name, 'option', false, $throwOnMissing);
     }
 
