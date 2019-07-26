@@ -7,10 +7,9 @@ use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 
 class Manager
 {
-
     use ConditionallyLoadsAttributes,
-        QueriesPages,
-        ResolvesPageCards;
+        Concerns\QueriesResources,
+        Concerns\ResolvesResourceCards;
 
     /**
      * The registered NovaPage Templates & Pages.
@@ -47,19 +46,32 @@ class Manager
     }
 
     /**
+     * Register a Template into the TemplatesRepository.
+     *
+     * @param string $type
+     * @param string $name
+     * @param string $template
+     * @return Whitecube\NovaPage\Pages\Template
+     */
+    public function register($type, $name, $template)
+    {
+        return $this->repository->register($type, $name, $template);
+    }
+
+    /**
      * Load a new Page Template
      *
-     * @param string $key
+     * @param string $name
      * @param string $type
      * @param bool $current
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($key, $type = null, $current = true, $throwOnMissing = false)
+    public function load($name, $type = 'route', $current = true, $throwOnMissing = false)
     {
-        $template = $this->repository->load($type ?? 'route', $key, $throwOnMissing);
+        $template = $this->repository->load($type, $name, $throwOnMissing);
 
-        if($current) {
+        if ($type == 'route' && $current) {
             $this->current = $template;
         }
 
@@ -72,44 +84,42 @@ class Manager
      * @param Illuminate\Routing\Route $route
      * @param bool $current
      * @param bool $throwOnMissing
-     * @return mixed
+     * @return void
      */
     public function loadForRoute(Route $route, $current = true, $throwOnMissing = false)
     {
-        if(!$route->template()) {
-            return;
-        }
-
-        return $this->load($route->getName(), 'route', $current, $throwOnMissing);
+        if(!$route->template()) return;
+        
+        $this->load($route->getName(), 'route', $current, $throwOnMissing);
     }
 
     /**
      * Get a loaded Template by its name
      *
-     * @param string $key
+     * @param string $name
      * @param string $type
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function find($key = null, $type = null)
+    public function find($name = null, $type = 'route')
     {
-        if(is_null($key)) {
+        if(is_null($name)) {
             return $this->current;
         }
 
-        return $this->repository->getLoaded($type ?? 'route', $key);
+        return $this->repository->getLoaded($type, $name);
     }
 
     /**
-     * Register a Template into the TemplatesRepository.
-     *
-     * @param string $type
-     * @param string $key
-     * @param string $template
-     * @return Whitecube\NovaPage\Pages\Template
+     * Get an option template by its name
+     * 
+     * @param string $name
+     * @param bool $throwOnMissing
+     * @return mixed
      */
-    public function register($type, $key, $template)
+    public function option($name, $throwOnMissing = false)
     {
-        return $this->repository->register($type, $key, $template);
+        return  $this->find($name, 'option') ??
+                $this->load($name, 'option', false, $throwOnMissing);
     }
 
     /**
@@ -150,7 +160,7 @@ class Manager
      */
     public function newQueryWithoutScopes()
     {
-        return new Query($this->repository);
+        return new Query($this->getRepository());
     }
 
     /**

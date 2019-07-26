@@ -15,9 +15,9 @@ class CreateStaticPagesTable extends Migration
     {
         Schema::create('static_pages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('title');
             $table->string('type');
+            $table->string('name');
+            $table->string('title')->nullable();
             $table->json('attributes');
             $table->timestamps();
         });

@@ -4,13 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin tool label
+    | Admin pages tool labels
     |--------------------------------------------------------------------------
     |
-    | How should we name the link in Laravel Nova's sidebar?
+    | How should we name the links in Laravel Nova's sidebar?
     |
     */
-    'label' => 'Pages',
+    'labels' => [
+        'pages' => 'Pages',
+        'page' => 'Page',
+        'options' => 'Options',
+        'option' => 'Option'
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -69,14 +74,12 @@ return [
     |
     */
     'sources' => [
-
         'filesystem' => [
             'path' => resource_path('lang/{type}/{key}.json')
         ],
         'database' => [
             'table_name' => 'static_pages'
-        ]
-
+        ],
     ]
 
 ];
