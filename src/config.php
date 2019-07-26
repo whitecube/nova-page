@@ -49,18 +49,19 @@ return [
     | provided when instanciated. This means you can add your own source's
     | configuration here too.
     |
-    | Path configurations can contain the following variables: {locale}
+    | Path configurations can contain the following variables: 
+    | - {locale}
+    | - {type}
+    | - {key}
     |
     */
     'sources' => [
-
         'filesystem' => [
             'path' => resource_path('lang/{type}/{key}.json')
         ],
         'database' => [
             'table_name' => 'static_pages'
-        ]
-
+        ],
     ]
 
 ];
