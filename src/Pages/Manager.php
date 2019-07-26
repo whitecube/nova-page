@@ -4,13 +4,12 @@ namespace Whitecube\NovaPage\Pages;
 
 use Illuminate\Routing\Route;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
-use Whitecube\NovaPage\Pages\Concerns\QueriesResources;
 
 class Manager
 {
     use ConditionallyLoadsAttributes,
-        QueriesResources,
-        ResolvesPageCards;
+        Concerns\QueriesResources,
+        Concerns\ResolvesResourceCards;
 
     /**
      * The registered NovaPage Templates & Pages.
