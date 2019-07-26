@@ -2,20 +2,15 @@
 
 namespace Whitecube\NovaPage\Pages;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Resource as BaseResource;
-use Laravel\Nova\Panel;
+use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Resource extends BaseResource
+abstract class StaticResource extends Resource
 {
-
-    use ResolvesPageFields;
+    use Concerns\ResolvesResourceFields;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -70,26 +65,6 @@ class Resource extends BaseResource
     }
 
     /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return config('novapage.resource_label') ?? 'nova-pages';
-    }
-
-    /**
-     * Get the displayable singular label of the resource.
-     *
-     * @return string
-     */
-    public static function singularLabel()
-    {
-        return config('novapage.resource_singular_label') ?? 'nova-page';
-    }
-
-    /**
      * Get the search result subtitle for the resource.
      *
      * @return string
@@ -116,16 +91,6 @@ class Resource extends BaseResource
     }
 
     /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
-    {
-        return 'nova-page';
-    }
-
-    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request $request
@@ -133,51 +98,25 @@ class Resource extends BaseResource
      */
     public function fields(Request $request)
     {
-        return array_prepend(
-            $this->getTemplateAttributesFields($request),
-            new Panel('Base page attributes', $this->getBaseAttributeFields())
+        return array_merge(
+            $this->getFormIntroductionFields(),
+            $this->getTemplateAttributesFields($request)
         );
     }
 
     /**
-     * Get the base common attributes
+     * Get the base fields displayed at the top of the resource's form.
      *
      * @return array
      */
-    protected function getBaseAttributeFields()
-    {
-        return [
-            Text::make('Page title', 'nova_page_title')
-                ->rules(['required', 'string', 'max:255']),
-
-            DateTime::make('Page creation date', 'nova_page_created_at')
-                ->format('DD-MM-YYYY HH:mm:ss')
-                ->rules(['required', 'string', 'max:255']),
-        ];
-    }
+    abstract protected function getFormIntroductionFields();
 
     /**
      * Get the base attributes Nova Panel
      *
      * @return array
      */
-    protected function getIndexTableFields()
-    {
-        return [
-            Text::make('Name', function() {
-                return $this->getName();
-            })->sortable(),
-
-            Text::make('Title', function() {
-                return $this->getTitle();
-            })->sortable(),
-
-            DateTime::make('Last updated on', function() {
-                $updated_at = $this->getDate('updated_at');
-                return $updated_at ? $updated_at->toDateTimeString() : null;
-            })->format(config('novapage.date_format'))->sortable()
-        ];
-    }
+    abstract protected function getIndexTableFields();
 
     /**
      * Get the fields displayed by the template.

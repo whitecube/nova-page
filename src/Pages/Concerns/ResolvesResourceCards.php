@@ -1,11 +1,10 @@
 <?php
 
-namespace Whitecube\NovaPage\Pages;
+namespace Whitecube\NovaPage\Pages\Concerns;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-trait ResolvesPageCards
+trait ResolvesResourceCards
 {
     /**
      * Get the cards that are available for the given request.

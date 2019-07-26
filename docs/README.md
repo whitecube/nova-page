@@ -10,7 +10,6 @@ This package adds basic **flat-file CMS features** to Laravel Nova in a breeze u
 composer require whitecube/nova-page
 ```
 
-
 If using Laravel >= 5.5, the service providers and aliases will register automatically.
 
 If for some reason you must do it manually, register the package in the `providers` section of the app config file in `app/config/app.php` and also add the facade:
@@ -48,37 +47,45 @@ public function tools()
 You can publish the package's configuration file with the `php artisan vendor:publish` command. This will add the `app/config/novapage.php` file containing the package's default configuration.
 
 ### Using the database as the data source
+
 A database source is available if you do not wish to make use of the package's flat-file capabilities.
 
 #### Changing the config
 In the config file, change the `default_source` option to `\Whitecube\NovaPage\Sources\Database::class`.
 
 #### Running the migration
+
 You will need to run the following command:
-```
+
+```bash
 php artisan vendor:publish --tag=nova-page-migrations
 ```
+
 Doing so will copy the migration to create the `static_pages` table into your project's `database/migrations` directory. Then, simply run:
-```
+
+```bash
 php artisan migrate
 ```
 
 #### Customizing the table name
-You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
 
+You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
 
 ## Templates
 
 In order to assign fields (and even cards!) to a page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
 
-### Creating Templates
+### Creating templates
 
 Each Template is defined in an unique class that resembles regular Nova Resources. You can store those classes wherever you want, but the package is configured to use `app/Nova/Templates` by default.
 
-You can use the artisan command to generate the file
+You can use the artisan command to generate the file:
+
 ```bash
 php artisan make:template About
 ```
+
+Which will result in:
 
 ```php
 namespace App\Nova\Templates;
@@ -126,6 +133,27 @@ Route::get('/about-me', 'AboutController@show')
 ```
 
 **Important**: Do not forget to name the routes you'll be using with NovaPage templates. Route names are used for retrieving and naming the route's JSON files.
+
+### Option templates
+
+Most websites or applications have repeated content, such as a copyright or contact information. These  attributes should not change from page to page, that's why you can define Option "templates". These templates are not bound to a specific route or page and are loaded on request, making it convenient to use them in the app's layouts. You can add as many Option "pages" as you want.
+
+First, create a regular `Template` as described above (e.g.: `php artisan make:template FooterOptions`) and fill the template's `fields()` method with all the wanted Nova fields.
+
+Now, register the template in NovaPage's Manager using the `register(string $type = 'option' | 'route', string $name, string $template)`. A good place to do this is in a ServiceProvider's `boot` method:
+
+```php
+use Whitecube\NovaPage\Pages\Manager;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(Manager $pages)
+    {
+        $pages->register('option', 'footer', \App\Nova\Templates\FooterOptions::class);
+    }
+}
+```
 
 ## Loading pages for display
 
@@ -220,6 +248,21 @@ Retrieving the page's static values in your application's blade templates is mad
     <p>Edited on <time datetime="{{ Page::date('updated_at')->format('c') }}">{{ Page::date('updated_at')->toFormattedDateString() }}</time></p>
     <p>{{ Page::get('introduction') }}</p>
     <a href="{!! Page::get('cta.href') !!}">{{ Page::get('cta.label') }}</a>
+    <p>Copyright: {{ Page::option('footer')->copyright }}</p>
+@endsection
+```
+
+Alternatively, we also added two useful Blade directives, `@get($attribute)` and `@option($key)`, which allow to access static attributes in a shorter way:
+
+```php
+@extends('layout')
+
+@section('pageName', Page::name())
+
+@section('content')
+    <p>@get('introduction')</p>
+    <a href="@get('cta.href')">@get('cta.label')</a>
+    <p>Copyright: @option('footer.copyright')</p>
 @endsection
 ```
 
@@ -254,20 +297,35 @@ Returns a defined field's value. Optionally, you can provide a callback `Closure
 
 Returns a previously loaded page template.
 
+**`Page::option($name)`**
+
+Loads and/or returns an option template. Can be used to retrieve an option template's attributes (`Page::option('footer')->copyright`).
+
 ### Dependency Injection
 
 Alternatively, it's also possible to type-hint the current `Whitecube\NovaPage\Page\Template` in classes resolved by Laravel's [Service Container](https://laravel.com/docs/container), such as controllers. **The page needs to be loaded before** the `Page\Template` is requested, which can be easily achieved using the package's `LoadPageForCurrentRoute` middleware.
 
 ```php
+use Whitecube\NovaPage\Pages\Manager;
 use Whitecube\NovaPage\Pages\Template;
 
 class HomepageController extends Controller
 {
 
-    public function show(Template $template)
+    public function show(Template $template, Manager $novapage)
     {
-        // If needed, manipulate $template's attribute before passing it to the view.
-        return view('pages.home', ['page' => $template]);
+        // Load other pages or options using 
+        // Manager::load(string $name, string $type = 'route' | 'option', bool $current = true)
+        $novapage->load('contact', 'route', false);
+
+        return view('pages.home', [
+            // $template contains the loaded template for the current route.
+            // If needed, manipulate $template's attribute before passing it to the view.
+            'page' => $template,
+            // Include other pages or option templates using NovaPage's Manager
+            'contact' => $novapage->find('contact'),
+            'footer' => $novapage->option('footer'),
+        ]);
     }
 
 }
@@ -285,10 +343,11 @@ And use it as a regular object in the `pages.home` template:
     <p>Edited on <time datetime="{{ $page->getDate('updated_at')->format('c') }}">{{ $page->getDate('updated_at')->toFormattedDateString() }}</time></p>
     <p>{{ $page->introduction }}</p>
     <a href="{!! $page->cta->href !!}">{{ $page->cta->label }}</a>
+    <p>Copyright: {{ $footer->copyright }}</p>
 @endsection
 ```
 
-As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Pages\Template` instance.
+As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Pages\Template` instances.
 
 ## Advanced features
 

@@ -11,13 +11,12 @@ use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
-use Whitecube\NovaPage\Pages\Concerns\HasJsonAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 
 abstract class Template implements ArrayAccess
 {
     use HasAttributes;
-    use HasJsonAttributes;
+    use Concerns\HasJsonAttributes;
 
     /**
      * The page name (usually the route's name)
@@ -25,6 +24,13 @@ abstract class Template implements ArrayAccess
      * @var string
      */
     protected $name;
+
+    /**
+     * The template key, used to identify it
+     * 
+     * @var string
+     */
+    protected $key;
 
     /**
      * The page type
@@ -71,14 +77,16 @@ abstract class Template implements ArrayAccess
     /**
      * Create A Template Instance.
      *
-     * @param string $name
+     * @param string $key
      * @param string $type
+     * @param string $name
      * @param bool $throwOnMissing
      */
-    public function __construct($name = null, $type = null, $throwOnMissing = false)
+    public function __construct($key = null, $type = null, $name = null, $throwOnMissing = false)
     {
-        $this->name = $name;
+        $this->key = $key;
         $this->type = $type;
+        $this->name = $name;
         $this->throwOnMissing = $throwOnMissing;
         $this->load($this->throwOnMissing);
     }
@@ -150,12 +158,13 @@ abstract class Template implements ArrayAccess
      *
      * @param string $type
      * @param string $key
+     * @param string $name
      * @param bool $throwOnMissing
      * @return \Whitecube\NovaPage\Pages\Template
      */
-    public function getNewTemplate($type, $key, $throwOnMissing = false)
+    public function getNewTemplate($type, $key, $name = null, $throwOnMissing = false)
     {
-        return new static($key, $type, $throwOnMissing);
+        return new static($key, $type, $name, $throwOnMissing);
     }
 
     /**
@@ -204,7 +213,7 @@ abstract class Template implements ArrayAccess
      */
     public function getKey()
     {
-        return $this->type . '.' . $this->name;
+        return $this->key;
     }
 
     /**

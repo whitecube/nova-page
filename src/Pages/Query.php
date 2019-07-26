@@ -16,11 +16,18 @@ class Query
     protected $repository;
 
     /**
-     * The name filter used to retrieve the resource
+     * The key filter used to retrieve the resource
      *
      * @var null|string
      */
-    protected $name;
+    protected $key;
+
+    /**
+     * The type filter used to retrieve the resource
+     *
+     * @var null|string
+     */
+    protected $type;
 
     /**
      * The locale filter used to retrieve the resource
@@ -42,12 +49,24 @@ class Query
     /**
      * Mimic eloquent's Builder and register a Where statement
      *
-     * @param string $name
+     * @param string $key
      * @return self
      */
-    public function whereKey($name)
+    public function whereKey($key)
     {
-        $this->name = $name;
+        $this->key = $key;
+        return $this;
+    }
+
+    /**
+     * Mimic eloquent's Builder and register a Where statement
+     *
+     * @param string $type
+     * @return self
+     */
+    public function whereType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 
@@ -65,7 +84,7 @@ class Query
             return $results->first();
         }
 
-        throw new TemplateNotFoundException(null, $this->name);        
+        throw new TemplateNotFoundException(null, $this->key);        
     }
 
     /**
@@ -76,15 +95,17 @@ class Query
      */
     public function get($throwOnMissing = false)
     {
-        return Collection::make($this->repository->getPages())
-            ->map(function($template, $name) {
-                return $this->repository->getPageTemplate($name);
+        $resources = $this->repository->getFiltered(trim($this->type . '.*', '.'));
+
+        return Collection::make($resources)
+            ->map(function($template, $key) {
+                return $this->repository->getResourceTemplate($key);
             })
             ->filter()
             ->reject([$this, 'shouldReject'])
-            ->map(function($template, $name) use ($throwOnMissing) {
-                list($type, $key) = explode('.', $name, 2);
-                return $this->repository->load($type, $key, $this->locale, $throwOnMissing);
+            ->map(function($template, $key) use ($throwOnMissing) {
+                list($type, $name) = explode('.', $key, 2);
+                return $this->repository->load($type, $name, $this->locale, $throwOnMissing);
             });
     }
 
@@ -93,10 +114,13 @@ class Query
      * on the current Where clauses.
      *
      * @param Whitecube\NovaPage\Pages\Template $item
-     * @param string $name
+     * @param string $key
      * @return Illuminate\Support\Collection
      */
-    public function shouldReject($item, $name) {
-        return is_null($this->name) ? false : ($this->name !== $name);
+    public function shouldReject($item, $key) {
+        if (!is_null($this->key)) {
+            return $this->key !== $key;
+        }
+        return false;
     }
 }
