@@ -14,7 +14,7 @@ class IndexController extends ResourceIndexController
      * @return string
      */
     protected function resourceLabel() {
-        return config('novapage.options_label');
+        return config('novapage.labels.options');
     }
 
     /**
