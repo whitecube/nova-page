@@ -16,6 +16,8 @@ class CountController extends Controller
      */
     public function show(ResourceIndexRequest $request, Manager $manager)
     {
-        return response()->json(['count' => $manager->queryRoutesCount($request)]);
+        return response()->json([
+            'count' => $manager->queryResourcesCount($request, 'route')
+        ]);
     }
 }

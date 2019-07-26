@@ -25,7 +25,6 @@ class IndexController extends ResourceIndexController
      * @return \Illuminate\Support\Collection 
      */
     protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager) {
-        $items = $manager->queryOptionsIndex($request);
-        return $items;
+        return $manager->queryIndexResources($request, 'option');
     }
 }

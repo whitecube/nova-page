@@ -4,13 +4,12 @@ namespace Whitecube\NovaPage\Pages;
 
 use Illuminate\Routing\Route;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Whitecube\NovaPage\Pages\Concerns\QueriesResources;
 
 class Manager
 {
-
     use ConditionallyLoadsAttributes,
-        QueriesPages,
-        QueriesOptions,
+        QueriesResources,
         ResolvesPageCards;
 
     /**
@@ -162,7 +161,7 @@ class Manager
      */
     public function newQueryWithoutScopes()
     {
-        return new Query($this->repository);
+        return new Query($this->getRepository());
     }
 
     /**
