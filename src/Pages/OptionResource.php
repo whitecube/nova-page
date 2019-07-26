@@ -75,7 +75,7 @@ class OptionResource extends StaticResource
      * @return string
      */
     public function getFormattedName() {
-        return preg_replace('/(?<!\ )[A-Z]/', ' $0', $this->getName());
+        return ucfirst(preg_replace('/(?<!\ )[A-Z]/', ' $0', $this->getName()));
     }
 
 }
