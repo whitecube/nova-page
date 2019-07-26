@@ -18,11 +18,11 @@ class TemplatesRepository
     protected $templates = [];
 
     /**
-     * The registered pages
+     * The registered pages & options
      *
      * @var array
      */
-    protected $pages = [];
+    protected $resources = [];
 
     /**
      * The loaded page templates
@@ -61,26 +61,26 @@ class TemplatesRepository
      * @return array
      */
     public function getFiltered($filter = '*') {
-        return Arr::where($this->pages, function($page, $key) use ($filter) {
+        return Arr::where($this->resources, function($resource, $key) use ($filter) {
             return Str::is($filter, $key);
         });
     }
 
     /**
-     * Get a registered page template by its key
+     * Get a registered page or option template by its key
      *
      * @param string $key
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function getPageTemplate($key)
+    public function getResourceTemplate($key)
     {
-        if(array_key_exists($key, $this->pages)) {
-            return $this->templates[$this->pages[$key]];
+        if(array_key_exists($key, $this->resources)) {
+            return $this->templates[$this->resources[$key]];
         }
     }
 
     /**
-     * Load a new Page Template Instance
+     * Load a new Template Instance
      *
      * @param string $type
      * @param string $name
@@ -89,19 +89,15 @@ class TemplatesRepository
      */
     public function load($type, $name, $throwOnMissing)
     {
-        $key = $type . '.' . $name;
+        $key = $this->getKey($type, $name);
 
-        if(!($template = $this->getPageTemplate($key))) {
-            throw new TemplateNotFoundException($this->pages[$key] ?? null, $key);
+        if(!($template = $this->getResourceTemplate($key))) {
+            throw new TemplateNotFoundException($this->resources[$key] ?? null, $key);
         }
 
         if(!isset($this->loaded[$key])) {
-            if ($type === 'option') {
-                $name = class_basename(get_class($template));
-            }
             $this->loaded[$key] = $template->getNewTemplate($type, $key, $name, $throwOnMissing);
-        }
-        else {
+        } else {
             $this->loaded[$key]->load($throwOnMissing);
         }
 
@@ -112,15 +108,15 @@ class TemplatesRepository
      * Get a loaded page template by its key
      *
      * @param string $type
-     * @param string $key
+     * @param string $name
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function getLoaded($type, $key)
+    public function getLoaded($type, $name)
     {
-        $identifier = $type . '.' . $key;
+        $key = $this->getKey($type, $name);
 
-        if(array_key_exists($identifier, $this->loaded)) {
-            return $this->loaded[$identifier];
+        if(array_key_exists($key, $this->loaded)) {
+            return $this->loaded[$key];
         }
     }
 
@@ -128,19 +124,31 @@ class TemplatesRepository
      * Add a page template
      *
      * @param string $type
-     * @param string $key
+     * @param string $name
      * @param string $template
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function register($type, $key, $template)
+    public function register($type, $name, $template)
     {
         if(!array_key_exists($template, $this->templates)) {
             $this->templates[$template] = new $template;
         }
 
-        $this->pages[$type . '.' . $key] = $template;
+        $this->resources[$this->getKey($type, $name)] = $template;
 
         return $this->templates[$template];
+    }
+
+    /**
+     * Get a resource identifier key
+     *
+     * @param string $type
+     * @param string $name
+     * @return string
+     */
+    public function getKey($type, $name)
+    {
+        return $type . '.' . $name;
     }
     
 }
