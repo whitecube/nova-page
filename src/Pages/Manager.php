@@ -49,27 +49,27 @@ class Manager
      * Register a Template into the TemplatesRepository.
      *
      * @param string $type
-     * @param string $key
+     * @param string $name
      * @param string $template
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function register($type, $key, $template)
+    public function register($type, $name, $template)
     {
-        return $this->repository->register($type, $key, $template);
+        return $this->repository->register($type, $name, $template);
     }
 
     /**
      * Load a new Page Template
      *
-     * @param string $key
+     * @param string $name
      * @param string $type
      * @param bool $current
      * @param bool $throwOnMissing
      * @return Whitecube\NovaPage\Pages\Template
      */
-    public function load($key, $type = 'route', $current = true, $throwOnMissing = true)
+    public function load($name, $type = 'route', $current = true, $throwOnMissing = true)
     {
-        $template = $this->repository->load($type, $key, $throwOnMissing);
+        $template = $this->repository->load($type, $name, $throwOnMissing);
 
         if ($type == 'route' && $current) {
             $this->current = $template;
@@ -96,23 +96,23 @@ class Manager
     /**
      * Get a loaded Template by its name
      *
-     * @param string $key
+     * @param string $name
      * @param string $type
      * @return null|Whitecube\NovaPage\Pages\Template
      */
-    public function find($key = null, $type = 'route')
+    public function find($name = null, $type = 'route')
     {
-        if(is_null($key)) {
+        if(is_null($name)) {
             return $this->current;
         }
 
-        return $this->repository->getLoaded($type, $key);
+        return $this->repository->getLoaded($type, $name);
     }
 
     /**
      * Get an option template by its name
      * 
-     * @param string $key The template's name/key
+     * @param string $name
      * @param bool $throwOnMissing
      * @return mixed
      */
