@@ -11,13 +11,12 @@ use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Http\Request;
-use Whitecube\NovaPage\Pages\Concerns\HasJsonAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 
 abstract class Template implements ArrayAccess
 {
     use HasAttributes;
-    use HasJsonAttributes;
+    use Concerns\HasJsonAttributes;
 
     /**
      * The page name (usually the route's name)

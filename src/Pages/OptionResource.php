@@ -14,8 +14,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class OptionResource extends BaseResource
 {
-
-    use ResolvesPageFields;
+    use Concerns\ResolvesResourceFields;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
