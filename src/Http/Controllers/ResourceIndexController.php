@@ -8,28 +8,23 @@ use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ResourceIndexController extends Controller
+abstract class ResourceIndexController extends Controller
 {
     /**
-     * Resource label callback
+     * Get the queried resource's plural label
      * 
      * @return string
      */
-    protected function resourceLabel() {
-        return config('novapage.labels.pages');
-    }
+    abstract protected function resourceLabel();
 
     /**
-     * Callback to retrieve the resource index items
+     * Get the queried resource's index items
      * 
      * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
      * @param  \Whitecube\NovaPage\Pages\Manager $manager
      * @return \Illuminate\Support\Collection 
      */
-    protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager) {
-        $items = $manager->queryRoutesIndex($request);
-        return $items;
-    }
+    abstract protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager);
 
     /**
      * List the resources for administration.

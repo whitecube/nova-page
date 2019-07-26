@@ -7,7 +7,9 @@ use Whitecube\NovaPage\Http\Controllers\ResourceUpdateController;
 class UpdateController extends ResourceUpdateController
 {
     /**
-     * Name of the resource to update
+     * The queried resource's name
+     *
+     * @var string
      */
     protected $resourceName = 'nova-option';
 }

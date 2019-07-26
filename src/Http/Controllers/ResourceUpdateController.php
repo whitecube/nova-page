@@ -6,9 +6,15 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\UpdateResourceRequest;
 
-class ResourceUpdateController extends Controller
+abstract class ResourceUpdateController extends Controller
 {
-    protected $resourceName = 'nova-page';
+    /**
+     * The queried resource's name
+     *
+     * @var string
+     */
+    protected $resourceName;
+
     /**
      * Update a resource.
      *
