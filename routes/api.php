@@ -5,12 +5,12 @@ use Whitecube\NovaPage\Http\Controllers\ActionController;
 use Whitecube\NovaPage\Http\Controllers\CardController;
 use Whitecube\NovaPage\Http\Controllers\FilterController;
 use Whitecube\NovaPage\Http\Controllers\LensController;
-use Whitecube\NovaPage\Http\Controllers\PageResourceIndexController;
-use Whitecube\NovaPage\Http\Controllers\PageResourceCountController;
-use Whitecube\NovaPage\Http\Controllers\PageResourceUpdateController;
-use Whitecube\NovaPage\Http\Controllers\OptionResourceIndexController;
-use Whitecube\NovaPage\Http\Controllers\OptionResourceCountController;
-use Whitecube\NovaPage\Http\Controllers\OptionResourceUpdateController;
+use Whitecube\NovaPage\Http\Controllers\Page\IndexController as PageResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\Page\CountController as PageResourceCountController;
+use Whitecube\NovaPage\Http\Controllers\Page\UpdateController as PageResourceUpdateController;
+use Whitecube\NovaPage\Http\Controllers\Option\IndexController as OptionResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\Option\CountController as OptionResourceCountController;
+use Whitecube\NovaPage\Http\Controllers\Option\UpdateController as OptionResourceUpdateController;
 
 /*
 |--------------------------------------------------------------------------

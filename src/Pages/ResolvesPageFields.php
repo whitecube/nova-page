@@ -4,8 +4,8 @@ namespace Whitecube\NovaPage\Pages;
 
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Whitecube\NovaPage\Http\Controllers\PageResourceIndexController;
-use Whitecube\NovaPage\Http\Controllers\OptionResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\Page\IndexController as PageResourceIndexController;
+use Whitecube\NovaPage\Http\Controllers\Option\IndexController as OptionResourceIndexController;
 
 trait ResolvesPageFields
 {

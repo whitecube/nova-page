@@ -10,6 +10,7 @@ class Manager
 
     use ConditionallyLoadsAttributes,
         QueriesPages,
+        QueriesOptions,
         ResolvesPageCards;
 
     /**
