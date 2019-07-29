@@ -119,7 +119,7 @@ Retrieving the page's static values in your application's blade templates is pos
 
 Please note it is also possible to define [Option Templates](https://whitecube.github.io/nova-page/#/?id=option-templates) for repeated data, which can be accessed using:
 
-```php
+```blade
 <p>@option('footer.copyright')</p>
 
 // or
@@ -136,4 +136,4 @@ Thanks!
 ## Made with ❤️ for open source
 At [Whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.
 So when we have an opportunity to give something back, we're super excited!  
-We hope you will enjoy this small contribution from us and would love to [hear from you](mailto:hello@whitecube.be) if you find it useful in your projects.
+We hope you will enjoy this small contribution from us and would love to [hear from you](https://twitter.com/whitecube_be) if you find it useful in your projects.
