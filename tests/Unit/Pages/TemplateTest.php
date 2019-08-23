@@ -72,14 +72,14 @@ class TemplateTest extends TestCase {
     public function throws_an_error_when_values_dont_exist()
     {
         $this->expectException(TemplateContentNotFoundException::class);
-        $instance = new Test('test', 'route', true);
+        $instance = new Test('test', 'route', 'test', true);
         $instance->load();
     }
 
     /** @test */
     public function can_transform_method_calls_to_getters()
     {
-        $instance = new Test('test', 'route', false);
+        $instance = new Test('test', 'route', 'test', false);
         $this->assertSame('test', $instance->name());
     }
 
@@ -87,15 +87,15 @@ class TemplateTest extends TestCase {
     public function throws_an_exception_when_calling_method_that_does_not_exist()
     {
         $this->expectException(\BadMethodCallException::class);
-        $instance = new Test('test', 'route', false);
+        $instance = new Test('test', 'route', 'test', false);
         $instance->foobarbaz();
     }
 
     /** @test */
     public function can_return_key()
     {
-        $instance = new Test('test', 'route', false);
-        $this->assertSame('route.test', $instance->getKey());
+        $instance = new Test('test', 'route', 'test', false);
+        $this->assertSame('test', $instance->getKey());
         $this->assertNull($instance->getKeyName());
     }
 
@@ -109,7 +109,7 @@ class TemplateTest extends TestCase {
     /** @test */
     public function can_get_a_default_title()
     {
-        $instance = new Test('test', 'route', false);
+        $instance = new Test('test', 'route', 'test', false);
         $this->assertSame('Default title', $instance->getTitle('Default title'));
     }
 
