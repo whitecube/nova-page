@@ -5,7 +5,7 @@ env:
     else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
 php:
-- 7.1
+- 7.3
 before_script:
 - composer install
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
