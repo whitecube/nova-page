@@ -28,7 +28,7 @@ class ManagerTest extends TestCase {
     public function can_create_a_template_repository()
     {
         $instance = $this->app->make(Manager::class);
-        $this->assertAttributeNotEmpty('repository', $instance);
+        $this->assertInstanceOf(TemplatesRepository::class, $instance->getRepository());
     }
 
     /** @test */

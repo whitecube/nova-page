@@ -61,7 +61,7 @@ class FilesystemTest extends TestCase {
     public function can_fetch_the_values_of_a_page()
     {
         $instance = new Filesystem();
-        $template = new Test('test', 'route', false);
+        $template = new Test('test', 'route', 'test');
         $instance->setConfig(config('novapage.sources.' . $instance->getName()));
         $data = $instance->fetch($template);
         $this->assertCount(3, $data['attributes']);
@@ -72,7 +72,7 @@ class FilesystemTest extends TestCase {
     public function can_store_the_values_of_a_page()
     {
         $instance = new Filesystem();
-        $template = new Test('test', 'route', false);
+        $template = new Test('test', 'route', 'test');
         $instance->setConfig(config('novapage.sources.' . $instance->getName()));
         $template->load();
         $this->assertNull($template->foobarbaz);
@@ -97,7 +97,7 @@ class FilesystemTest extends TestCase {
     public function can_create_necessary_directories_when_storing_a_file()
     {
         $instance = new Filesystem();
-        $template = new Test('test', 'route', false);
+        $template = new Test('test', 'route', 'test');
         $instance->setConfig(config('novapage.sources.' . $instance->getName()));
         $template->load();
 

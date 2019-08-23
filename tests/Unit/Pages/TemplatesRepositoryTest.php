@@ -32,7 +32,7 @@ class TemplatesRepositoryTest extends TestCase {
     public function can_return_the_list_of_registered_pages()
     {
         $instance = $this->app->make(TemplatesRepository::class);
-        $this->assertEquals([], $instance->getPages());
+        $this->assertEquals([], $instance->getFiltered());
     }
 
     /** @test */
@@ -41,7 +41,7 @@ class TemplatesRepositoryTest extends TestCase {
         \Route::get('/test', 'TestController@foo')->template(Test::class)->name('test');
         $instance = $this->app->make(TemplatesRepository::class);
         $instance->registerRouteTemplates();
-        $this->assertCount(1, $instance->getPages());
+        $this->assertCount(1, $instance->getFiltered());
     }
 
     /** @test */
@@ -49,8 +49,8 @@ class TemplatesRepositoryTest extends TestCase {
     {
         $instance = $this->app->make(TemplatesRepository::class);
         $instance->register('route', 'test', Test::class);
-        $this->assertCount(1, $instance->getPages());
-        $this->assertEquals('FakeTestApp\Nova\Templates\Test', $instance->getPages()['route.test']);
+        $this->assertCount(1, $instance->getFiltered());
+        $this->assertEquals('FakeTestApp\Nova\Templates\Test', $instance->getFiltered()['route.test']);
     }
 
     /** @test */

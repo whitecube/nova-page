@@ -27,23 +27,23 @@ class QueryTest extends TestCase {
     {
         $repository = $this->createMock(TemplatesRepository::class);
         $instance = (new class($repository) extends Query {
-            public function getName() {
-                return $this->name;
+            public function getKey() {
+                return $this->key;
             }
         });
         $instance->whereKey('test');
-        $this->assertSame('test', $instance->getName());
+        $this->assertSame('test', $instance->getKey());
     }
 
     /** @test */
     public function can_get_templates()
     {
         $repository = $this->createMock(TemplatesRepository::class);
-        $repository->method('getPages')->willReturn([
+        $repository->method('getFiltered')->willReturn([
             'route.test' => Test::class
         ]);
         $template = new Test();
-        $repository->method('getPageTemplate')->willReturn($template);
+        $repository->method('getResourceTemplate')->willReturn($template);
         $repository->method('load')->willReturn($template);
         $instance = new Query($repository);
         $this->assertCount(1, $instance->get());

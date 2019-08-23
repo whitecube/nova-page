@@ -18,6 +18,35 @@ class TemplateTest extends TestCase {
         return ['Whitecube\NovaPage\NovaPageServiceProvider'];
     }
 
+    protected function getInstance()
+    {
+        $instance = (new class('test', 'route', 'test') extends Test {
+            public function setSource($source)
+            {
+                $this->source = $source;
+            }
+            public function setThrowOnMissing($throwOnMissing)
+            {
+                $this->throwOnMissing = $throwOnMissing;
+            }
+        });
+
+        $source = $this->createMock(Filesystem::class);
+
+        $source->method('fetch')->willReturn([
+            'title' => 'Page title',
+            'attributes' => [
+                'test_field' => 'Test value'
+            ]
+        ]);
+
+        $instance->setSource($source);
+
+        $instance->load(true);
+
+        return $instance;
+    }
+
     /** @test */
     public function can_create_an_instance()
     {
@@ -245,30 +274,6 @@ class TemplateTest extends TestCase {
         $instance = $this->getInstance();
         $this->assertTrue($instance->isJsonAttribute('foo_json'));
         $this->assertFalse($instance->isJsonAttribute('bar_json'));
-    }
-
-    protected function getInstance()
-    {
-        $instance = (new class('test', 'route', false) extends Test {
-            public function setSource($source)
-            {
-                $this->source = $source;
-            }
-            public function setThrowOnMissing($throwOnMissing)
-            {
-                $this->throwOnMissing = $throwOnMissing;
-            }
-        });
-        $source = $this->createMock(Filesystem::class);
-        $source->method('fetch')->willReturn([
-            'title' => 'Page title',
-            'attributes' => [
-                'test_field' => 'Test value'
-            ]
-        ]);
-        $instance->setSource($source);
-        $instance->load(true);
-        return $instance;
     }
 
 }
