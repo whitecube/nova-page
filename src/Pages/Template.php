@@ -108,6 +108,16 @@ abstract class Template implements ArrayAccess
     }
 
     /**
+     * Get underlying source object
+     *
+     * @return mixed
+     */
+    public function getOriginal()
+    {
+        return $this->getSource()->getOriginal($this);
+    }
+
+    /**
      * Load the page's static content if needed
      *
      * @param bool $throwOnMissing

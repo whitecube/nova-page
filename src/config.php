@@ -78,7 +78,8 @@ return [
             'path' => resource_path('lang/{type}/{key}.json')
         ],
         'database' => [
-            'table_name' => 'static_pages'
+            'table_name' => 'static_pages',
+            'model' => \Whitecube\NovaPage\Sources\StaticPage::class
         ],
     ]
 

@@ -46,13 +46,11 @@ class Filesystem implements SourceInterface
      */
     public function fetch(Template $template)
     {
-        $file = $this->getFilePath($template->getType(), $template->getName());
-
-        if(!($file = realpath($file))) {
+        if(!($path = realpath($this->getOriginal($template)))) {
             return;
         }
 
-        return $this->parse($template, $file);
+        return $this->parse($template, $path);
     }
 
     /**
@@ -69,10 +67,22 @@ class Filesystem implements SourceInterface
         $data['updated_at'] = Carbon::now()->toDateTimeString();
         $data['attributes'] = $template->getAttributes();
 
-        $path = $this->getFilePath($template->getType(), $template->getName());
+        $path = $this->getOriginal($template);
+        
         $this->makeDirectory($path);
 
         return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT, 512));
+    }
+
+    /**
+     * Retrieve original storage path
+     *
+     * @param \Whitecube\NovaPage\Pages\Template $template
+     * @return string
+     */
+    public function getOriginal(Template $template)
+    {
+        return $this->getFilePath($template->getType(), $template->getName());
     }
 
     /**

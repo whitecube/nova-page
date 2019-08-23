@@ -14,7 +14,21 @@ class Database implements SourceInterface {
      *
      * @var string
      */
-    protected $tableName;
+    protected $table;
+
+    /**
+     * The model used to store static pages content
+     *
+     * @var string
+     */
+    protected $model;
+
+    /**
+     * The fetched model instance
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $original;
 
     /**
      * Retrieve the source's name
@@ -33,40 +47,48 @@ class Database implements SourceInterface {
      */
     public function setConfig(array $config)
     {
-        $this->tableName = $config['table_name'];
+        $this->table = $config['table_name'];
+        $this->model = $config['model'];
     }
 
     /**
-     * Retrieve data from the filesystem
+     * Retrieve data from the database
      *
      * @param \Whitecube\NovaPage\Pages\Template $template
      * @return object
      */
     public function fetch(Template $template)
     {
-        $staticPage = DB::table($this->tableName)->where('name', $template->getName())->first();
-        if ($staticPage) {
-            return [
-                'title' => $staticPage->title,
-                'created_at' => $staticPage->created_at,
-                'updated_at' => $staticPage->updated_at,
-                'attributes' => $this->getParsedAttributes($template, json_decode($staticPage->attributes, true)) ?? []
-            ];
+        $model = $this->getOriginal($template);
+
+        if(!$model->id) {
+            return;
         }
-        return;
+
+        $attributes = $this->getParsedAttributes(
+            $template,
+            $model->attributes ? json_decode($model->attributes, true) : []
+        );
+
+        return [
+            'title' => $model->title,
+            'created_at' => $model->created_at,
+            'updated_at' => $model->updated_at,
+            'attributes' => $attributes
+        ];
     }
 
     /**
-     * Save template in the filesystem
+     * Save template in the database
      *
      * @param \Whitecube\NovaPage\Pages\Template $template
-     * @return bool
+     * @return void
      */
     public function store(Template $template)
     {
-        DB::table($this->tableName)->updateOrInsert([
-            'name' => $template->getName()
-        ], [
+        $original = $this->getOriginal($template);
+
+        $original->fill([
             'name' => $template->getName(),
             'title' => $template->getTitle(),
             'type' => $template->getType(),
@@ -74,6 +96,25 @@ class Database implements SourceInterface {
             'created_at' => $template->getDate('created_at'),
             'updated_at' => Carbon::now()
         ]);
+
+        $original->save();
+    }
+
+    /**
+     * Retrieve original StaticPage model
+     *
+     * @param \Whitecube\NovaPage\Pages\Template $template
+     * @return null|\Illuminate\Database\Eloquent\Model
+     */
+    public function getOriginal(Template $template)
+    {
+        if(!$this->original) {
+            $instance = call_user_func($this->model . '::where', 'name', $template->getName())->first();
+
+            $this->original = $instance ?? (new $this->model);
+        }
+
+        return $this->original;
     }
 
     /**
@@ -101,6 +142,6 @@ class Database implements SourceInterface {
      */
     public function getErrorLocation($type, $name)
     {
-        return $this->getName() . ' table "' . $this->tableName . '". Page "' . $name . '".';
+        return $this->getName() . ' table "' . $this->table . '". Page "' . $name . '".';
     }
 }
