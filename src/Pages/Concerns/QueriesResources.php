@@ -3,6 +3,7 @@
 namespace Whitecube\NovaPage\Pages\Concerns;
 
 use Route;
+use Whitecube\NovaPage\Pages\Query;
 use Whitecube\NovaPage\Pages\Template;
 use Whitecube\NovaPage\Pages\PageResource;
 use Whitecube\NovaPage\Pages\OptionResource;
@@ -19,7 +20,9 @@ trait QueriesResources
      */
     public function queryIndexResources(ResourceIndexRequest $request, $type) {
         $query = $this->newQueryWithoutScopes();
-        return $query->whereType($type)->get(false)->map(function($template) use ($type) {
+        $query->whereType($type);
+        $this->applyIndexQueryForType($type, $query);
+        return $query->get(false)->map(function($template) use ($type) {
             return $this->getResourceForType($type, $template);
         });
     }
@@ -47,6 +50,15 @@ trait QueriesResources
         switch ($type) {
             case 'route': return new PageResource($resource);
             case 'option': return new OptionResource($resource);
+        }
+    }
+
+    protected function applyIndexQueryForType($type, Query $query) {
+        $page_resource_class = config('novapage.default_page_resource');
+        $option_resource_class = config('novapage.default_option_resource');
+        switch ($type) {
+            case 'route': return $page_resource_class::novaPageIndexQuery($query);
+            case 'option': return $option_resource_class::novaPageIndexQuery($query);
         }
     }
 }

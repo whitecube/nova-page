@@ -2,6 +2,7 @@
 
 namespace Whitecube\NovaPage\Pages;
 
+use App\Scopes\People\PrimaryClubPersonScope;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -102,6 +103,17 @@ abstract class StaticResource extends Resource
             $this->getFormIntroductionFields(),
             $this->getTemplateAttributesFields($request)
         );
+    }
+
+    /**
+     * A blank method which allows index queries to be manipulated by the Resource
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public static function novaPageIndexQuery(Query $query)
+    {
+        return $query;
     }
 
     /**
