@@ -49,6 +49,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Option Resource
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the option resource. It is possible to customise as
+    | long as it extends Whitecube\NovaPage\Pages\OptionResource.
+    |
+    */
+    'default_option_resource' => \Whitecube\NovaPage\Pages\OptionResource::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Page Resource
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the page resource. It is possible to customise as
+    | long as it extends Whitecube\NovaPage\Pages\PageResource.
+    |
+    */
+    'default_page_resource' => \Whitecube\NovaPage\Pages\PageResource::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Source
     |--------------------------------------------------------------------------
     |
