@@ -2,7 +2,6 @@
 
 namespace Whitecube\NovaPage\Pages;
 
-use App\Scopes\People\PrimaryClubPersonScope;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
