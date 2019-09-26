@@ -4,7 +4,6 @@ namespace Whitecube\NovaPage\Pages\Concerns;
 
 use Route;
 use Whitecube\NovaPage\Pages\Template;
-use Whitecube\NovaPage\Pages\PageResource;
 use Whitecube\NovaPage\Pages\OptionResource;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 
@@ -44,9 +43,11 @@ trait QueriesResources
      * @return \Laravel\Nova\Resource
      */
     protected function getResourceForType($type, Template $resource) {
+        $page_resource_class = config('novapage.default_page_resource');
+        $option_resource_class = config('novapage.default_option_resource');
         switch ($type) {
-            case 'route': return new PageResource($resource);
-            case 'option': return new OptionResource($resource);
+            case 'route': return new $page_resource_class($resource);
+            case 'option': return new $option_resource_class($resource);
         }
     }
 }
