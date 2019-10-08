@@ -140,7 +140,7 @@ Most websites or applications have repeated content, such as a copyright or cont
 
 First, create a regular `Template` as described above (e.g.: `php artisan make:template FooterOptions`) and fill the template's `fields()` method with all the wanted Nova fields.
 
-Now, register the template in NovaPage's Manager using the `register(string $type = 'option' | 'route', string $name, string $template)`. A good place to do this is in a ServiceProvider's `boot` method:
+Now, register the template in NovaPage's Manager using the `registerOption(string $name, string $template)`. A good place to do this is in a ServiceProvider's `boot` method:
 
 ```php
 use Whitecube\NovaPage\Pages\Manager;
@@ -150,7 +150,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot(Manager $pages)
     {
-        $pages->register('option', 'footer', \App\Nova\Templates\FooterOptions::class);
+        $pages->registerOption('footer', \App\Nova\Templates\FooterOptions::class);
     }
 }
 ```

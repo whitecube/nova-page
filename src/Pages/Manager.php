@@ -46,7 +46,8 @@ class Manager
     }
 
     /**
-     * Register a Template into the TemplatesRepository.
+     * Register a Template into the TemplatesRepository
+     * and to the Laravel service container as well.
      *
      * @param string $type
      * @param string $name
@@ -55,7 +56,25 @@ class Manager
      */
     public function register($type, $name, $template)
     {
+        app()->bind($template, function () use ($name) {
+            return $this->option($name);
+        });
+
         return $this->repository->register($type, $name, $template);
+    }
+
+    /**
+     * Register an option Template into the TemplatesRepository
+     * and to the Laravel service container as well.
+     *
+     * @param string $type
+     * @param string $name
+     * @param string $template
+     * @return Whitecube\NovaPage\Pages\Template
+     */
+    public function registerOption($name, $template)
+    {
+        return $this->register('option', $name, $template);
     }
 
     /**
