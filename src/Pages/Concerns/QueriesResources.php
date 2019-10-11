@@ -46,8 +46,8 @@ trait QueriesResources
      * @return \Laravel\Nova\Resource
      */
     protected function getResourceForType($type, Template $resource) {
-        $page_resource_class = config('novapage.default_page_resource');
-        $option_resource_class = config('novapage.default_option_resource');
+        $page_resource_class = config('novapage.default_page_resource', \Whitecube\NovaPage\Pages\PageResource::class);
+        $option_resource_class = config('novapage.default_option_resource', \Whitecube\NovaPage\Pages\OptionResource::class);
         switch ($type) {
             case 'route': return new $page_resource_class($resource);
             case 'option': return new $option_resource_class($resource);
@@ -55,8 +55,8 @@ trait QueriesResources
     }
 
     protected function applyIndexQueryForType($type, Query $query) {
-        $page_resource_class = config('novapage.default_page_resource');
-        $option_resource_class = config('novapage.default_option_resource');
+        $page_resource_class = config('novapage.default_page_resource', \Whitecube\NovaPage\Pages\PageResource::class);
+        $option_resource_class = config('novapage.default_option_resource', \Whitecube\NovaPage\Pages\OptionResource::class);
         switch ($type) {
             case 'route': return $page_resource_class::novaPageIndexQuery($query);
             case 'option': return $option_resource_class::novaPageIndexQuery($query);
