@@ -71,61 +71,6 @@ php artisan migrate
 
 You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
 
-### Extending the Page Resource
-Nova Page uses `Whitecube\NovaPage\Pages\PageResource` as the Nova Resource for Page's.
-
-You can customize it's behaviour by extending the class. For example in `app\Nova\PageResource.php`:
-```
-namespace App\Nova;
-
-use Whitecube\NovaPage\Pages\PageResource as BasePageResource;
-
-class PageResource extends BasePageResource
-{
-    /**
-     * Overrwrites the Page Resource's fields
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function fields(Request $request)
-    {
-        return parent::fields($request);
-    }
-}
-```
-And then in the config file, change the 'default_page_resource' option to your own class name. For example:
-```
-'default_page_resource' => \App\Nova\PageResource::class,
-```
-### Extending the Option Resource
-Nova Page uses `Whitecube\NovaPage\Pages\OptionResource` as the Nova Resource for Option's.
-
-You can customize it's behaviour by extending the class. For example in `app\Nova\OptionResource.php`:
-```
-namespace App\Nova;
-
-use Whitecube\NovaPage\Pages\OptionResource as BaseOptionResource;
-
-class OptionResource extends BaseOptionResource
-{
-    /**
-     * Overrwrites the Option Resource's fields
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return array
-     */
-    public function fields(Request $request)
-    {
-        return parent::fields($request);
-    }
-}
-```
-And then in the config file, change the 'default_option_resource' option to your own class name. For example:
-```
-'default_option_resource' => \App\Nova\OptionResource::class,
-```
-
 ## Templates
 
 In order to assign fields (and even cards!) to a page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
@@ -403,6 +348,79 @@ And use it as a regular object in the `pages.home` template:
 ```
 
 As you can see, for convenience regular attributes (= defined fields) can be directly retrieved as properties of the `Whitecube\NovaPage\Pages\Template` instances.
+
+## Extending the Resources
+Nova Page uses two classes for the Page and Options. They can be extended to customize their functionality.
+
+### Page Resource
+Nova Page uses `Whitecube\NovaPage\Pages\PageResource` as the Nova Resource for Page's.
+
+You can customize it's behaviour by extending the class. For example in `app\Nova\PageResource.php`:
+```
+namespace App\Nova;
+
+use Whitecube\NovaPage\Pages\PageResource as BasePageResource;
+
+class PageResource extends BasePageResource
+{
+    /**
+     * Overrwrites the Page Resource's fields
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return parent::fields($request);
+    }
+}
+```
+And then in the config file, change the 'default_page_resource' option to your own class name. For example:
+```
+'default_page_resource' => \App\Nova\PageResource::class,
+```
+### Option Resource
+Nova Page uses `Whitecube\NovaPage\Pages\OptionResource` as the Nova Resource for Option's.
+
+You can customize it's behaviour by extending the class. For example in `app\Nova\OptionResource.php`:
+```
+namespace App\Nova;
+
+use Whitecube\NovaPage\Pages\OptionResource as BaseOptionResource;
+
+class OptionResource extends BaseOptionResource
+{
+    /**
+     * Overrwrites the Option Resource's fields
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return parent::fields($request);
+    }
+}
+```
+And then in the config file, change the 'default_option_resource' option to your own class name. For example:
+```
+'default_option_resource' => \App\Nova\OptionResource::class,
+```
+
+### Resource Index Queries
+Each Resource is provided a method `novaPageIndexQuery` to mimic the core `indexQuery` on Nova Resource's. 
+
+After extending either the Page or Option Resource classes you can override the `novaPageIndexQuery` method. For example:
+```
+public static function novaPageIndexQuery(\Whitecube\NovaPage\Pages\Query $query)
+{
+    return $query->orderBy(function ($item) {
+        return $item->getTitle();
+    }, 'ASC');
+}
+```
+
+Take note: The first parameter given to `novaPageIndexQuery` is an instance of `Whitecube\NovaPage\Pages\Query` and has own set of methods.
 
 ## Advanced features
 
