@@ -71,6 +71,61 @@ php artisan migrate
 
 You can customize the table name in the migration file and then update the `table_name` parameter in the `novapage.php` config file, if you wish.
 
+### Extending the Page Resource
+Nova Page uses `Whitecube\NovaPage\Pages\PageResource` as the Nova Resource for Page's.
+
+You can customize it's behaviour by extending the class. For example in `app\Nova\PageResource.php`:
+```
+namespace App\Nova;
+
+use Whitecube\NovaPage\Pages\PageResource as BasePageResource;
+
+class PageResource extends BasePageResource
+{
+    /**
+     * Overrwrites the Page Resource's fields
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return parent::fields($request);
+    }
+}
+```
+And then in the config file, change the 'default_page_resource' option to your own class name. For example:
+```
+'default_page_resource' => \App\Nova\PageResource::class,
+```
+### Extending the Option Resource
+Nova Page uses `Whitecube\NovaPage\Pages\OptionResource` as the Nova Resource for Option's.
+
+You can customize it's behaviour by extending the class. For example in `app\Nova\OptionResource.php`:
+```
+namespace App\Nova;
+
+use Whitecube\NovaPage\Pages\OptionResource as BaseOptionResource;
+
+class OptionResource extends BaseOptionResource
+{
+    /**
+     * Overrwrites the Option Resource's fields
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return parent::fields($request);
+    }
+}
+```
+And then in the config file, change the 'default_option_resource' option to your own class name. For example:
+```
+'default_option_resource' => \App\Nova\OptionResource::class,
+```
+
 ## Templates
 
 In order to assign fields (and even cards!) to a page's edition form, we'll have to create a `Template` class and register this class on one or more routes. You'll see, it's quite easy.
