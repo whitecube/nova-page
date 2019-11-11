@@ -21,12 +21,13 @@
             "email": "adrien@whitecube.be"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
-        }
-    ],
+
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://pedrosantiago@bitbucket.org/pedrosantiago/nova.git"
+    }
+  ],
     "require": {
         "php": ">=7.1.0",
         "laravel/nova": "*"
@@ -35,6 +36,7 @@
         "phpunit/phpunit": "^8.1",
         "orchestra/testbench": "3.8.*"
     },
+
     "autoload": {
         "psr-4": {
             "Whitecube\\NovaPage\\": "src/",
