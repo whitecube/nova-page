@@ -68,7 +68,7 @@ class Filesystem implements SourceInterface
         $data['attributes'] = $template->getAttributes();
 
         $path = $this->getOriginal($template);
-        
+
         $this->makeDirectory($path);
 
         return file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT, 512));
@@ -110,7 +110,7 @@ class Filesystem implements SourceInterface
      */
     protected function makeDirectory($path)
     {
-        $files = resolve(BaseFilesystem::class);
+        $files = app(BaseFilesystem::class);
 
         if(!$files->isDirectory(dirname($path))) {
             $files->makeDirectory(dirname($path), 0755, true, true);

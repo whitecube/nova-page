@@ -27,7 +27,7 @@ abstract class Template implements ArrayAccess
 
     /**
      * The template key, used to identify it
-     * 
+     *
      * @var string
      */
     protected $key;
@@ -457,7 +457,7 @@ abstract class Template implements ArrayAccess
      */
     public function newQueryWithoutScopes()
     {
-        return resolve(Manager::class)->newQueryWithoutScopes();
+        return app(Manager::class)->newQueryWithoutScopes();
     }
 
     /**

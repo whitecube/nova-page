@@ -82,12 +82,12 @@ abstract class StaticResource extends Resource
     public static function newModel()
     {
         if(request()->resourceId) {
-            return resolve(Manager::class)
+            return app(Manager::class)
                 ->newQueryWithoutScopes()
                 ->whereKey(request()->resourceId)
                 ->firstOrFail();
         }
-        return resolve(Manager::class);
+        return app(Manager::class);
     }
 
     /**
@@ -202,7 +202,7 @@ abstract class StaticResource extends Resource
      */
     public function jsonSerialize()
     {
-        return $this->serializeWithId($this->resolveFields(resolve(NovaRequest::class)));
+        return $this->serializeWithId($this->resolveFields(app(NovaRequest::class)));
     }
 
     /**
@@ -216,7 +216,7 @@ abstract class StaticResource extends Resource
         return [
             'id' => tap(ID::make('id', function() {
                         return $this->getKey();
-                    }))->resolve($this->resource),
+                    }))->app($this->resource),
             'fields' => $fields->all(),
         ];
     }
