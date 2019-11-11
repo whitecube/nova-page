@@ -216,7 +216,7 @@ abstract class StaticResource extends Resource
         return [
             'id' => tap(ID::make('id', function() {
                         return $this->getKey();
-                    }))->app($this->resource),
+                    }))->resolve($this->resource),
             'fields' => $fields->all(),
         ];
     }
