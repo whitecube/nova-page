@@ -14,7 +14,9 @@ return [
         'pages' => 'Pages',
         'page' => 'Page',
         'options' => 'Options',
-        'option' => 'Option'
+        'option' => 'Option',
+        'page_title' => 'Page title',
+        'page_created_at' => 'Page creation date'
     ],
 
     /*
@@ -80,7 +82,7 @@ return [
     |
     */
     'default_source' => \Whitecube\NovaPage\Sources\Filesystem::class,
-    
+
     /*
     |--------------------------------------------------------------------------
     | Sources configuration
@@ -91,7 +93,7 @@ return [
     | provided when instanciated. This means you can add your own source's
     | configuration here too.
     |
-    | Path configurations can contain the following variables: 
+    | Path configurations can contain the following variables:
     | {type}, {key}, {locale}
     |
     */

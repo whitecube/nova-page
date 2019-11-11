@@ -58,10 +58,10 @@ class PageResource extends StaticResource
     protected function getBaseAttributeFields()
     {
         return [
-            Text::make('Page title', 'nova_page_title')
+            Text::make(config('novapage.labels.page_title'), 'nova_page_title')
                 ->rules(['required', 'string', 'max:255']),
 
-            DateTime::make('Page creation date', 'nova_page_created_at')
+            DateTime::make(config('novapage.labels.page_created_at'), 'nova_page_created_at')
                 ->format('DD-MM-YYYY HH:mm:ss')
                 ->rules(['required', 'string', 'max:255']),
         ];
