@@ -384,7 +384,7 @@ abstract class Template implements ArrayAccess
                 break;
 
             default:
-                $this->attributes[$attribute] = $value;
+                $this->setAttribute($attribute, $value);
                 break;
         }
     }
