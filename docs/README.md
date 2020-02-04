@@ -150,7 +150,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot(Manager $pages)
     {
-        $pages->registerOption('footer', \App\Nova\Templates\FooterOptions::class);
+        $pages->register('option', 'footer', \App\Nova\Templates\FooterOptions::class);
     }
 }
 ```
