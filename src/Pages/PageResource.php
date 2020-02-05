@@ -46,7 +46,7 @@ class PageResource extends StaticResource
     protected function getFormIntroductionFields()
     {
         return [
-            new Panel('Base page attributes', $this->getBaseAttributeFields()),
+            (new Panel('Base page attributes', $this->getBaseAttributeFields()))->withToolbar(),
         ];
     }
 
