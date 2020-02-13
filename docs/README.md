@@ -196,7 +196,7 @@ protected $middlewareGroups = [
 
 ### Manual loading
 
-At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Pages\Manager` dependency in a controller and call its `load($name, $template, $locale = null, $current = true)` method:
+At any time, pages can be loaded using the package's Page Manager. Simply type-hint the `Whitecube\NovaPage\Pages\Manager` dependency in a controller and call its `load($name, $type = 'route', $current = true, $throwOnMissing = false)` method:
 
 ```php
 use App\Nova\Templates\Aboutpage;
@@ -207,7 +207,7 @@ class AboutController extends Controller
 
     public function show(Manager $page)
     {
-        $page->load('about', About::class);
+        $page->load('about');
         return view('pages.about');
     }
 
