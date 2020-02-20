@@ -127,6 +127,10 @@ Please note it is also possible to define [Option Templates](https://whitecube.g
 <p>{{ Page::option('footer')->copyright }}</p>
 ```
 
+## 💖 Sponsorships 
+
+If you are reliant on this package in your production applications, consider [sponsoring us](https://github.com/sponsors/whitecube)! It is the best way to help us keep doing what we love to do: making great open source software.
+
 ## Contributing
 
 Feel free to suggest changes, ask for new features or fix bugs yourself. We're sure there are still a lot of improvements that could be made and we would be very happy to merge useful pull requests.
