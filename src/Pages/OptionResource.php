@@ -2,9 +2,9 @@
 
 namespace Whitecube\NovaPage\Pages;
 
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\DateTime;
 
 class OptionResource extends StaticResource
 {
@@ -46,7 +46,7 @@ class OptionResource extends StaticResource
     protected function getFormIntroductionFields()
     {
         return [
-            Heading::make($this->getFormattedName())
+            Heading::make($this->getFormattedName()),
         ];
     }
 
@@ -58,23 +58,24 @@ class OptionResource extends StaticResource
     protected function getIndexTableFields()
     {
         return [
-            Text::make('Name', function() {
+            Text::make(__('Name'), 'name', function () {
                 return $this->getFormattedName();
             })->sortable(),
 
-            DateTime::make('Last updated on', function() {
+            DateTime::make(__('Last updated on'), 'last_updated_on', function () {
                 $updated_at = $this->getDate('updated_at');
                 return $updated_at ? $updated_at->toDateTimeString() : null;
-            })->format(config('novapage.date_format'))->sortable()
+            })->format(config('novapage.date_format'))->sortable(),
         ];
     }
 
     /**
      * Format template class name for display
-     * 
+     *
      * @return string
      */
-    public function getFormattedName() {
+    public function getFormattedName()
+    {
         return ucfirst(preg_replace('/(?<!\ )[A-Z]/', ' $0', $this->getName()));
     }
 

@@ -75,15 +75,15 @@ class PageResource extends StaticResource
     protected function getIndexTableFields()
     {
         return [
-            Text::make(__('Name'), function () {
+            Text::make(__('Name'), 'name', function () {
                 return $this->getName();
             })->sortable(),
 
-            Text::make(__('Title'), function () {
+            Text::make(__('Title'), 'title', function () {
                 return $this->getTitle();
             })->sortable(),
 
-            DateTime::make(__('Last updated on'), function () {
+            DateTime::make(__('Last updated on'), 'last_updated_on', function () {
                 $updated_at = $this->getDate('updated_at');
                 return $updated_at ? $updated_at->toDateTimeString() : null;
             })->format(config('novapage.date_format'))->sortable(),
