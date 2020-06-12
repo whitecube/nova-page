@@ -50,4 +50,4 @@ Route::delete('/nova-api/nova-page/{resourceId}/field/{field}', PageFieldDestroy
 Route::get('/nova-api/nova-option', OptionResourceIndexController::class . '@handle');
 Route::get('/nova-api/nova-option/count', OptionResourceCountController::class . '@show');
 Route::put('/nova-api/nova-option/{resourceId}', OptionResourceUpdateController::class . '@handle');
-Route::delete('/nova-api/nova-page/{resourceId}/field/{field}', OptionFieldDestroyController::class . '@handle');
+Route::delete('/nova-api/nova-option/{resourceId}/field/{field}', OptionFieldDestroyController::class . '@handle');
