@@ -214,7 +214,7 @@ class AboutController extends Controller
 }
 ```
 
-In most cases, this will probably not be very convenient since we alreay registered the current route's template in our routes definitions. Therefore, it is also possible to load the page's content with an `Illuminate\Routing\Route` instance using the `loadFromRoute($route, $locale = null, $current = true)` method:
+In most cases, this will probably not be very convenient since we alreay registered the current route's template in our routes definitions. Therefore, it is also possible to load the page's content with an `Illuminate\Routing\Route` instance using the `loadForRoute($route, $locale = null, $current = true)` method:
 
 ```php
 use Illuminate\Http\Request;
@@ -225,14 +225,14 @@ class AboutController extends Controller
 
     public function show(Request $request, Manager $page)
     {
-        $page->loadFromRoute($request->route());
+        $page->loadForRoute($request->route());
         return view('pages.about');
     }
 
 }
 ```
 
-Anyway, if no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define it as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` or `loadFromRoute()` with `$current` set to `false`.
+Anyway, if no locale is provided, NovaPage will use the application's current locale (using `App::getLocale()`). By default, loading a page's content will define it as the current page, making its attributes accessible with the `Page` facade. If you just want to load content without setting it as the current page, you should call `load()` or `loadForRoute()` with `$current` set to `false`.
 
 ## Front-end Template Usage
 
