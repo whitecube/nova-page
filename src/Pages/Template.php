@@ -356,12 +356,11 @@ abstract class Template implements ArrayAccess
      * @param Closure $closure
      * @return mixed
      */
-    public function setDateIf($moment, $date = null, Closure $closure)
+    public function setDateIf($moment, $date, Closure $closure)
     {
         if(!($date instanceof Carbon)) {
             $date = new Carbon($date);
         }
-
         if($closure($date, $this->getDate($moment))) {
             return $this->setDate($moment, $date);
         }
