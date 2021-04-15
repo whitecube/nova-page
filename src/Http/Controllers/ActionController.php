@@ -2,18 +2,8 @@
 
 namespace Whitecube\NovaPage\Http\Controllers;
 
-use Illuminate\Routing\Controller;
+use Laravel\Nova\Http\Controllers\ActionController as Controller;
 
 class ActionController extends Controller
 {
-
-    /**
-     * List the actions for the given resource.
-     *
-     */
-    public function index()
-    {
-        return collect();
-    }
-
 }
