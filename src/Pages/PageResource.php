@@ -9,6 +9,13 @@ use Laravel\Nova\Panel;
 class PageResource extends StaticResource
 {
     /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = 'nova-page';
+
+    /**
      * Get the URI key for the resource.
      *
      * @return string

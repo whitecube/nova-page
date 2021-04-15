@@ -42,6 +42,7 @@ abstract class ResourceIndexController extends Controller
             'resources' => $paginator->getCollection()->values()->map->serializeForIndex($request),
             'prev_page_url' => $paginator->previousPageUrl(),
             'next_page_url' => $paginator->nextPageUrl(),
+            'per_page' => $paginator->perPage(),
             'softDeletes' => null,
         ]);
     }

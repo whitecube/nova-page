@@ -8,6 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | How should we name the links in Laravel Nova's sidebar?
+    | Note that translation keys can be used instead of plain text.
     |
     */
     'labels' => [

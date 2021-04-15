@@ -9,6 +9,13 @@ use Laravel\Nova\Fields\Text;
 class OptionResource extends StaticResource
 {
     /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = 'nova-option';
+    
+    /**
      * Get the URI key for the resource.
      *
      * @return string
