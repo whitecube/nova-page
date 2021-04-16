@@ -105,6 +105,17 @@ abstract class StaticResource extends Resource
     }
 
     /**
+     * A blank method which allows index queries to be manipulated by the Resource
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public static function novaPageIndexQuery(Query $query)
+    {
+        return $query;
+    }
+
+    /**
      * Get the base fields displayed at the top of the resource's form.
      *
      * @return array
