@@ -21,8 +21,6 @@ class NovaPageToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-page');
-
         $this->app->booted(function () {
             $this->routes();
         });
@@ -39,17 +37,7 @@ class NovaPageToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware(['nova', Authorize::class])
-                ->group(__DIR__.'/../routes/api.php');
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
+        Nova::router(['nova', Authorize::class], 'nova-page')
+            ->group(__DIR__.'/../routes/api.php');
     }
 }

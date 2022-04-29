@@ -84,7 +84,7 @@ class Query
             return $results->first();
         }
 
-        throw new TemplateNotFoundException(null, $this->key);        
+        throw new TemplateNotFoundException(null, $this->key);
     }
 
     /**

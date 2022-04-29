@@ -16,5 +16,5 @@ class Authorize
             ? $next($request)
             : abort(403);
     }
-    
+
 }

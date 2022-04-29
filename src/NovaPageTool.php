@@ -4,6 +4,9 @@ namespace Whitecube\NovaPage;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Illuminate\Http\Request;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 
 class NovaPageTool extends Tool
 {
@@ -25,8 +28,11 @@ class NovaPageTool extends Tool
      *
      * @return \Illuminate\View\View
      */
-    public function renderNavigation()
+    public function menu(Request $request)
     {
-        return view('nova-page::navigation');
+        return MenuSection::make('Nova Pages', [
+            MenuItem::make('Pages')->path('resources/nova-page'),
+            MenuItem::make('Options')->path('resources/nova-option'),
+        ]);
     }
 }

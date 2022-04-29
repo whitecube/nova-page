@@ -36,7 +36,7 @@ abstract class ResourceUpdateController extends Controller
         if ($this->templateHasBeenUpdatedSinceRetrieval($request, $template)) {
             return response('', 409);
         }
-        
+
         [$template, $callbacks] = $resource::fillForUpdate($request, $template);
 
         tap($template)->save();

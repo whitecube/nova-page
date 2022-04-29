@@ -35,7 +35,6 @@ abstract class StaticResource extends Resource
     public static $search = [
         'title', 'name'
     ];
-
     /**
      * Indicates if the resource should be displayed in the sidebar.
      *
@@ -49,7 +48,7 @@ abstract class StaticResource extends Resource
      * @param \Whitecube\NovaPage\Pages\Template $resource
      * @return void
      */
-    public function __construct(Template $resource)
+    public function __construct($resource)
     {
         parent::__construct($resource);
     }
@@ -93,10 +92,10 @@ abstract class StaticResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return array_merge(
             $this->getFormIntroductionFields(),
@@ -121,32 +120,32 @@ abstract class StaticResource extends Resource
     /**
      * Get the fields displayed by the template.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    protected function getTemplateAttributesFields(Request $request)
+    protected function getTemplateAttributesFields(NovaRequest $request)
     {
-        return $this->resource->fields($request);
+        return $this->resource->fields($request) ?? [];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
-        return $this->resource->cards($request);
+        return $this->resource->cards($request) ?? [];
     }
 
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [];
     }
@@ -154,10 +153,10 @@ abstract class StaticResource extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(NovaRequest $request)
     {
         return [];
     }
@@ -165,10 +164,10 @@ abstract class StaticResource extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [];
     }
@@ -200,7 +199,7 @@ abstract class StaticResource extends Resource
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->serializeWithId($this->resolveFields(resolve(NovaRequest::class)));
     }

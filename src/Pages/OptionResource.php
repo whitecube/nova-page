@@ -14,7 +14,7 @@ class OptionResource extends StaticResource
      * @var string
      */
     public static $model = 'nova-option';
-    
+
     /**
      * Get the URI key for the resource.
      *
@@ -72,7 +72,9 @@ class OptionResource extends StaticResource
             DateTime::make(__('Last updated on'), 'last_updated_on', function () {
                 $updated_at = $this->getDate('updated_at');
                 return $updated_at ? $updated_at->toDateTimeString() : null;
-            })->format(config('novapage.date_format'))->sortable(),
+            })
+            // ->format(config('novapage.date_format'))
+            ->sortable(),
         ];
     }
 
