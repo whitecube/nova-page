@@ -80,7 +80,7 @@ abstract class StaticResource extends Resource
      */
     public static function newModel()
     {
-        if(request()->resourceId) {
+        if(\in_array(request()->route('resource'), [PageResource::uriKey(), OptionResource::uriKey()]) && request()->route('resourceId')) {
             return resolve(Manager::class)
                 ->newQueryWithoutScopes()
                 ->whereKey(request()->resourceId)

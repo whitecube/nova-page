@@ -33,6 +33,6 @@ class NovaPageTool extends Tool
         return MenuSection::make('Nova Pages', [
             MenuItem::make('Pages')->path('resources/nova-page'),
             MenuItem::make('Options')->path('resources/nova-option'),
-        ]);
+        ])->collapsable()->icon('document');
     }
 }

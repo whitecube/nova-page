@@ -37,7 +37,7 @@ class NovaPageToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authorize::class], 'nova-page')
+        Nova::router(['nova', Authorize::class], 'resources')
             ->group(__DIR__.'/../routes/api.php');
     }
 }
