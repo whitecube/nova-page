@@ -92,10 +92,9 @@ class PageResource extends StaticResource
 
             DateTime::make(__('Last updated on'), 'last_updated_on', function () {
                 $updated_at = $this->getDate('updated_at');
-                return $updated_at ? $updated_at->toDateTimeString() : null;
+                return $updated_at ? $updated_at : null;
             })
-                // ->format(config('novapage.date_format'))
-                ->sortable(),
+            ->sortable(),
         ];
     }
 

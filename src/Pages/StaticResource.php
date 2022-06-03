@@ -195,6 +195,30 @@ abstract class StaticResource extends Resource
     }
 
     /**
+     * Determine if the current user can impersonate the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return bool
+     */
+    public function authorizedToImpersonate(NovaRequest $request)
+    {
+        return false;
+    }
+
+    /**
+     * Determine if the current user can replicate the given resource or throw an exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
+    }
+
+    /**
      * Prepare the resource for JSON serialization.
      *
      * @return array

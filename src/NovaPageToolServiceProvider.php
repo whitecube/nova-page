@@ -36,8 +36,20 @@ class NovaPageToolServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) {
             return;
         }
+        // Nova::router(['nova', Authorize::class], 'resources')
+        //     ->group(__DIR__.'/../routes/api.php');
+    }
 
-        Nova::router(['nova', Authorize::class], 'resources')
-            ->group(__DIR__.'/../routes/api.php');
+    public function register()
+    {
+        $this->registerRoutes();
+    }
+
+    protected function registerRoutes()
+    {
+        Route::middleware(['nova', Authorize::class])
+            ->group(
+                __DIR__.'/../routes/api.php'
+            );
     }
 }
