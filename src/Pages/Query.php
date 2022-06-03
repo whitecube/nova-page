@@ -132,7 +132,7 @@ class Query
      */
     public function tap($callback)
     {
-        $this->queryCallbacks[] = $callback;
+        $callback($this);
 
         return $this;
     }

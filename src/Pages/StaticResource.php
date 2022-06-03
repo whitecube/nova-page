@@ -68,6 +68,16 @@ abstract class StaticResource extends Resource
      *
      * @return string
      */
+    public function title()
+    {
+        return $this->resource->getName();
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
     public function subtitle()
     {
         return $this->resource->getName();
@@ -80,12 +90,6 @@ abstract class StaticResource extends Resource
      */
     public static function newModel()
     {
-        if(\in_array(request()->route('resource'), [PageResource::uriKey(), OptionResource::uriKey()]) && request()->route('resourceId')) {
-            return resolve(Manager::class)
-                ->newQueryWithoutScopes()
-                ->whereKey(request()->resourceId)
-                ->firstOrFail();
-        }
         return resolve(Manager::class);
     }
 
