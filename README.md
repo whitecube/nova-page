@@ -37,7 +37,7 @@ In order to assign fields (and even cards!) to a page's edition form, we'll have
 
 #### Creating Templates
 
-```bash 
+```bash
 php artisan make:template About
 ````
 
@@ -54,10 +54,10 @@ class About extends Template
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             Text::make('Title of the page', 'title')
@@ -67,10 +67,10 @@ class About extends Template
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [];
     }
@@ -127,7 +127,7 @@ Please note it is also possible to define [Option Templates](https://whitecube.g
 <p>{{ Page::option('footer')->copyright }}</p>
 ```
 
-## 💖 Sponsorships 
+## 💖 Sponsorships
 
 If you are reliant on this package in your production applications, consider [sponsoring us](https://github.com/sponsors/whitecube)! It is the best way to help us keep doing what we love to do: making great open source software.
 
@@ -139,5 +139,5 @@ Thanks!
 
 ## Made with ❤️ for open source
 At [Whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.
-So when we have an opportunity to give something back, we're super excited!  
+So when we have an opportunity to give something back, we're super excited!
 We hope you will enjoy this small contribution from us and would love to [hear from you](https://twitter.com/whitecube_be) if you find it useful in your projects.

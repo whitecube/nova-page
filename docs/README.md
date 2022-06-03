@@ -90,7 +90,7 @@ Which will result in:
 ```php
 namespace App\Nova\Templates;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Whitecube\NovaPage\Pages\Template;
 
 class About extends Template
@@ -99,10 +99,10 @@ class About extends Template
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [];
     }
@@ -110,10 +110,10 @@ class About extends Template
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [];
     }
@@ -314,7 +314,7 @@ class HomepageController extends Controller
 
     public function show(Template $template, Manager $novapage)
     {
-        // Load other pages or options using 
+        // Load other pages or options using
         // Manager::load(string $name, string $type = 'route' | 'option', bool $current = true)
         $novapage->load('contact', 'route', false);
 
