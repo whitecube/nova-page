@@ -123,4 +123,17 @@ class Query
         }
         return false;
     }
+
+    /**
+     * Pass the query to a given callback.
+     *
+     * @param  callable(\Illuminate\Database\Eloquent\Builder):void  $callback
+     * @return $this
+     */
+    public function tap($callback)
+    {
+        $this->queryCallbacks[] = $callback;
+
+        return $this;
+    }
 }
