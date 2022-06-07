@@ -10,7 +10,7 @@ class IndexController extends ResourceIndexController
 {
     /**
      * Resource label callback
-     * 
+     *
      * @return string
      */
     protected function resourceLabel() {
@@ -19,10 +19,10 @@ class IndexController extends ResourceIndexController
 
     /**
      * Callback to retrieve the resource index items
-     * 
+     *
      * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
      * @param  \Whitecube\NovaPage\Pages\Manager $manager
-     * @return \Illuminate\Support\Collection 
+     * @return \Illuminate\Support\Collection
      */
     protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager) {
         return $manager->queryIndexResources($request, 'route');

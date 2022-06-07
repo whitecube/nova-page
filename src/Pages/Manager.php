@@ -108,7 +108,7 @@ class Manager
     public function loadForRoute(Route $route, $current = true, $throwOnMissing = false)
     {
         if(!$route->template()) return;
-        
+
         $this->load($route->getName(), 'route', $current, $throwOnMissing);
     }
 
@@ -130,7 +130,7 @@ class Manager
 
     /**
      * Get an option template by its name
-     * 
+     *
      * @param string $name
      * @param bool $throwOnMissing
      * @return mixed
@@ -190,5 +190,5 @@ class Manager
     {
         return $this->repository;
     }
-    
+
 }

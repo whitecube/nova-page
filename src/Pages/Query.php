@@ -84,7 +84,7 @@ class Query
             return $results->first();
         }
 
-        throw new TemplateNotFoundException(null, $this->key);        
+        throw new TemplateNotFoundException(null, $this->key);
     }
 
     /**
@@ -122,5 +122,18 @@ class Query
             return $this->key !== $key;
         }
         return false;
+    }
+
+    /**
+     * Pass the query to a given callback.
+     *
+     * @param  callable(\Illuminate\Database\Eloquent\Builder):void  $callback
+     * @return $this
+     */
+    public function tap($callback)
+    {
+        $callback($this);
+
+        return $this;
     }
 }
