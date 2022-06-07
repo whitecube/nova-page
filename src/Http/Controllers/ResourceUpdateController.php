@@ -29,7 +29,7 @@ abstract class ResourceUpdateController extends Controller
 
         $resource = $request->resource();
 
-        $resource::validateForUpdate($request);
+        $resource::validateForUpdate($request, $request->findResourceOrFail());
 
         $template = $request->findModelQuery()->firstOrFail();
 
