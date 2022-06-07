@@ -2,13 +2,8 @@
 
 namespace Whitecube\NovaPage;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use Whitecube\NovaPage\Pages\Manager;
-use Whitecube\NovaPage\Pages\Template;
 use Whitecube\NovaPage\Http\Middleware\Authorize;
 
 class NovaPageToolServiceProvider extends ServiceProvider
@@ -36,8 +31,6 @@ class NovaPageToolServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) {
             return;
         }
-        // Nova::router(['nova', Authorize::class], 'resources')
-        //     ->group(__DIR__.'/../routes/api.php');
     }
 
     public function register()
@@ -48,8 +41,6 @@ class NovaPageToolServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::middleware(['nova', Authorize::class])
-            ->group(
-                __DIR__.'/../routes/api.php'
-            );
+            ->group(__DIR__.'/../routes/api.php');
     }
 }

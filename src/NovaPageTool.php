@@ -30,7 +30,7 @@ class NovaPageTool extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Nova Pages', [
+        return MenuSection::make('Nova Page', [
             MenuItem::make('Pages')->path('resources/nova-page'),
             MenuItem::make('Options')->path('resources/nova-option'),
         ])->collapsable()->icon('document');
