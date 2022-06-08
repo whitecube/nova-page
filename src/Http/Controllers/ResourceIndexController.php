@@ -12,17 +12,17 @@ abstract class ResourceIndexController extends Controller
 {
     /**
      * Get the queried resource's plural label
-     * 
+     *
      * @return string
      */
     abstract protected function resourceLabel();
 
     /**
      * Get the queried resource's index items
-     * 
+     *
      * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
      * @param  \Whitecube\NovaPage\Pages\Manager $manager
-     * @return \Illuminate\Support\Collection 
+     * @return \Illuminate\Support\Collection
      */
     abstract protected function resourceIndexItems(ResourceIndexRequest $request, Manager $manager);
 
@@ -64,5 +64,4 @@ abstract class ResourceIndexController extends Controller
 
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page);
     }
-
 }

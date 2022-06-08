@@ -28,12 +28,12 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "laravel/nova": "*"
+        "php": "^7.3|^8.0",
+        "laravel/nova": "^4.0",
+        "orchestra/testbench": "^7.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.1",
-        "orchestra/testbench": "3.8.*"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {

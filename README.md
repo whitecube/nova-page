@@ -59,10 +59,10 @@ class About extends Template
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             Text::make('Title of the page', 'title')
@@ -72,10 +72,10 @@ class About extends Template
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [];
     }

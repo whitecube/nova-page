@@ -10,9 +10,8 @@ use BadMethodCallException;
 use Whitecube\NovaPage\Sources\SourceInterface;
 use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
-
+use Laravel\Nova\Http\Requests\NovaRequest;
 abstract class Template implements ArrayAccess
 {
     use HasAttributes;
@@ -27,7 +26,7 @@ abstract class Template implements ArrayAccess
 
     /**
      * The template key, used to identify it
-     * 
+     *
      * @var string
      */
     protected $key;
@@ -436,18 +435,18 @@ abstract class Template implements ArrayAccess
     /**
      * Get the fields displayed by the template.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    abstract public function fields(Request $request);
+    abstract public function fields(NovaRequest $request);
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    abstract public function cards(Request $request);
+    abstract public function cards(NovaRequest $request);
 
     /**
      * Mimic eloquent model method and return a fake Query builder

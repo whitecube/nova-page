@@ -29,14 +29,14 @@ abstract class ResourceUpdateController extends Controller
 
         $resource = $request->resource();
 
-        $resource::validateForUpdate($request);
+        $resource::validateForUpdate($request, $request->findResourceOrFail());
 
         $template = $request->findModelQuery()->firstOrFail();
 
         if ($this->templateHasBeenUpdatedSinceRetrieval($request, $template)) {
             return response('', 409);
         }
-        
+
         [$template, $callbacks] = $resource::fillForUpdate($request, $template);
 
         tap($template)->save();

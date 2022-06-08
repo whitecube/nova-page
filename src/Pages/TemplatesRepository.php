@@ -56,7 +56,7 @@ class TemplatesRepository
 
     /**
      * Get all registered pages matching given filter
-     * 
+     *
      * @param string $filter
      * @return array
      */
@@ -150,5 +150,4 @@ class TemplatesRepository
     {
         return $type . '.' . $name;
     }
-    
 }
