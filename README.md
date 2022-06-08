@@ -17,11 +17,6 @@ Here's a very condensed guide to get you started asap. For more details, example
 
 ### Install
 
- Laravel      | Nova       | nova-page
-:-------------|:----------|:----------
- > 9.x        | > 4.0     | > 0.3.3
- <= 9.x       | <= 4.0    | <= 0.3.3
-
 ```bash
 composer require whitecube/nova-page
 ```
