@@ -6,11 +6,16 @@ This package adds basic **flat-file CMS features** to Laravel Nova in a breeze u
 
 ## Installation
 
+Laravel      | Nova       | nova-page
+:-------------|:----------|:----------
+\< 9.x        | < 4.0     | < 0.3.0
+9.x           | 4.0       | ^ 0.3.0
+
 ```bash
 composer require whitecube/nova-page
 ```
 
-If using Laravel >= 5.5, the service providers and aliases will register automatically.
+When using Laravel >= 5.5, the service providers and aliases will register automatically.
 
 If for some reason you must do it manually, register the package in the `providers` section of the app config file in `app/config/app.php` and also add the facade:
 
@@ -41,6 +46,25 @@ public function tools()
     ];
 }
 ```
+
+## Concept overview
+
+Nova Page is a package that will add a "static page resource" to Laravel Nova. The typical use case is quite straightforward: add the ability to edit routes/pages displaying content that should be structured in order to fit a specific custom design such as homepages, about pages, legal information, and so on.
+
+Depending on your configuration, this "page" resource can be a database model or a JSON file directly stored in the project's filesystem (which can be useful if you want to keep this content tracked in your VCS).
+
+To get started :
+
+1. Make sure there are existing "web" routes ;
+2. [Create a Template class](#creating-templates) for each route serving a static page ;
+3. Define the Template's fields describing its custom structure ;
+4. [Link (assign) the template to the route(s)](#assigning-templates) it serves ;
+5. Fill the page's content using Laravel Nova's UI ;
+6. [Display (inject) the field's values](#loading-pages-for-display) as page attributes in the Blade Template files.
+
+Please note that the created Template classes need to be assigned to routes in order to appear in Nova Page's resource index. More info below.
+
+**Pro tip:** you can also use Nova Page's templates for the structural content on dynamic pages! For instance, a product page or a blog post could have content that should not be edited per model. It is quite common to attach a Template class to each web route in order to let administrators manage SEO metadata (page title, description, social media share image, etc.) even when the page's core content is dynamically provided by another model.
 
 ## Configuration
 
