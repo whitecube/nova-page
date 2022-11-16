@@ -9,14 +9,14 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "laravel-nova": "^1.0",
+        "@vue/babel-plugin-jsx": "^1.1.1",
         "@vue/compiler-sfc": "^3.2.22",
         "laravel-mix": "^6.0.41",
+        "laravel-nova": "^1.0",
         "postcss": "^8.2",
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.8",
         "sass-loader": "10.*",
-        "vue-loader": "^16.8.3",
-        "@vue/babel-plugin-jsx": "^1.1.1"
+        "vue-loader": "^16.8.3"
     }
 }
