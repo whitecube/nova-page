@@ -118,7 +118,9 @@ class Query
      */
     public function exists($throwOnMissing = false)
     {
-        return true;
+        $results = $this->get($throwOnMissing);
+
+        return $results->count() === 1;
     }
 
     /**
