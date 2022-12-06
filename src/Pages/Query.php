@@ -108,6 +108,20 @@ class Query
                 return $this->repository->load($type, $name, $this->locale, $throwOnMissing);
             });
     }
+    
+    
+    /**
+     * Mimic eloquent's Builder and execute the query
+     *
+     * @param bool $throwOnMissing
+     * @return Illuminate\Support\Collection
+     */
+    public function exists($throwOnMissing = false)
+    {
+        $results = $this->get($throwOnMissing);
+
+        return $results->count() === 1;
+    }
 
     /**
      * Checks if template should be included in results based
