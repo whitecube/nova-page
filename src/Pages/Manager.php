@@ -4,6 +4,7 @@ namespace Whitecube\NovaPage\Pages;
 
 use Illuminate\Routing\Route;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Whitecube\NovaPage\Exceptions\TemplateNotFoundException;
 
 class Manager
 {
@@ -84,7 +85,8 @@ class Manager
      * @param string $type
      * @param bool $current
      * @param bool $throwOnMissing
-     * @return Whitecube\NovaPage\Pages\Template
+     * @return Template
+     * @throws TemplateNotFoundException
      */
     public function load($name, $type = 'route', $current = true, $throwOnMissing = false)
     {
@@ -100,10 +102,11 @@ class Manager
     /**
      * Load Page Template for given route instance
      *
-     * @param Illuminate\Routing\Route $route
+     * @param Route $route
      * @param bool $current
      * @param bool $throwOnMissing
      * @return void
+     * @throws TemplateNotFoundException
      */
     public function loadForRoute(Route $route, $current = true, $throwOnMissing = false)
     {
@@ -134,6 +137,7 @@ class Manager
      * @param string $name
      * @param bool $throwOnMissing
      * @return mixed
+     * @throws TemplateNotFoundException
      */
     public function option($name, $throwOnMissing = false)
     {
@@ -175,7 +179,7 @@ class Manager
     /**
      * Mimic eloquent model method and return a fake Query builder
      *
-     * @return Whitecube\NovaPage\Pages\Query
+     * @return Query
      */
     public function newQueryWithoutScopes()
     {
