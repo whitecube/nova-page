@@ -163,6 +163,22 @@ abstract class Template implements ArrayAccess
     }
 
     /**
+     * Force Fill the layout with an array of attributes.
+     *
+     * @param  array  $attributes
+     * @return $this
+     */
+    public function forceFill(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $attribute = \Str::replace('->', '.', $key);
+            \Arr::set($this->attributes, $attribute, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Create a new loaded template instance
      *
      * @param string $type
