@@ -3,15 +3,15 @@
 namespace Whitecube\NovaPage\Pages;
 
 use App;
-use Closure;
 use ArrayAccess;
-use Carbon\Carbon;
 use BadMethodCallException;
-use Whitecube\NovaPage\Sources\SourceInterface;
-use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
-use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
+use Carbon\Carbon;
+use Closure;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
+use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
+use Whitecube\NovaPage\Sources\SourceInterface;
 abstract class Template implements ArrayAccess
 {
     use HasAttributes;
@@ -409,7 +409,7 @@ abstract class Template implements ArrayAccess
      * @param  mixed  $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return ! is_null($this->__get($offset));
     }
@@ -420,7 +420,7 @@ abstract class Template implements ArrayAccess
      * @param  mixed  $offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->__get($offset);
     }
@@ -432,7 +432,7 @@ abstract class Template implements ArrayAccess
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -443,7 +443,7 @@ abstract class Template implements ArrayAccess
      * @param  mixed  $offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }
