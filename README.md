@@ -132,6 +132,11 @@ Please note it is also possible to define [Option Templates](https://whitecube.g
 <p>{{ Page::option('footer')->copyright }}</p>
 ```
 
+If you are using a custom menu for example Nova::mainMenu(function (Request $request) {return [... menu secions and items... ]}
+Just add: MenuItem::link(__('nova-pages'), '/resources/nova-page'),
+          MenuItem::link(__('nova-options'), '/resources/nova-option')
+
+
 ## 💖 Sponsorships
 
 If you are reliant on this package in your production applications, consider [sponsoring us](https://github.com/sponsors/whitecube)! It is the best way to help us keep doing what we love to do: making great open source software.
