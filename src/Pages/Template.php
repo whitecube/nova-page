@@ -519,4 +519,15 @@ abstract class Template implements ArrayAccess
         return $this->raw;
     }
 
+    
+    /**
+     * Determine if accessing missing attributes is disabled.
+     *
+     * @return bool
+     */
+    public static function preventsAccessingMissingAttributes()
+    {
+        return Model::preventsAccessingMissingAttributes();
+    }
+
 }
