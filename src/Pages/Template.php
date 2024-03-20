@@ -12,6 +12,8 @@ use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
 use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Database\Eloquent\Model;
+
 abstract class Template implements ArrayAccess
 {
     use HasAttributes;
