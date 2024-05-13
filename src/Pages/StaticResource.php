@@ -44,11 +44,8 @@ abstract class StaticResource extends Resource
 
     /**
      * Create a new resource instance.
-     *
-     * @param \Whitecube\NovaPage\Pages\Template $resource
-     * @return void
      */
-    public function __construct(Template $resource)
+    public function __construct(Manager|Template $resource)
     {
         parent::__construct($resource);
     }
