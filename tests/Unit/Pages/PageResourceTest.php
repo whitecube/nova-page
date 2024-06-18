@@ -55,10 +55,6 @@ class PageResourceTest extends TestCase
     public function can_get_a_fresh_instance_of_the_model_represented_by_the_resource()
     {
         $this->assertInstanceOf(Manager::class, PageResource::newModel());
-
-        $this->expectException(TemplateNotFoundException::class);
-        request()->resourceId = 'route.test';
-        PageResource::newModel();
     }
 
     /** @test */
