@@ -29,10 +29,10 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/nova": "^4.0",
-        "orchestra/testbench": "^8.5"
+        "laravel/nova": "^4.0"
     },
     "require-dev": {
+        "orchestra/testbench": "^8.5",
         "phpunit/phpunit": "^10.0"
     },
     "autoload": {
