@@ -8,3 +8,4 @@ composer.lock
 .DS_Store
 Thumbs.db
 auth.json
+.phpunit.cache

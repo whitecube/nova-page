@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="./tests/bootstrap.php"
->
-    <testsuites>
-        <testsuite name="Package Test Suite">
-            <directory suffix=".php">./tests/</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist>
-            <directory>src/</directory>
-            <exclude>
-                <directory>src/Exceptions</directory>
-                <directory>src/Stubs</directory>
-                <directory>src/Http</directory>
-                <file>src/config.php</file>
-                <file>src/NovaPageFacade.php</file>
-                <file>src/NovaPageRouteMacros.php</file>
-                <file>src/NovaPageServiceProvider.php</file>
-                <file>src/NovaPageTool.php</file>
-                <file>src/NovaPageToolServiceProvider.php</file>
-                <file>src/Sources/SourceInterface.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" colors="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="Package Test Suite">
+      <directory suffix=".php">./tests/</directory>
+      <exclude>./tests/test-application/</exclude>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory>src/</directory>
+    </include>
+    <exclude>
+      <directory>src/Exceptions</directory>
+      <directory>src/Stubs</directory>
+      <directory>src/Http</directory>
+      <file>src/config.php</file>
+      <file>src/NovaPageFacade.php</file>
+      <file>src/NovaPageRouteMacros.php</file>
+      <file>src/NovaPageServiceProvider.php</file>
+      <file>src/NovaPageTool.php</file>
+      <file>src/NovaPageToolServiceProvider.php</file>
+      <file>src/Sources/SourceInterface.php</file>
+    </exclude>
+  </source>
 </phpunit>
