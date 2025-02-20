@@ -2,17 +2,16 @@
 
 namespace Whitecube\NovaPage\Pages;
 
-use App;
-use Closure;
 use ArrayAccess;
-use Carbon\Carbon;
 use BadMethodCallException;
-use Whitecube\NovaPage\Sources\SourceInterface;
-use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
-use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
+use Carbon\Carbon;
+use Closure;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Database\Eloquent\Model;
+use Whitecube\NovaPage\Exceptions\TemplateContentNotFoundException;
+use Whitecube\NovaPage\Exceptions\ValueNotFoundException;
+use Whitecube\NovaPage\Sources\SourceInterface;
 
 abstract class Template implements ArrayAccess
 {

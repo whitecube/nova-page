@@ -3,8 +3,8 @@
 namespace Whitecube\NovaPage\Sources;
 
 use \App;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Whitecube\NovaPage\Pages\Template;
 
 class Database implements SourceInterface {
@@ -67,7 +67,7 @@ class Database implements SourceInterface {
 
         $attributes = $this->getParsedAttributes(
             $template,
-            $model->attributes ? json_decode($model->attributes, true) : []
+            $model->attributes ? (is_array($model->attributes) ? $model->attributes : json_decode($model->attributes, true)) : []
         );
 
         return [
