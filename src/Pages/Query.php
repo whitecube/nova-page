@@ -30,6 +30,16 @@ class Query
     protected $type;
 
     /**
+     * The column to order by
+     */
+    protected $orderColumn;
+
+    /**
+     * The direction to order by
+     */
+    protected $orderDirection;
+
+    /**
      * The locale filter used to retrieve the resource
      *
      * @var null|string
@@ -71,6 +81,19 @@ class Query
     }
 
     /**
+     * Mimic eloquent's Builder and register a orderBy statment
+     *
+     * @param mixed $column
+     * @param string $direction
+     */
+    public function orderBy($column, string $direction = 'ASC')
+    {
+        $this->orderColumn = $column;
+        $this->orderDirection = $direction;
+        return $this;
+    }
+
+    /**
      * Mimic eloquent's Builder and return corresponding Resource
      *
      * @return mixed
@@ -97,7 +120,7 @@ class Query
     {
         $resources = $this->repository->getFiltered(trim($this->type . '.*', '.'));
 
-        return Collection::make($resources)
+        $result = Collection::make($resources)
             ->map(function($template, $key) {
                 return $this->repository->getResourceTemplate($key);
             })
@@ -107,6 +130,12 @@ class Query
                 list($type, $name) = explode('.', $key, 2);
                 return $this->repository->load($type, $name, $this->locale, $throwOnMissing);
             });
+
+        if ($this->orderColumn && $this->orderDirection) {
+            $result = $result->sortBy($this->orderColumn, SORT_REGULAR, ($this->orderDirection === 'DESC') ? true : false);
+        }
+
+        return $result;
     }
     
     
