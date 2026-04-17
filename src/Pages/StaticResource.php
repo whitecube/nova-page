@@ -238,9 +238,9 @@ abstract class StaticResource extends Resource
     protected function serializeWithId(Collection $fields)
     {
         return [
-            'id' => tap(ID::make('id', function() {
-                        return $this->getKey();
-                    }))->resolve($this->resource),
+            'id' => tap(ID::make('id')
+                        ->resolveUsing(fn() => $this->getKey())
+                    )->resolve($this->resource),
             'fields' => $fields->all(),
         ];
     }
