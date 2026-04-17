@@ -15,7 +15,7 @@ trait ResolvesResourceFields
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
-    public function availableFields(NovaRequest $request)
+    public function availableFields(NovaRequest $request): FieldCollection
     {
         if($this->isDisplayingIndexFields($request)) {
             return new FieldCollection($this->getIndexTableFields($request));
