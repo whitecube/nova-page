@@ -42,7 +42,7 @@ class NovaPageServiceProvider extends ServiceProvider
         });
 
         Blade::directive('option', function($key) {
-            list($name, $attribute) = explode('.', trim($key, "'\""), 2);
+            [$name, $attribute] = explode('.', trim($key, "'\""), 2);
             return '<?= data_get(Page::option(\'' . $name . '\'),\'' . $attribute . '\'); ?>';
         });
     }
