@@ -151,6 +151,9 @@ class PageResourceTest extends TestCase
                 }
                 public function route($param = null, $default = null)
                 {
+                    if ($param !== null) {
+                        return $default;
+                    }
                     return $this->routeMock;
                 }
             };
