@@ -2,7 +2,7 @@
 
 namespace Whitecube\NovaPage\Http\Controllers;
 
-use Laravel\Nova\Http\Controllers\ActionController as Controller;
+use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ActionController extends Controller

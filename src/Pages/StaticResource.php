@@ -174,6 +174,27 @@ abstract class StaticResource extends Resource
     }
 
     /**
+     * Return null to opt out of policy-gate authorization. StaticResource
+     * has no Eloquent model, so Nova 5's resolveResourceOrModelForAuthorization
+     * would fail. Authorization is handled via the authorizedToXxx() methods below.
+     */
+    public static function authorizationGate()
+    {
+        return null;
+    }
+
+    /**
+     * Nova 5's authorizedTo() calls resolveResourceOrModelForAuthorization($this)
+     * unconditionally, before checking authorizable(). Since our model is a Template
+     * (not an Eloquent Model), that throws a TypeError. We bypass it here and return
+     * true; the individual authorizedToXxx() overrides below handle specific denials.
+     */
+    public function authorizedTo(Request $request, string $ability): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine if the current user can create new resources.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -238,9 +259,9 @@ abstract class StaticResource extends Resource
     protected function serializeWithId(Collection $fields)
     {
         return [
-            'id' => tap(ID::make('id', function() {
-                        return $this->getKey();
-                    }))->resolve($this->resource),
+            'id' => tap(ID::make('id')
+                        ->resolveUsing(fn() => $this->getKey())
+                    )->resolve($this->resource),
             'fields' => $fields->all(),
         ];
     }
